@@ -17,7 +17,11 @@ Anzar Alvi (anzaruoft), Hugo Hudson (hudsonhu22), Maryam Hassan (maryamhassan1),
 
 ### Assignments of User stories: 
 User story #1: Team 
+
 User story #2: Maryam
+
 User story #3: Hugo
+
 User story #4: Anzar 
+
 User story #5: Benjamin
