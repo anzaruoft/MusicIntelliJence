@@ -1,4 +1,4 @@
-# MusicIntelliJence 
+# TuneTribunal
 
 ## CSC207 - Final Group Project
 ### Authors: 
