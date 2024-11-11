@@ -10,6 +10,8 @@ public class SignupState {
     private String passwordError;
     private String repeatPassword = "";
     private String repeatPasswordError;
+    private String email = "";
+    private String emailError;
 
     public String getUsername() {
         return username;
@@ -33,6 +35,14 @@ public class SignupState {
 
     public String getRepeatPasswordError() {
         return repeatPasswordError;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getEmailError() {
+        return emailError;
     }
 
     public void setUsername(String username) {
