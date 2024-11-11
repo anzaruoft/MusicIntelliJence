@@ -1,12 +1,19 @@
 package data_access;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
+import entity.CommonUser;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import entity.User;
 import entity.UserFactory;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -25,122 +32,107 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
-    private static final String JSON_FILE_URL = "http://ec2-3-139-82-243.us-east-2.compute.amazonaws.com/example_input.json";
+    private static final String JSON_FILE_URL = "http://ec2-3-139-82-243.us-east-2.compute.amazonaws.com:8080/users";
     private final UserFactory userFactory;
 
     public DBUserDataAccessObject(UserFactory userFactory) {
         this.userFactory = userFactory;
     }
 
-    // Helper method to retrieve the entire JSON file
-    private JSONObject getJsonData() throws IOException, JSONException {
-        final OkHttpClient client = new OkHttpClient().newBuilder().build();
-        final Request request = new Request.Builder()
-                .url(JSON_FILE_URL)
-                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
-                .build();
-        final Response response = client.newCall(request).execute();
-
-        if (response.code() != SUCCESS_CODE) {
-            throw new RuntimeException("Unexpected HTTP status code: " + response.code());
-        }
-        return new JSONObject(response.body().string());
-    }
-
     @Override
     public User get(String username) {
-        try {
-            final JSONObject responseBody = getJsonData();
-            final JSONArray usersArray = responseBody.getJSONArray("users");
-
-            for (int i = 0; i < usersArray.length(); i++) {
-                JSONObject userJSONObject = usersArray.getJSONObject(i);
-                if (userJSONObject.getString("username").equals(username)) {
-                    String name = userJSONObject.getString("username");
-                    String password = userJSONObject.getString("password");
-                    String email = userJSONObject.getString("email");
-
-                    return userFactory.create(name, password, email);
-                }
+        final String endpoint2 = "/user-information";
+        String url = JSON_FILE_URL + endpoint2 + "?username=" + username;
+        final Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+        OkHttpClient client = new OkHttpClient();
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                System.out.println("Response body: " + responseBody);
+                JSONObject jsonObject = new JSONObject(responseBody);
+                return new CommonUser(
+                        username,
+                        jsonObject.getString("password"),
+                        jsonObject.getString("email")
+                );
             }
-            throw new RuntimeException("User not found");
-        } catch (IOException | JSONException ex) {
-            throw new RuntimeException("Error fetching user data: " + ex.getMessage(), ex);
         }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 
     @Override
     public boolean existsByName(String username) {
         try {
-            final JSONObject responseBody = getJsonData();
-            final JSONArray usersArray = responseBody.getJSONArray("users");
-
-            for (int i = 0; i < usersArray.length(); i++) {
-                JSONObject userJSONObject = usersArray.getJSONObject(i);
-                if (userJSONObject.getString("username").equals(username)) {
-                    return true; // User exists
+            final String endpoint = "/json-information";
+            final URI uri = new URI(JSON_FILE_URL + endpoint);
+            final Request request = new Request.Builder()
+                    .url(uri.toURL())
+                    .get()
+                    .build();
+            OkHttpClient client = new OkHttpClient();
+            try (Response response = client.newCall(request).execute()) {
+                if (response.isSuccessful()) {
+                    String jsonResponse = response.body().string();
+                    JSONArray jsonArray = new JSONArray(jsonResponse);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        if (jsonArray.getString(i).equals(username)) {
+                            return true;
+                        }
+                    }
                 }
             }
-            return false; // User not found
-        } catch (IOException | JSONException ex) {
-            throw new RuntimeException("Error checking if user exists: " + ex.getMessage(), ex);
+            return false;
+        }
+        catch (IOException | URISyntaxException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public void save(User user) {
         try {
-            final JSONObject responseBody = getJsonData();
-            final JSONArray usersArray = responseBody.getJSONArray("users");
+            final String endpointAdd = "/add";
+            final URI uri = new URI(JSON_FILE_URL + endpointAdd);
 
-            // Create the new user JSONObject
-            JSONObject newUser = new JSONObject();
-            newUser.put("username", user.getName());
-            newUser.put("password", user.getPassword());
-            newUser.put("email", user.getEmail());
+            final RequestBody formBody = new FormBody.Builder()
+                    .add("username", user.getName())
+                    .add("password", user.getPassword())
+                    .add("email", user.getEmail())
+                    .build();
 
-// Initialize empty arrays for followers, following, posts, and ratings
-            newUser.put("followers", new JSONArray());
-            newUser.put("following", new JSONArray());
-            newUser.put("posts", new JSONArray());
-            newUser.put("ratings", new JSONArray());
-
-// Wrap the new user inside the "users" array
-            usersArray.put(newUser);
-
-// Create the final JSON object with the "users" key
-            JSONObject finalJsonData = new JSONObject();
-            finalJsonData.put("users", usersArray);
-
-// Send the final JSON data to the server
-            sendJsonData(finalJsonData);
-
+            final Request request = new Request.Builder()
+                    .url(uri.toURL())
+                    .addHeader(CONTENT_TYPE_LABEL, "application/x-www-form-urlencoded")
+                    .post(formBody)
+                    .build();
+            OkHttpClient client = new OkHttpClient();
+            try (Response response = client.newCall(request).execute()) {
+                if (response.isSuccessful()) {
+                    System.out.println("User added successfully: " + response.body().string());
+                }
+                else {
+                    System.out.println("Failed to add user. Response code: " + response.code());
+                    System.out.println("Response body: " + response.body().string());
+                }
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        catch (IOException | JSONException ex) {
-            throw new RuntimeException("Error saving user: " + ex.getMessage(), ex);
+        catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void changePassword(User user) {
-        try {
-            final JSONObject responseBody = getJsonData();
-            final JSONArray usersArray = responseBody.getJSONArray("users");
-
-            for (int i = 0; i < usersArray.length(); i++) {
-                JSONObject userJSONObject = usersArray.getJSONObject(i);
-                if (userJSONObject.getString("username").equals(user.getName())) {
-                    userJSONObject.put("password", user.getPassword()); // Update the password
-
-                    // Send the updated JSON back to the server
-                    sendJsonData(responseBody);
-                    return; // Exit after updating
-                }
-            }
-            throw new RuntimeException("User not found");
-        } catch (IOException | JSONException ex) {
-            throw new RuntimeException("Error changing password: " + ex.getMessage(), ex);
-        }
+        //
     }
 
     // Helper method to send the updated JSON data back to the server
