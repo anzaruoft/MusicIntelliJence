@@ -8,6 +8,11 @@
     <artifactId>homework-5</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <java.version>17.0.12</java.version> <!-- or the Java version you are using -->
+        <spring-boot.version>2.7.6</spring-boot.version> <!-- Set the correct Spring Boot version -->
+    </properties>
+
     <dependencies>
 
         <dependency>
@@ -33,15 +38,11 @@
             <version>5.8.1</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring-boot.version}</version> <!-- Use the version from the properties -->
+        </dependency>
     </dependencies>
-
-
-
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
 </project>

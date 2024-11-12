@@ -1,12 +1,19 @@
 package data_access;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
+import entity.CommonUser;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import entity.User;
 import entity.UserFactory;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -17,149 +24,144 @@ import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
-/**
- * The DAO for user data.
- */
 public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
         LogoutUserDataAccessInterface {
+
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
-    private static final String STATUS_CODE_LABEL = "status_code";
-    private static final String USERNAME = "username";
-    private static final String PASSWORD = "password";
-    private static final String MESSAGE = "message";
+    private static final String JSON_FILE_URL = "http://ec2-3-139-82-243.us-east-2.compute.amazonaws.com:8080/users";
     private final UserFactory userFactory;
 
     public DBUserDataAccessObject(UserFactory userFactory) {
         this.userFactory = userFactory;
-        // No need to do anything to reinitialize a user list! The data is the cloud that may be miles away.
     }
 
     @Override
     public User get(String username) {
-        // Make an API call to get the user object.
-        final OkHttpClient client = new OkHttpClient().newBuilder().build();
+        final String endpoint2 = "/user-information";
+        String url = JSON_FILE_URL + endpoint2 + "?username=" + username;
         final Request request = new Request.Builder()
-                .url(String.format("http://vm003.teach.cs.toronto.edu:20112/user?username=%s", username))
-                .addHeader("Content-Type", CONTENT_TYPE_JSON)
+                .url(url)
+                .get()
                 .build();
-        try {
-            final Response response = client.newCall(request).execute();
-
-            final JSONObject responseBody = new JSONObject(response.body().string());
-
-            if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
-                final JSONObject userJSONObject = responseBody.getJSONObject("user");
-                final String name = userJSONObject.getString(USERNAME);
-                final String password = userJSONObject.getString(PASSWORD);
-
-                return userFactory.create(name, password);
-            }
-            else {
-                throw new RuntimeException(responseBody.getString(MESSAGE));
+        OkHttpClient client = new OkHttpClient();
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                System.out.println("Response body: " + responseBody);
+                JSONObject jsonObject = new JSONObject(responseBody);
+                return new CommonUser(
+                        username,
+                        jsonObject.getString("password"),
+                        jsonObject.getString("email")
+                );
             }
         }
-        catch (IOException | JSONException ex) {
-            throw new RuntimeException(ex);
+        catch (IOException e) {
+            throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public void setCurrentUsername(String name) {
-        // this isn't implemented for the lab
+        return null;
     }
 
     @Override
     public boolean existsByName(String username) {
-        final OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        final Request request = new Request.Builder()
-                .url(String.format("http://vm003.teach.cs.toronto.edu:20112/checkIfUserExists?username=%s", username))
-                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
-                .build();
         try {
-            final Response response = client.newCall(request).execute();
-
-            final JSONObject responseBody = new JSONObject(response.body().string());
-
-            return responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE;
+            final String endpoint = "/json-information";
+            final URI uri = new URI(JSON_FILE_URL + endpoint);
+            final Request request = new Request.Builder()
+                    .url(uri.toURL())
+                    .get()
+                    .build();
+            OkHttpClient client = new OkHttpClient();
+            try (Response response = client.newCall(request).execute()) {
+                if (response.isSuccessful()) {
+                    String jsonResponse = response.body().string();
+                    JSONArray jsonArray = new JSONArray(jsonResponse);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        if (jsonArray.getString(i).equals(username)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
         }
-        catch (IOException | JSONException ex) {
-            throw new RuntimeException(ex);
+        catch (IOException | URISyntaxException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public void save(User user) {
-        final OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-
-        // POST METHOD
-        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
-        final JSONObject requestBody = new JSONObject();
-        requestBody.put(USERNAME, user.getName());
-        requestBody.put(PASSWORD, user.getPassword());
-        final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
-        final Request request = new Request.Builder()
-                .url("http://vm003.teach.cs.toronto.edu:20112/user")
-                .method("POST", body)
-                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
-                .build();
         try {
-            final Response response = client.newCall(request).execute();
+            final String endpointAdd = "/add";
+            final URI uri = new URI(JSON_FILE_URL + endpointAdd);
 
-            final JSONObject responseBody = new JSONObject(response.body().string());
+            final RequestBody formBody = new FormBody.Builder()
+                    .add("username", user.getName())
+                    .add("password", user.getPassword())
+                    .add("email", user.getEmail())
+                    .build();
 
-            if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
-                // success!
+            final Request request = new Request.Builder()
+                    .url(uri.toURL())
+                    .addHeader(CONTENT_TYPE_LABEL, "application/x-www-form-urlencoded")
+                    .post(formBody)
+                    .build();
+            OkHttpClient client = new OkHttpClient();
+            try (Response response = client.newCall(request).execute()) {
+                if (response.isSuccessful()) {
+                    System.out.println("User added successfully: " + response.body().string());
+                }
+                else {
+                    System.out.println("Failed to add user. Response code: " + response.code());
+                    System.out.println("Response body: " + response.body().string());
+                }
             }
-            else {
-                throw new RuntimeException(responseBody.getString(MESSAGE));
+            catch (IOException e) {
+                e.printStackTrace();
             }
         }
-        catch (IOException | JSONException ex) {
-            throw new RuntimeException(ex);
+        catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void changePassword(User user) {
-        final OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
+        //
+    }
 
-        // POST METHOD
+    // Helper method to send the updated JSON data back to the server
+    private void sendJsonData(JSONObject updatedData) throws IOException {
+        final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
-        final JSONObject requestBody = new JSONObject();
-        requestBody.put(USERNAME, user.getName());
-        requestBody.put(PASSWORD, user.getPassword());
-        final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
+        final RequestBody body = RequestBody.create(updatedData.toString(), mediaType);
+
         final Request request = new Request.Builder()
-                .url("http://vm003.teach.cs.toronto.edu:20112/user")
+                .url(JSON_FILE_URL) // Ensure this is the correct endpoint for updating data
                 .method("PUT", body)
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
-        try {
-            final Response response = client.newCall(request).execute();
 
-            final JSONObject responseBody = new JSONObject(response.body().string());
-
-            if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
-                // success!
-            }
-            else {
-                throw new RuntimeException(responseBody.getString(MESSAGE));
-            }
-        }
-        catch (IOException | JSONException ex) {
-            throw new RuntimeException(ex);
+        final Response response = client.newCall(request).execute();
+        if (response.code() != SUCCESS_CODE) {
+            System.out.println("Response code: " + response.code());
+            System.out.println("Response body: " + response.body().string());
+            throw new RuntimeException("Failed to update JSON data on the server");
         }
     }
 
     @Override
+    public void setCurrentUsername(String name) {
+        // Not implemented
+    }
+
+    @Override
     public String getCurrentUsername() {
-        return null;
+        return null; // Not implemented
     }
 }
