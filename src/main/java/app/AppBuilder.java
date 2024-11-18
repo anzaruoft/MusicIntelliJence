@@ -13,6 +13,9 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.feed.FeedController;
+import interface_adapter.feed.FeedPresenter;
+import interface_adapter.feed.FeedViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -24,6 +27,9 @@ import interface_adapter.signup.SignupViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.feed.FeedInputBoundary;
+import use_case.feed.FeedInteractor;
+import use_case.feed.FeedOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -33,10 +39,7 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
-import view.LoggedInView;
-import view.LoginView;
-import view.SignupView;
-import view.ViewManager;
+import view.*;
 
 /**
  * The AppBuilder class is responsible for putting together the pieces of
@@ -66,6 +69,8 @@ public class AppBuilder {
     private LoggedInViewModel loggedInViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
+    private FeedView feedView;
+    private FeedViewModel feedViewModel;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -104,6 +109,13 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addFeedView() {
+        feedViewModel = new FeedViewModel();
+        feedView = new FeedView(feedViewModel);
+        cardPanel.add(feedView, feedView.getViewName());
+        return this;
+    }
+
     /**
      * Adds the Signup Use Case to the application.
      * @return this builder
@@ -124,13 +136,14 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addLoginUseCase() {
-        final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
+        final LoginPresenter loginPresenter = new LoginPresenter(viewManagerModel,
+                feedViewModel, loginViewModel, signupViewModel);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
-                userDataAccessObject, loginOutputBoundary);
+                userDataAccessObject, loginPresenter);
 
         final LoginController loginController = new LoginController(loginInteractor);
         loginView.setLoginController(loginController);
+        loginView.setLoginPresenter(loginPresenter);
         return this;
     }
 
@@ -167,12 +180,22 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addFeedUseCase() {
+        final FeedOutputBoundary feedOutputPresenter = new FeedPresenter(viewManagerModel, feedViewModel);
+
+        final FeedInputBoundary feedInteractor = new FeedInteractor(userDataAccessObject, feedOutputPresenter);
+
+        final FeedController feedController = new FeedController(feedInteractor);
+        feedView.setFeedController(feedController);
+        return this;
+    }
+
     /**
      * Creates the JFrame for the application and initially sets the SignupView to be displayed.
      * @return the application
      */
     public JFrame build() {
-        final JFrame application = new JFrame("Login Example");
+        final JFrame application = new JFrame("InTune");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);
