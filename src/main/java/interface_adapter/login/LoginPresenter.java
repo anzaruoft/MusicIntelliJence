@@ -3,6 +3,7 @@ package interface_adapter.login;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.song_search.SongSearchViewModel;
 import use_case.login.LoginOutputBoundary;
 import use_case.login.LoginOutputData;
 
@@ -14,6 +15,7 @@ public class LoginPresenter implements LoginOutputBoundary {
     private final LoginViewModel loginViewModel;
     private final LoggedInViewModel loggedInViewModel;
     private final ViewManagerModel viewManagerModel;
+    private final SongSearchViewModel songSearchViewModel;
 
     public LoginPresenter(ViewManagerModel viewManagerModel,
                           LoggedInViewModel loggedInViewModel,
@@ -21,6 +23,7 @@ public class LoginPresenter implements LoginOutputBoundary {
         this.viewManagerModel = viewManagerModel;
         this.loggedInViewModel = loggedInViewModel;
         this.loginViewModel = loginViewModel;
+        this.songSearchViewModel = new SongSearchViewModel();
     }
 
     @Override
@@ -32,8 +35,13 @@ public class LoginPresenter implements LoginOutputBoundary {
         this.loggedInViewModel.setState(loggedInState);
         this.loggedInViewModel.firePropertyChanged();
 
-        this.viewManagerModel.setState(loggedInViewModel.getViewName());
+        // Switch to SongSearch view
+
+        this.viewManagerModel.setState(songSearchViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
+//
+//        this.viewManagerModel.setState(loggedInViewModel.getViewName());
+//        this.viewManagerModel.firePropertyChanged();
     }
 
     @Override

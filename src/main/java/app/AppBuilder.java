@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import data_access.DBUserDataAccessObject;
+import data_access.SongSearchDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
@@ -21,6 +22,9 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.song_search.SongSearchController;
+import interface_adapter.song_search.SongSearchPresenter;
+import interface_adapter.song_search.SongSearchViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -33,10 +37,8 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
-import view.LoggedInView;
-import view.LoginView;
-import view.SignupView;
-import view.ViewManager;
+import use_case.song_search.*;
+import view.*;
 
 /**
  * The AppBuilder class is responsible for putting together the pieces of
@@ -66,6 +68,8 @@ public class AppBuilder {
     private LoggedInViewModel loggedInViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
+    private SongSearchView songSearchView;
+    private SongSearchViewModel songSearchViewModel;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -101,6 +105,13 @@ public class AppBuilder {
         loggedInViewModel = new LoggedInViewModel();
         loggedInView = new LoggedInView(loggedInViewModel);
         cardPanel.add(loggedInView, loggedInView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addSongSearchView() {
+        songSearchViewModel = new SongSearchViewModel();
+        songSearchView = new SongSearchView(songSearchViewModel);
+        cardPanel.add(songSearchView, songSearchView.getViewName());
         return this;
     }
 
@@ -167,6 +178,24 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addSongSearchUseCase() {
+        // Step 1: Define the output boundary (Presenter)
+        final SongSearchOutputBoundary songSearchOutputBoundary = new SongSearchPresenter(viewManagerModel, songSearchViewModel);
+
+        // Step 2: Define the input boundary (Interactor)
+        // Here, you instantiate the concrete class `SongSearchDataAccessObject` which implements `SongSearchUserDataAccessInterface`
+        final SongSearchUserDataAccessInterface songDataAccessObject = new SongSearchDataAccessObject(); // Correct instantiation
+        final SongSearchInputBoundary songSearchInteractor = new SongSearchInteractor(
+                songDataAccessObject, songSearchOutputBoundary);
+
+        // Step 3: Create the controller
+        final SongSearchController songSearchController = new SongSearchController(songSearchInteractor);
+
+        // Step 4: Connect the controller to the view
+        songSearchView.setSongSearchController(songSearchController);
+
+        return this;
+    }
     /**
      * Creates the JFrame for the application and initially sets the SignupView to be displayed.
      * @return the application

@@ -17,10 +17,12 @@ public class Main {
                                             .addLoginView()
                                             .addSignupView()
                                             .addLoggedInView()
+                                            .addSongSearchView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addChangePasswordUseCase()
                                             .addLogoutUseCase()
+                                            .addSongSearchUseCase()
                                             .build();
 
         application.pack();
