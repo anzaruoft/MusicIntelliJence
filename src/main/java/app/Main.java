@@ -18,11 +18,13 @@ public class Main {
                                             .addSignupView()
                                             .addLoggedInView()
                                             .addFeedView()
+                                            .addProfileView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addChangePasswordUseCase()
                                             .addLogoutUseCase()
                                             .addFeedUseCase()
+                                            .addProfileUseCase()
                                             .build();
 
         application.pack();

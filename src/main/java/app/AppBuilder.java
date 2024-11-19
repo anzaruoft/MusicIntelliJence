@@ -21,6 +21,9 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.profile.ProfileController;
+import interface_adapter.profile.ProfilePresenter;
+import interface_adapter.profile.ProfileViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
@@ -36,6 +39,9 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.profile.ProfileInputBoundary;
+import use_case.profile.ProfileInteractor;
+import use_case.profile.ProfileOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
@@ -71,6 +77,8 @@ public class AppBuilder {
     private LoginView loginView;
     private FeedView feedView;
     private FeedViewModel feedViewModel;
+    private ProfileViewModel profileViewModel;
+    private ProfileView profileView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -113,6 +121,13 @@ public class AppBuilder {
         feedViewModel = new FeedViewModel();
         feedView = new FeedView(feedViewModel);
         cardPanel.add(feedView, feedView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addProfileView() {
+        profileViewModel = new ProfileViewModel();
+        profileView = new ProfileView(profileViewModel);
+        cardPanel.add(profileView, profileView.getViewName());
         return this;
     }
 
@@ -181,12 +196,22 @@ public class AppBuilder {
     }
 
     public AppBuilder addFeedUseCase() {
-        final FeedOutputBoundary feedOutputPresenter = new FeedPresenter(viewManagerModel, feedViewModel);
-
-        final FeedInputBoundary feedInteractor = new FeedInteractor(userDataAccessObject, feedOutputPresenter);
+        final FeedPresenter feedPresenter = new FeedPresenter(viewManagerModel,
+                feedViewModel, profileViewModel);
+        final FeedInputBoundary feedInteractor = new FeedInteractor(userDataAccessObject, feedPresenter);
 
         final FeedController feedController = new FeedController(feedInteractor);
         feedView.setFeedController(feedController);
+        feedView.setFeedPresenter(feedPresenter);
+        return this;
+    }
+
+    public AppBuilder addProfileUseCase() {
+        final ProfileOutputBoundary profileOutputPresenter = new ProfilePresenter(viewManagerModel, profileViewModel, feedViewModel);
+        final ProfileInputBoundary profileInteractor = new ProfileInteractor(userDataAccessObject, profileOutputPresenter);
+        final ProfileController profileController = new ProfileController(profileInteractor);
+        profileView.setProfileController(profileController);
+        feedView.setProfileController(profileController);
         return this;
     }
 
@@ -205,4 +230,5 @@ public class AppBuilder {
 
         return application;
     }
+
 }
