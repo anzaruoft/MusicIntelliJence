@@ -183,11 +183,11 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     }
 
     private void addEmailListener() {
-        repeatPasswordInputField.getDocument().addDocumentListener(new DocumentListener() {
+        emailInputField.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
                 final SignupState currentState = signupViewModel.getState();
-                currentState.setRepeatPassword(emailInputField.getText());
+                currentState.setEmail(emailInputField.getText());
                 signupViewModel.setState(currentState);
             }
 

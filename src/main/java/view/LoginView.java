@@ -81,6 +81,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
         cancel.addActionListener(
                 new ActionListener() {
+                    @Override
                     public void actionPerformed(ActionEvent evt) {
                         if (loginPresenter != null) {
                             loginPresenter.prepareSignupView();

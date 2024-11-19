@@ -21,11 +21,27 @@ public class SignupInteractor implements SignupInputBoundary {
 
     @Override
     public void execute(SignupInputData signupInputData) {
-        if (userDataAccessObject.existsByName(signupInputData.getUsername())) {
+        if (signupInputData.getUsername().isEmpty() || signupInputData.getPassword().isEmpty()
+                || signupInputData.getEmail().isEmpty()) {
+            userPresenter.prepareFailView("Username or password or email cannot be empty");
+        }
+
+        else if (signupInputData.getPassword().length() < 6) {
+            userPresenter.prepareFailView("Password must be at least 6 characters");
+            return;
+        }
+        else if (!signupInputData.getEmail().contains("@")
+                || !signupInputData.getEmail().contains(".com")) {
+            userPresenter.prepareFailView("Invalid email format");
+            return;
+        }
+        else if (userDataAccessObject.existsByName(signupInputData.getUsername())) {
             userPresenter.prepareFailView("User already exists.");
+            return;
         }
         else if (!signupInputData.getPassword().equals(signupInputData.getRepeatPassword())) {
             userPresenter.prepareFailView("Passwords don't match.");
+            return;
         }
         else {
             final User user = userFactory.create(signupInputData.getUsername(), signupInputData.getPassword(), signupInputData.getEmail());
