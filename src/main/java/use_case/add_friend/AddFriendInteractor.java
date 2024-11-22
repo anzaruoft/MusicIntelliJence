@@ -24,18 +24,18 @@ public class AddFriendInteractor implements AddFriendInputBoundary {
         final String username = addFriendInputData.getUsername();
         final String friendUserName = addFriendInputData.getFriendUserName();
         if (userDataAccessObject.isFriend(friendUserName, username)) {
-            AddFriendPresenter.displayActiveFriendStatus();
+            userPresenter.displayActiveFriendStatus();
         }
         // Add statements:
         // if user has sent outgoing request to friendUserName, not accepted
         // if user has recieved outgoing request to friendUserName, not accepted
         // if no requests exist between user and friendUserName
         if (userDataAccessObject.sentFriendRequest(friendUserName, username)) {
-            AddFriendPresenter.displaySentFriendRequestStatus();
+            userPresenter.displaySentFriendRequestStatus();
         }
 
         if (userDataAccessObject.recievedFriendRequest(friendUserName, username)) {
-            AddFriendPresenter.displayRecievedFriendRequestStatus();
+            userPresenter.displayRecievedFriendRequestStatus();
         }
 
     }
