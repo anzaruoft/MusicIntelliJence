@@ -1,10 +1,7 @@
 package interface_adapter.profile;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.feed.FeedViewModel;
-import interface_adapter.profile.ProfileState;
-import interface_adapter.profile.ProfileViewModel;
 import use_case.profile.ProfileOutputBoundary;
 import use_case.profile.ProfileOutputData;
 
@@ -28,11 +25,12 @@ public class ProfilePresenter implements ProfileOutputBoundary {
     }
 
     @Override
-    public void prepareSuccessView(ProfileOutputData profileOutputData) {
+    public void prepareSuccessView(ProfileOutputData response) {
         final ProfileState profileState = profileViewModel.getState();
-        profileState.setFriends(profileOutputData.getFriends());
-        profileState.setPosts(profileOutputData.getPosts());
-        profileState.setTopSongs(profileOutputData.getTopSongs());
+        profileState.setUsername(response.getUsername());
+        profileState.setFriends(response.getFriends());
+        profileState.setPosts(response.getPosts());
+        profileState.setTopSongs(response.getTopSongs());
         profileViewModel.setState(profileState);
         profileViewModel.firePropertyChanged();
         viewManagerModel.setState(profileViewModel.getViewName());
@@ -42,7 +40,7 @@ public class ProfilePresenter implements ProfileOutputBoundary {
     @Override
     public void prepareFailView(String error) {
         final ProfileState profileState = profileViewModel.getState();
-        profileState.setProfileError(error);
+        profileState.setFriendsError(error);
         profileViewModel.firePropertyChanged();
     }
 

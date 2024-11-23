@@ -24,7 +24,7 @@ public class ProfileController {
     }
 
     /**
-     * Executes the "switch to LoggedInView" Use Case.
+     * Executes the "switch to FeedView" Use Case.
      */
     public void switchToFeedView() {
         userProfileUseCaseInteractor.switchToFeedView();

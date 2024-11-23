@@ -17,15 +17,13 @@ public class ProfileInteractor implements ProfileInputBoundary {
 
     @Override
     public void execute(ProfileInputData profileInputData) {
-        System.out.println("THIS RANNNNNNNN");
-        final String username = profileInputData.getUsername();
+        final String username = profileInputData.getName();
+        System.out.println(username);
         final User user = userDataAccessObject.get(username);
         final ProfileOutputData profileOutputData = new ProfileOutputData(user.getName(),
                 user.getFriends(),
                 user.getPosts(),
                 user.getTopSongs());
-        System.out.println("DID NOT ERROR OUT");
-        System.out.println(profileOutputData);
         profilePresenter.prepareSuccessView(profileOutputData);
     }
 

@@ -11,7 +11,7 @@ public class ProfileInputData {
         this.username = username;
     }
 
-    public String getUsername() {
+    public String getName() {
         return username;
     }
 }

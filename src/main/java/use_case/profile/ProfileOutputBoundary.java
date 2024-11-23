@@ -13,9 +13,9 @@ public interface ProfileOutputBoundary {
 
     /**
      * Prepares the fail view for the Profile Use Case.
-     * @param username the username data
+     * @param errorMessage the explanation of the failure
      */
-    void prepareFailView(String username);
+    void prepareFailView(String errorMessage);
 
     /**
      * Switches to the Feed View.

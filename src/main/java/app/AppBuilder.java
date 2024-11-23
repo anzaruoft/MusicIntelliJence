@@ -16,6 +16,12 @@ import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.feed.FeedController;
 import interface_adapter.feed.FeedPresenter;
 import interface_adapter.feed.FeedViewModel;
+import interface_adapter.friendProfile.FriendProfileController;
+import interface_adapter.friendProfile.FriendProfilePresenter;
+import interface_adapter.friendProfile.FriendProfileViewModel;
+import interface_adapter.friends.FriendsController;
+import interface_adapter.friends.FriendsPresenter;
+import interface_adapter.friends.FriendsViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -32,10 +38,13 @@ import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
 import use_case.feed.FeedInputBoundary;
 import use_case.feed.FeedInteractor;
-import use_case.feed.FeedOutputBoundary;
+import use_case.friendProfile.FriendProfileInputBoundary;
+import use_case.friendProfile.FriendProfileInteractor;
+import use_case.friends.FriendsInputBoundary;
+import use_case.friends.FriendsInteractor;
+import use_case.friends.FriendsOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
-import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
@@ -79,6 +88,10 @@ public class AppBuilder {
     private FeedViewModel feedViewModel;
     private ProfileViewModel profileViewModel;
     private ProfileView profileView;
+    private FriendsViewModel friendsViewModel;
+    private FriendsView friendsView;
+    private FriendProfileViewModel friendProfileViewModel;
+    private FriendProfileView friendProfileView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -128,6 +141,20 @@ public class AppBuilder {
         profileViewModel = new ProfileViewModel();
         profileView = new ProfileView(profileViewModel);
         cardPanel.add(profileView, profileView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addFriendsView() {
+        friendsViewModel = new FriendsViewModel();
+        friendsView = new FriendsView(friendsViewModel);
+        cardPanel.add(friendsView, friendsView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addFriendProfileView() {
+        friendProfileViewModel = new FriendProfileViewModel();
+        friendProfileView = new FriendProfileView(friendProfileViewModel);
+        cardPanel.add(friendProfileView, friendProfileView.getViewName());
         return this;
     }
 
@@ -212,6 +239,29 @@ public class AppBuilder {
         final ProfileController profileController = new ProfileController(profileInteractor);
         profileView.setProfileController(profileController);
         feedView.setProfileController(profileController);
+        return this;
+    }
+
+    public AppBuilder addFriendsUseCase() {
+        final FriendsPresenter friendsPresenter = new FriendsPresenter(viewManagerModel,
+                profileViewModel, friendsViewModel);
+        final FriendsInputBoundary friendsInteractor = new FriendsInteractor(userDataAccessObject, friendsPresenter);
+
+        final FriendsController friendsController = new FriendsController(friendsInteractor);
+        friendsView.setFriendsController(friendsController);
+        friendsView.setFriendsPresenter(friendsPresenter);
+        return this;
+    }
+
+    public AppBuilder addFriendProfileUseCase() {
+        final FriendProfilePresenter friendProfilePresenter = new FriendProfilePresenter(viewManagerModel,
+                friendProfileViewModel, friendsViewModel);
+        final FriendProfileInputBoundary friendProfileInteractor = new FriendProfileInteractor(userDataAccessObject,
+                friendProfilePresenter);
+
+        final FriendProfileController friendProfileController = new FriendProfileController(friendProfileInteractor);
+        friendProfileView.setFriendProfileController(friendProfileController);
+        friendProfileView.setFriendProfilePresenter(friendProfilePresenter);
         return this;
     }
 

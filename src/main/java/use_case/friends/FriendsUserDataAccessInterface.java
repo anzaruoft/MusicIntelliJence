@@ -1,11 +1,11 @@
-package use_case.profile;
+package use_case.friends;
 
 import entity.User;
 
 /**
- * DAO for the Profile Use Case.
+ * DAO for the Friends Use Case.
  */
-public interface ProfileUserDataAccessInterface {
+public interface FriendsUserDataAccessInterface {
 
     /**
      * Checks if the given username has a profile.
@@ -20,5 +20,4 @@ public interface ProfileUserDataAccessInterface {
      * @return the user with the given username
      */
     User get(String username);
-
 }

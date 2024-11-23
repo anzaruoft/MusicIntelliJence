@@ -19,12 +19,16 @@ public class Main {
                                             .addLoggedInView()
                                             .addFeedView()
                                             .addProfileView()
+                                            .addFriendsView()
+                                            .addFriendProfileView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addChangePasswordUseCase()
                                             .addLogoutUseCase()
                                             .addFeedUseCase()
                                             .addProfileUseCase()
+                                            .addFriendsUseCase()
+                                            .addFriendProfileUseCase()
                                             .build();
 
         application.pack();

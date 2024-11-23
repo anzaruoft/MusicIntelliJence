@@ -12,7 +12,7 @@ public class ProfileState {
     private List<String> friends = new ArrayList<>();
     private List<String> topSongs = new ArrayList<>();
     private List<String> posts = new ArrayList<>();
-    private String profileError;
+    private String friendsError;
 
     public String getUsername() {
         return username;
@@ -30,6 +30,14 @@ public class ProfileState {
         return posts;
     }
 
+    public String getFriendsError() {
+        return friendsError;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public void setFriends(List<String> friends) {
         this.friends = friends;
     }
@@ -42,8 +50,8 @@ public class ProfileState {
         this.posts = posts;
     }
 
-    public void setProfileError(String profileError) {
-        this.profileError = profileError;
+    public void setFriendsError(String friendsError) {
+        this.friendsError = friendsError;
     }
 
 }

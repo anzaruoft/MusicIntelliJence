@@ -14,7 +14,7 @@ public class ProfileViewModel extends ViewModel<ProfileState> {
     public static final String TOP_SONGS_LABEL = "Top Songs by Rating: ";
 
     public ProfileViewModel() {
-        super("profile");
+        super("Profile");
         setState(new ProfileState());
     }
 }
