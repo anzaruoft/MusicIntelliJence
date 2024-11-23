@@ -17,3 +17,4 @@ public class SongSearchInputData {
         return songName;
     }
 }
+

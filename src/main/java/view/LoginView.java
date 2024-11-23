@@ -15,9 +15,15 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.login.LoginController;
+import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginState;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.signup.SignupController;
+import interface_adapter.signup.SignupState;
+import interface_adapter.signup.SignupViewModel;
+// import jdk.jpackage.internal.Log;
 
 /**
  * The View for when the user is logging into the program.
@@ -38,6 +44,8 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     private final JButton logIn;
     private final JButton cancel;
     private LoginController loginController;
+    private LoginPresenter loginPresenter;
+    private SignupViewModel signupViewModel;
 
     public LoginView(LoginViewModel loginViewModel) {
 
@@ -63,17 +71,27 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(logIn)) {
                             final LoginState currentState = loginViewModel.getState();
-
                             loginController.execute(
                                     currentState.getUsername(),
                                     currentState.getPassword()
                             );
                         }
                     }
+                });
+
+        cancel.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent evt) {
+                        if (loginPresenter != null) {
+                            loginPresenter.prepareSignupView();
+                        }
+                        else {
+                            System.out.println("LoginPresenter is null");
+                        }
+                    }
                 }
         );
-
-        cancel.addActionListener(this);
 
         usernameInputField.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -158,5 +176,9 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
     public void setLoginController(LoginController loginController) {
         this.loginController = loginController;
+    }
+
+    public void setLoginPresenter(LoginPresenter loginPresenter) {
+        this.loginPresenter = loginPresenter;
     }
 }

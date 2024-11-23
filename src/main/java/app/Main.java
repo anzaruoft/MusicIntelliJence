@@ -17,12 +17,26 @@ public class Main {
                                             .addLoginView()
                                             .addSignupView()
                                             .addLoggedInView()
+<<<<<<< HEAD
                                             .addSongSearchView()
+=======
+                                            .addFeedView()
+                                            .addProfileView()
+                                            .addFriendsView()
+                                            .addFriendProfileView()
+>>>>>>> origin/main
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addChangePasswordUseCase()
                                             .addLogoutUseCase()
+<<<<<<< HEAD
                                             .addSongSearchUseCase()
+=======
+                                            .addFeedUseCase()
+                                            .addProfileUseCase()
+                                            .addFriendsUseCase()
+                                            .addFriendProfileUseCase()
+>>>>>>> origin/main
                                             .build();
 
         application.pack();

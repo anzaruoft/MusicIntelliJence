@@ -20,14 +20,22 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
+import use_case.feed.FeedUserDataAccessInterface;
+import use_case.friendProfile.FriendProfileUserDataAccessInterface;
+import use_case.friends.FriendsUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
+import use_case.profile.ProfileUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
 public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
-        LogoutUserDataAccessInterface {
+        LogoutUserDataAccessInterface,
+        FeedUserDataAccessInterface,
+        ProfileUserDataAccessInterface,
+        FriendsUserDataAccessInterface,
+        FriendProfileUserDataAccessInterface {
 
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
@@ -132,7 +140,11 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 
     @Override
     public void changePassword(User user) {
-        //
+        try {
+            save(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // Helper method to send the updated JSON data back to the server
@@ -164,4 +176,5 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     public String getCurrentUsername() {
         return null; // Not implemented
     }
+
 }

@@ -14,11 +14,23 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.feed.FeedController;
+import interface_adapter.feed.FeedPresenter;
+import interface_adapter.feed.FeedViewModel;
+import interface_adapter.friendProfile.FriendProfileController;
+import interface_adapter.friendProfile.FriendProfilePresenter;
+import interface_adapter.friendProfile.FriendProfileViewModel;
+import interface_adapter.friends.FriendsController;
+import interface_adapter.friends.FriendsPresenter;
+import interface_adapter.friends.FriendsViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.profile.ProfileController;
+import interface_adapter.profile.ProfilePresenter;
+import interface_adapter.profile.ProfileViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
@@ -28,16 +40,28 @@ import interface_adapter.song_search.SongSearchViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.feed.FeedInputBoundary;
+import use_case.feed.FeedInteractor;
+import use_case.friendProfile.FriendProfileInputBoundary;
+import use_case.friendProfile.FriendProfileInteractor;
+import use_case.friends.FriendsInputBoundary;
+import use_case.friends.FriendsInteractor;
+import use_case.friends.FriendsOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
-import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.profile.ProfileInputBoundary;
+import use_case.profile.ProfileInteractor;
+import use_case.profile.ProfileOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
+<<<<<<< HEAD
 import use_case.song_search.*;
+=======
+>>>>>>> origin/main
 import view.*;
 
 /**
@@ -68,8 +92,19 @@ public class AppBuilder {
     private LoggedInViewModel loggedInViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
+<<<<<<< HEAD
     private SongSearchView songSearchView;
     private SongSearchViewModel songSearchViewModel;
+=======
+    private FeedView feedView;
+    private FeedViewModel feedViewModel;
+    private ProfileViewModel profileViewModel;
+    private ProfileView profileView;
+    private FriendsViewModel friendsViewModel;
+    private FriendsView friendsView;
+    private FriendProfileViewModel friendProfileViewModel;
+    private FriendProfileView friendProfileView;
+>>>>>>> origin/main
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -108,10 +143,38 @@ public class AppBuilder {
         return this;
     }
 
+<<<<<<< HEAD
     public AppBuilder addSongSearchView() {
         songSearchViewModel = new SongSearchViewModel();
         songSearchView = new SongSearchView(songSearchViewModel);
         cardPanel.add(songSearchView, songSearchView.getViewName());
+=======
+    public AppBuilder addFeedView() {
+        feedViewModel = new FeedViewModel();
+        feedView = new FeedView(feedViewModel);
+        cardPanel.add(feedView, feedView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addProfileView() {
+        profileViewModel = new ProfileViewModel();
+        profileView = new ProfileView(profileViewModel);
+        cardPanel.add(profileView, profileView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addFriendsView() {
+        friendsViewModel = new FriendsViewModel();
+        friendsView = new FriendsView(friendsViewModel);
+        cardPanel.add(friendsView, friendsView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addFriendProfileView() {
+        friendProfileViewModel = new FriendProfileViewModel();
+        friendProfileView = new FriendProfileView(friendProfileViewModel);
+        cardPanel.add(friendProfileView, friendProfileView.getViewName());
+>>>>>>> origin/main
         return this;
     }
 
@@ -135,13 +198,14 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addLoginUseCase() {
-        final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
+        final LoginPresenter loginPresenter = new LoginPresenter(viewManagerModel,
+                feedViewModel, loginViewModel, signupViewModel);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
-                userDataAccessObject, loginOutputBoundary);
+                userDataAccessObject, loginPresenter);
 
         final LoginController loginController = new LoginController(loginInteractor);
         loginView.setLoginController(loginController);
+        loginView.setLoginPresenter(loginPresenter);
         return this;
     }
 
@@ -178,6 +242,7 @@ public class AppBuilder {
         return this;
     }
 
+<<<<<<< HEAD
     public AppBuilder addSongSearchUseCase() {
         // Step 1: Define the output boundary (Presenter)
         final SongSearchOutputBoundary songSearchOutputBoundary = new SongSearchPresenter(viewManagerModel, songSearchViewModel);
@@ -196,12 +261,57 @@ public class AppBuilder {
 
         return this;
     }
+=======
+    public AppBuilder addFeedUseCase() {
+        final FeedPresenter feedPresenter = new FeedPresenter(viewManagerModel,
+                feedViewModel, profileViewModel);
+        final FeedInputBoundary feedInteractor = new FeedInteractor(userDataAccessObject, feedPresenter);
+
+        final FeedController feedController = new FeedController(feedInteractor);
+        feedView.setFeedController(feedController);
+        feedView.setFeedPresenter(feedPresenter);
+        return this;
+    }
+
+    public AppBuilder addProfileUseCase() {
+        final ProfileOutputBoundary profileOutputPresenter = new ProfilePresenter(viewManagerModel, profileViewModel, feedViewModel);
+        final ProfileInputBoundary profileInteractor = new ProfileInteractor(userDataAccessObject, profileOutputPresenter);
+        final ProfileController profileController = new ProfileController(profileInteractor);
+        profileView.setProfileController(profileController);
+        feedView.setProfileController(profileController);
+        return this;
+    }
+
+    public AppBuilder addFriendsUseCase() {
+        final FriendsPresenter friendsPresenter = new FriendsPresenter(viewManagerModel,
+                profileViewModel, friendsViewModel);
+        final FriendsInputBoundary friendsInteractor = new FriendsInteractor(userDataAccessObject, friendsPresenter);
+
+        final FriendsController friendsController = new FriendsController(friendsInteractor);
+        friendsView.setFriendsController(friendsController);
+        friendsView.setFriendsPresenter(friendsPresenter);
+        return this;
+    }
+
+    public AppBuilder addFriendProfileUseCase() {
+        final FriendProfilePresenter friendProfilePresenter = new FriendProfilePresenter(viewManagerModel,
+                friendProfileViewModel, friendsViewModel);
+        final FriendProfileInputBoundary friendProfileInteractor = new FriendProfileInteractor(userDataAccessObject,
+                friendProfilePresenter);
+
+        final FriendProfileController friendProfileController = new FriendProfileController(friendProfileInteractor);
+        friendProfileView.setFriendProfileController(friendProfileController);
+        friendProfileView.setFriendProfilePresenter(friendProfilePresenter);
+        return this;
+    }
+
+>>>>>>> origin/main
     /**
      * Creates the JFrame for the application and initially sets the SignupView to be displayed.
      * @return the application
      */
     public JFrame build() {
-        final JFrame application = new JFrame("Login Example");
+        final JFrame application = new JFrame("InTune");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);
@@ -211,4 +321,5 @@ public class AppBuilder {
 
         return application;
     }
+
 }

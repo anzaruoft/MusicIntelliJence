@@ -42,4 +42,3 @@ public class SongSearchView extends JPanel implements PropertyChangeListener {
         this.songSearchController = songSearchController;
     }
 }
-
