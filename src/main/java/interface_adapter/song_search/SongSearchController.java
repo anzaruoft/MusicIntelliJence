@@ -3,22 +3,27 @@ package interface_adapter.song_search;
 import use_case.song_search.SongSearchInputBoundary;
 import use_case.song_search.SongSearchInputData;
 
-/**
- * Controller for the song search use case.
- */
 public class SongSearchController {
-    private final SongSearchInputBoundary songSearchUseCaseInteractor;
+    private final SongSearchInputBoundary songSearchInteractor;
 
-    public SongSearchController(SongSearchInputBoundary songSearchUseCaseInteractor) {
-        this.songSearchUseCaseInteractor = songSearchUseCaseInteractor;
+    public SongSearchController(SongSearchInputBoundary songSearchInteractor) {
+        this.songSearchInteractor = songSearchInteractor;
     }
 
     /**
      * Executes the Song Search Use Case.
-     * @param songName the name of the song being searched
      */
-    public void execute(String songName) {
-        final SongSearchInputData songSearchInputData = new SongSearchInputData(songName);
-        songSearchUseCaseInteractor.execute(songSearchInputData);
+    public void execute() {
+        final SongSearchInputData songSearchInputData = new SongSearchInputData();
+
+        songSearchInteractor.execute(songSearchInputData);
+    }
+
+    public void switchToFeedView() {
+        songSearchInteractor.switchToFeedView();
+    }
+
+    public void switchToLeaveRatingView() {
+
     }
 }

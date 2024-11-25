@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import data_access.DBUserDataAccessObject;
-import data_access.SongSearchDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
@@ -23,6 +22,9 @@ import interface_adapter.friendProfile.FriendProfileViewModel;
 import interface_adapter.friends.FriendsController;
 import interface_adapter.friends.FriendsPresenter;
 import interface_adapter.friends.FriendsViewModel;
+import interface_adapter.leave_rating.LeaveRatingController;
+import interface_adapter.leave_rating.LeaveRatingPresenter;
+import interface_adapter.leave_rating.LeaveRatingViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -47,6 +49,8 @@ import use_case.friendProfile.FriendProfileInteractor;
 import use_case.friends.FriendsInputBoundary;
 import use_case.friends.FriendsInteractor;
 import use_case.friends.FriendsOutputBoundary;
+import use_case.leave_rating.LeaveRatingInputBoundary;
+import use_case.leave_rating.LeaveRatingInteractor;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.logout.LogoutInputBoundary;
@@ -58,10 +62,9 @@ import use_case.profile.ProfileOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
-<<<<<<< HEAD
-import use_case.song_search.*;
-=======
->>>>>>> origin/main
+import use_case.song_search.SongSearchInputBoundary;
+import use_case.song_search.SongSearchInteractor;
+import use_case.song_search.SongSearchOutputBoundary;
 import view.*;
 
 /**
@@ -92,10 +95,6 @@ public class AppBuilder {
     private LoggedInViewModel loggedInViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
-<<<<<<< HEAD
-    private SongSearchView songSearchView;
-    private SongSearchViewModel songSearchViewModel;
-=======
     private FeedView feedView;
     private FeedViewModel feedViewModel;
     private ProfileViewModel profileViewModel;
@@ -104,7 +103,10 @@ public class AppBuilder {
     private FriendsView friendsView;
     private FriendProfileViewModel friendProfileViewModel;
     private FriendProfileView friendProfileView;
->>>>>>> origin/main
+    private SongSearchViewModel songSearchViewModel;
+    private SongSearchView songSearchView;
+    private LeaveRatingViewModel leaveRatingViewModel;
+    private LeaveRatingView leaveRatingView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -143,12 +145,6 @@ public class AppBuilder {
         return this;
     }
 
-<<<<<<< HEAD
-    public AppBuilder addSongSearchView() {
-        songSearchViewModel = new SongSearchViewModel();
-        songSearchView = new SongSearchView(songSearchViewModel);
-        cardPanel.add(songSearchView, songSearchView.getViewName());
-=======
     public AppBuilder addFeedView() {
         feedViewModel = new FeedViewModel();
         feedView = new FeedView(feedViewModel);
@@ -174,7 +170,20 @@ public class AppBuilder {
         friendProfileViewModel = new FriendProfileViewModel();
         friendProfileView = new FriendProfileView(friendProfileViewModel);
         cardPanel.add(friendProfileView, friendProfileView.getViewName());
->>>>>>> origin/main
+        return this;
+    }
+
+    public AppBuilder addSongSearchView() {
+        songSearchViewModel = new SongSearchViewModel();
+        songSearchView = new SongSearchView(songSearchViewModel);
+        cardPanel.add(songSearchView, songSearchView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addLeaveRatingView() {
+        leaveRatingViewModel = new LeaveRatingViewModel();
+        leaveRatingView = new LeaveRatingView(leaveRatingViewModel);
+        cardPanel.add(leaveRatingView, leaveRatingView.getViewName());
         return this;
     }
 
@@ -242,29 +251,9 @@ public class AppBuilder {
         return this;
     }
 
-<<<<<<< HEAD
-    public AppBuilder addSongSearchUseCase() {
-        // Step 1: Define the output boundary (Presenter)
-        final SongSearchOutputBoundary songSearchOutputBoundary = new SongSearchPresenter(viewManagerModel, songSearchViewModel);
-
-        // Step 2: Define the input boundary (Interactor)
-        // Here, you instantiate the concrete class `SongSearchDataAccessObject` which implements `SongSearchUserDataAccessInterface`
-        final SongSearchUserDataAccessInterface songDataAccessObject = new SongSearchDataAccessObject(); // Correct instantiation
-        final SongSearchInputBoundary songSearchInteractor = new SongSearchInteractor(
-                songDataAccessObject, songSearchOutputBoundary);
-
-        // Step 3: Create the controller
-        final SongSearchController songSearchController = new SongSearchController(songSearchInteractor);
-
-        // Step 4: Connect the controller to the view
-        songSearchView.setSongSearchController(songSearchController);
-
-        return this;
-    }
-=======
     public AppBuilder addFeedUseCase() {
         final FeedPresenter feedPresenter = new FeedPresenter(viewManagerModel,
-                feedViewModel, profileViewModel);
+                feedViewModel, profileViewModel, songSearchViewModel);
         final FeedInputBoundary feedInteractor = new FeedInteractor(userDataAccessObject, feedPresenter);
 
         final FeedController feedController = new FeedController(feedInteractor);
@@ -305,7 +294,32 @@ public class AppBuilder {
         return this;
     }
 
->>>>>>> origin/main
+    public AppBuilder addSongSearchUseCase() {
+        final SongSearchPresenter songSearchPresenter = new SongSearchPresenter(viewManagerModel,
+                songSearchViewModel, feedViewModel);
+        final SongSearchInputBoundary songSearchInteractor = new SongSearchInteractor(userDataAccessObject,
+                songSearchPresenter);
+
+        final SongSearchController songSearchController = new SongSearchController(songSearchInteractor);
+        songSearchView.setSongSearchController(songSearchController);
+        songSearchView.setSongSearchPresenter(songSearchPresenter);
+        feedView.setSongSearchController(songSearchController);
+
+        return this;
+    }
+
+    public AppBuilder addLeaveRatingUseCase() {
+        final LeaveRatingPresenter leaveRatingPresenter = new LeaveRatingPresenter(viewManagerModel,
+                leaveRatingViewModel);
+        final LeaveRatingInputBoundary leaveRatingInteractor = new LeaveRatingInteractor(userDataAccessObject,
+                leaveRatingPresenter);
+
+        final LeaveRatingController leaveRatingController = new LeaveRatingController(leaveRatingInteractor);
+        leaveRatingView.setLeaveRatingController(leaveRatingController);
+        leaveRatingView.setLeaveRatingPresenter(leaveRatingPresenter);
+        return this;
+    }
+
     /**
      * Creates the JFrame for the application and initially sets the SignupView to be displayed.
      * @return the application

@@ -1,20 +1,25 @@
 package use_case.song_search;
 
-/**
- * The Song Search Interactor.
- */
+import use_case.song_search.SongSearchInputData;
+import use_case.song_search.SongSearchOutputBoundary;
+import use_case.song_search.SongSearchUserDataAccessInterface;
+
+
+
 public class SongSearchInteractor implements SongSearchInputBoundary {
+    private final SongSearchUserDataAccessInterface userDataAccessObject;
+    private final SongSearchOutputBoundary userPresenter;
 
-    private final SongSearchUserDataAccessInterface songSearchUserDataAccessInterface;
-    private final SongSearchOutputBoundary songSearchOutputBoundary;
-
-    public SongSearchInteractor(SongSearchUserDataAccessInterface songSearchUserDataAccessInterface,
+    public SongSearchInteractor(SongSearchUserDataAccessInterface songSearchDataAccessInterface,
                                 SongSearchOutputBoundary songSearchOutputBoundary) {
-        this.songSearchUserDataAccessInterface = songSearchUserDataAccessInterface;
-        this.songSearchOutputBoundary = songSearchOutputBoundary;
+        this.userDataAccessObject = songSearchDataAccessInterface;
+        this.userPresenter = songSearchOutputBoundary;
+    }
+    @Override
+    public void execute(SongSearchInputData songSearchInputData) {
     }
 
     @Override
-    public void execute(SongSearchInputData songSearchInputData) {
+    public void switchToFeedView() {
     }
 }

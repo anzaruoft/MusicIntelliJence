@@ -1,14 +1,13 @@
-package interface_adapter.song_search;
+package interface_adapter.leave_rating;
 
-public class SongSearchState {
+public class LeaveRatingState {
     private String username = "";
 
-    public SongSearchState(String username) {
+    public LeaveRatingState(String username) {
         this.username = username;
     }
 
-    public SongSearchState() {
-
+    public LeaveRatingState() {
     }
 
     public String getUsername() {
