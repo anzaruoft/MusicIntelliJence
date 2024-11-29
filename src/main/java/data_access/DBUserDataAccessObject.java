@@ -23,10 +23,12 @@ import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.feed.FeedUserDataAccessInterface;
 import use_case.friendProfile.FriendProfileUserDataAccessInterface;
 import use_case.friends.FriendsUserDataAccessInterface;
+import use_case.leave_rating.LeaveRatingUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.profile.ProfileUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
+import use_case.song_search.SongSearchUserDataAccessInterface;
 
 public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
@@ -35,7 +37,9 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         FeedUserDataAccessInterface,
         ProfileUserDataAccessInterface,
         FriendsUserDataAccessInterface,
-        FriendProfileUserDataAccessInterface {
+        FriendProfileUserDataAccessInterface,
+        LeaveRatingUserDataAccessInterface,
+        SongSearchUserDataAccessInterface {
 
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
