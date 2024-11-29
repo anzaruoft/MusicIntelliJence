@@ -310,7 +310,7 @@ public class AppBuilder {
 
     public AppBuilder addLeaveRatingUseCase() {
         final LeaveRatingPresenter leaveRatingPresenter = new LeaveRatingPresenter(viewManagerModel,
-                leaveRatingViewModel);
+                leaveRatingViewModel, songSearchViewModel);
         final LeaveRatingInputBoundary leaveRatingInteractor = new LeaveRatingInteractor(userDataAccessObject,
                 leaveRatingPresenter);
 

@@ -113,4 +113,7 @@ public class SongSearchView extends JPanel implements PropertyChangeListener, Ac
     public void setLeaveRatingController(LeaveRatingController leaveRatingController) {
         this.leaveRatingController = leaveRatingController;
     }
+
+    public void setSongSearchPresenter(SongSearchPresenter songSearchPresenter) {
+    }
 }
