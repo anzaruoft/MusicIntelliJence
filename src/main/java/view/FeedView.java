@@ -31,7 +31,7 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
     private final JButton addratingButton;
     private final JButton profileButton;
     private final JButton addfriendbutton;
-
+    private final JButton changepasswordbutton;
 
     public FeedView(FeedViewModel feedViewModel) {
         this.feedViewModel = feedViewModel;
@@ -50,9 +50,13 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
         addfriendbutton = new JButton("Add friend");
         buttons.add(addfriendbutton);
 
+        changepasswordbutton = new JButton("Change password");
+        buttons.add(changepasswordbutton);
+
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.setBackground(Color.PINK);
+        buttons.setBackground(Color.PINK);
 
         addratingButton.addActionListener(
                 // This creates an anonymous subclass of ActionListener and instantiates it.
@@ -90,6 +94,16 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
                     }
                 }
         );
+
+        changepasswordbutton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        if (e.getSource().equals(changepasswordbutton)) {
+                            final FeedState currentState = feedViewModel.getState();
+                        }
+                    }
+                }
+        )
 
         this.add(title);
         this.add(buttons);

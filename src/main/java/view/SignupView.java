@@ -92,6 +92,11 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(Color.PINK);
+        buttons.setBackground(Color.PINK);
+        usernameInfo.setBackground(Color.PINK);
+        passwordInfo.setBackground(Color.PINK);
+        repeatPasswordInfo.setBackground(Color.PINK);
+        emailInfo.setBackground(Color.PINK);
 
         this.add(title);
         this.add(usernameInfo);
