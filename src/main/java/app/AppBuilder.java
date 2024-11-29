@@ -37,6 +37,7 @@ import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
 import use_case.feed.FeedInputBoundary;
+import use_case.feed.FeedInputData;
 import use_case.feed.FeedInteractor;
 import use_case.friendProfile.FriendProfileInputBoundary;
 import use_case.friendProfile.FriendProfileInteractor;
@@ -226,7 +227,6 @@ public class AppBuilder {
         final FeedPresenter feedPresenter = new FeedPresenter(viewManagerModel,
                 feedViewModel, profileViewModel);
         final FeedInputBoundary feedInteractor = new FeedInteractor(userDataAccessObject, feedPresenter);
-
         final FeedController feedController = new FeedController(feedInteractor);
         feedView.setFeedController(feedController);
         feedView.setFeedPresenter(feedPresenter);
@@ -234,8 +234,10 @@ public class AppBuilder {
     }
 
     public AppBuilder addProfileUseCase() {
-        final ProfileOutputBoundary profileOutputPresenter = new ProfilePresenter(viewManagerModel, profileViewModel, feedViewModel);
-        final ProfileInputBoundary profileInteractor = new ProfileInteractor(userDataAccessObject, profileOutputPresenter);
+        final ProfileOutputBoundary profileOutputPresenter =
+                new ProfilePresenter(viewManagerModel, profileViewModel, feedViewModel);
+        final ProfileInputBoundary profileInteractor =
+                new ProfileInteractor(userDataAccessObject, profileOutputPresenter);
         final ProfileController profileController = new ProfileController(profileInteractor);
         profileView.setProfileController(profileController);
         feedView.setProfileController(profileController);
