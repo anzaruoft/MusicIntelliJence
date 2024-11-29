@@ -58,6 +58,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         backButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
+
                         profileController.switchToFeedView();
                     }
                 }

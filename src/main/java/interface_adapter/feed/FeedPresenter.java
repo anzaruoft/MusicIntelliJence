@@ -5,6 +5,8 @@ import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
 import interface_adapter.song_search.SongSearchState;
 import interface_adapter.song_search.SongSearchViewModel;
+import use_case.change_password.ChangePasswordInputData;
+import use_case.change_password.ChangePasswordInteractor;
 import use_case.feed.FeedOutputBoundary;
 import use_case.feed.FeedOutputData;
 
@@ -54,6 +56,12 @@ public class FeedPresenter implements FeedOutputBoundary {
 
         this.viewManagerModel.setState(songSearchViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
+    }
+
+    // public void switchtoChangePasswordView(String username, String newpassword, String email) {
+       // ChangePasswordInputData changePasswordInputData = new ChangePasswordInteractor(username, newpassword, email)
+
+
     }
 }
 
