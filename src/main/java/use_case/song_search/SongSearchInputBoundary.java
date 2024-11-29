@@ -10,4 +10,6 @@ public interface SongSearchInputBoundary {
     void execute(SongSearchInputData songSearchInputData);
 
     void switchToFeedView();
+
+    void switchToLeaveRatingView();
 }

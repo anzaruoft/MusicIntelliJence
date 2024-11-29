@@ -13,7 +13,7 @@ public interface SongSearchOutputBoundary {
      */
     void prepareFailView(String errorMessage);
 
-    void switchToFeedView(String username);
+    void switchToFeedView();
 
-    void switchToLeaveRatingView(String username);
+    void switchToLeaveRatingView();
 }

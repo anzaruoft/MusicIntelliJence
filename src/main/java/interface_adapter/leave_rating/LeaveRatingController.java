@@ -19,7 +19,7 @@ public class LeaveRatingController {
         leaveRatingInteractor.execute(leaveRatingInputData);
     }
 
-    // COME BACK TO THIS
-    public void switchToFeedView() {
+    public void switchToSongSearchView() {
+        leaveRatingInteractor.switchToSongSearchView();
     }
 }

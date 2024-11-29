@@ -9,5 +9,5 @@ public interface LeaveRatingInputBoundary {
     void execute(LeaveRatingInputData leaveRatingInputData);
 
     // COULD BE SOMETHING ELSE HERE
-    void switchToFeedView();
+    void switchToSongSearchView();
 }

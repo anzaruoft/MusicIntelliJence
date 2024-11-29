@@ -24,6 +24,6 @@ public class SongSearchController {
     }
 
     public void switchToLeaveRatingView() {
-
+        songSearchInteractor.switchToLeaveRatingView();
     }
 }

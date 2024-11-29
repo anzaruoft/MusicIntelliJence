@@ -18,11 +18,13 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener, A
 
     public LeaveRatingView(LeaveRatingViewModel leaveRatingViewModel) {
         this.leaveRatingViewModel = leaveRatingViewModel;
+        this.leaveRatingViewModel.addPropertyChangeListener(this);
         this.setLayout(new BorderLayout());
 
         // Panel for form inputs
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
+        formPanel.setBackground(Color.PINK);
 
         // Song Title
         JLabel songTitleLabel = new JLabel("Song Title:");
@@ -36,6 +38,8 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener, A
         JPanel buttonPanel = new JPanel();
         JButton backButton = new JButton("Back");
         JButton submitButton = new JButton("Save/Submit");
+
+        buttonPanel.setBackground(Color.PINK);
 
         // Adding components to the form panel
         formPanel.add(songTitleLabel);
@@ -53,7 +57,13 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener, A
         this.add(buttonPanel, BorderLayout.SOUTH);
 
         // Action Listeners
-        // TODO
+        backButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        leaveRatingController.switchToSongSearchView();
+                    }
+                }
+        );
     }
 
     @Override

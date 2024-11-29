@@ -296,7 +296,7 @@ public class AppBuilder {
 
     public AppBuilder addSongSearchUseCase() {
         final SongSearchPresenter songSearchPresenter = new SongSearchPresenter(viewManagerModel,
-                songSearchViewModel, feedViewModel);
+                songSearchViewModel, feedViewModel, leaveRatingViewModel);
         final SongSearchInputBoundary songSearchInteractor = new SongSearchInteractor(userDataAccessObject,
                 songSearchPresenter);
 
@@ -317,6 +317,8 @@ public class AppBuilder {
         final LeaveRatingController leaveRatingController = new LeaveRatingController(leaveRatingInteractor);
         leaveRatingView.setLeaveRatingController(leaveRatingController);
         leaveRatingView.setLeaveRatingPresenter(leaveRatingPresenter);
+        songSearchView.setLeaveRatingController(leaveRatingController);
+
         return this;
     }
 

@@ -1,10 +1,5 @@
 package use_case.song_search;
 
-import use_case.song_search.SongSearchInputData;
-import use_case.song_search.SongSearchOutputBoundary;
-import use_case.song_search.SongSearchUserDataAccessInterface;
-
-
 
 public class SongSearchInteractor implements SongSearchInputBoundary {
     private final SongSearchUserDataAccessInterface userDataAccessObject;
@@ -21,5 +16,11 @@ public class SongSearchInteractor implements SongSearchInputBoundary {
 
     @Override
     public void switchToFeedView() {
+        userPresenter.switchToFeedView();
+    }
+
+    @Override
+    public void switchToLeaveRatingView() {
+        userPresenter.switchToLeaveRatingView();
     }
 }
