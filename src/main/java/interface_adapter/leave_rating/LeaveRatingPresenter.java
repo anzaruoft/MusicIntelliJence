@@ -10,7 +10,6 @@ public class LeaveRatingPresenter implements LeaveRatingOutputBoundary {
 
     private LeaveRatingViewModel leaveRatingViewModel;
     private ViewManagerModel viewManagerModel;
-    private SongSearchViewModel songSearchViewModel;
 
     public LeaveRatingPresenter(ViewManagerModel viewManagerModel, LeaveRatingViewModel leaveRatingViewModel) {
         this.leaveRatingViewModel = leaveRatingViewModel;

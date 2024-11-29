@@ -315,9 +315,10 @@ public class AppBuilder {
                 leaveRatingPresenter);
 
         final LeaveRatingController leaveRatingController = new LeaveRatingController(leaveRatingInteractor);
-        leaveRatingView.setLeaveRatingController(leaveRatingController);
-        leaveRatingView.setLeaveRatingPresenter(leaveRatingPresenter);
-        songSearchView.setLeaveRatingController(leaveRatingController);
+//        leaveRatingView.setLeaveRatingController(leaveRatingController);
+//        leaveRatingView.setLeaveRatingPresenter(leaveRatingPresenter);
+//        songSearchView.setLeaveRatingController(leaveRatingController);
+
 
         return this;
     }
