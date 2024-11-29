@@ -9,12 +9,18 @@ public class FeedInteractor implements FeedInputBoundary {
     private final FeedOutputBoundary userPresenter;
 
     public FeedInteractor(FeedUserDataAccessInterface feedDataAccessInterface,
-                                    FeedOutputBoundary feedOutputBoundary) {
+                          FeedOutputBoundary feedOutputBoundary) {
         this.userDataAccessObject = feedDataAccessInterface;
         this.userPresenter = feedOutputBoundary;
     }
+
     @Override
     public void execute(FeedInputData feedInputData) {
 
+    }
+
+    @Override
+    public void switchToChangePasswordView() {
+        userPresenter.switchToChangePasswordView();
     }
 }
