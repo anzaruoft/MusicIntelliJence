@@ -225,14 +225,14 @@ public class AppBuilder {
      */
     public AppBuilder addChangePasswordUseCase() {
         final ChangePasswordOutputBoundary changePasswordOutputBoundary =
-                new ChangePasswordPresenter(loggedInViewModel);
+                new ChangePasswordPresenter(viewManagerModel, loggedInViewModel);
 
         final ChangePasswordInputBoundary changePasswordInteractor =
                 new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
 
         final ChangePasswordController changePasswordController =
                 new ChangePasswordController(changePasswordInteractor);
-        loggedInView.setChangePasswordController(changePasswordController);
+        feedView.setChangePasswordController(changePasswordController);
         return this;
     }
 
@@ -254,7 +254,7 @@ public class AppBuilder {
 
     public AppBuilder addFeedUseCase() {
         final FeedPresenter feedPresenter = new FeedPresenter(viewManagerModel,
-                feedViewModel, profileViewModel, songSearchViewModel);
+                feedViewModel, profileViewModel, songSearchViewModel, loggedInViewModel);
         final FeedInputBoundary feedInteractor = new FeedInteractor(userDataAccessObject, feedPresenter);
         final FeedController feedController = new FeedController(feedInteractor);
         feedView.setFeedController(feedController);
@@ -312,7 +312,7 @@ public class AppBuilder {
 
     public AppBuilder addLeaveRatingUseCase() {
         final LeaveRatingPresenter leaveRatingPresenter = new LeaveRatingPresenter(viewManagerModel,
-                leaveRatingViewModel);
+                leaveRatingViewModel, songSearchViewModel);
         final LeaveRatingInputBoundary leaveRatingInteractor = new LeaveRatingInteractor(userDataAccessObject,
                 leaveRatingPresenter);
 

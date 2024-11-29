@@ -27,6 +27,7 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
     private ProfileController profileController;
     private FeedPresenter feedPresenter;
     private SongSearchController songSearchController;
+    private ChangePasswordController changePasswordController;
 
     private final JButton addratingButton;
     private final JButton profileButton;
@@ -97,13 +98,11 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
 
         changepasswordbutton.addActionListener(
                 new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        if (e.getSource().equals(changepasswordbutton)) {
-                            final FeedState currentState = feedViewModel.getState();
-                        }
+                    public void actionPerformed(ActionEvent evt) {
+                        changePasswordController.switchToChangePasswordView();
                     }
                 }
-        )
+        );
 
         this.add(title);
         this.add(buttons);
@@ -126,12 +125,16 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
         this.profileController = profileController;
     }
 
-    public void setSongSearchController (SongSearchController songSearchController) {
+    public void setSongSearchController(SongSearchController songSearchController) {
         this.songSearchController = songSearchController;
     }
 
     public void setFeedPresenter(FeedPresenter feedPresenter) {
         this.feedPresenter = feedPresenter;
+    }
+
+    public void setChangePasswordController(ChangePasswordController changePasswordController) {
+        this.changePasswordController = changePasswordController;
     }
 
     /**

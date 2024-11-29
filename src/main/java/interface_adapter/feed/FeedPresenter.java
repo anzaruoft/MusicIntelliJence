@@ -1,6 +1,8 @@
 package interface_adapter.feed;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.change_password.LoggedInState;
+import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
 import interface_adapter.song_search.SongSearchState;
@@ -18,13 +20,16 @@ public class FeedPresenter implements FeedOutputBoundary {
     private ViewManagerModel viewManagerModel;
     private ProfileViewModel profileViewModel;
     private SongSearchViewModel songSearchViewModel;
+    private LoggedInViewModel changePasswordViewModel;
 
     public FeedPresenter(ViewManagerModel viewManagerModel, FeedViewModel feedViewModel,
-                         ProfileViewModel profileViewModel, SongSearchViewModel songSearchViewModel) {
+                         ProfileViewModel profileViewModel, SongSearchViewModel songSearchViewModel,
+                         LoggedInViewModel changePasswordViewModel) {
         this.feedViewModel = feedViewModel;
         this.viewManagerModel = viewManagerModel;
         this.profileViewModel = profileViewModel;
         this.songSearchViewModel = songSearchViewModel;
+        this.changePasswordViewModel = changePasswordViewModel;
     }
 
     @Override
@@ -58,10 +63,22 @@ public class FeedPresenter implements FeedOutputBoundary {
         this.viewManagerModel.firePropertyChanged();
     }
 
+    @Override
+    public void switchToChangePasswordView() {
+        final LoggedInState loggedInState = changePasswordViewModel.getState();
+        // feedState.setUsername(response.getUsername());
+        this.changePasswordViewModel.setState(loggedInState);
+        this.changePasswordViewModel.firePropertyChanged();
+
+        this.viewManagerModel.setState(changePasswordViewModel.getViewName());
+        this.viewManagerModel.firePropertyChanged();
+
+    }
+}
+
     // public void switchtoChangePasswordView(String username, String newpassword, String email) {
        // ChangePasswordInputData changePasswordInputData = new ChangePasswordInteractor(username, newpassword, email)
 
 
-    }
-}
+
 
