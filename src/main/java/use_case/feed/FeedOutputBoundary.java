@@ -16,4 +16,6 @@ public interface FeedOutputBoundary {
     void switchToProfileView(String username);
 
     void switchToSongSearchView(String username);
+
+    void switchToChangePasswordView();
 }

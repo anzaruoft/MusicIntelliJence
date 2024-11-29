@@ -1,6 +1,6 @@
 package view;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -79,6 +79,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         toLogin.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
+
                         signupController.switchToLoginView();
                     }
                 }
@@ -90,6 +91,12 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         addEmailListener();
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setBackground(Color.PINK);
+        buttons.setBackground(Color.PINK);
+        usernameInfo.setBackground(Color.PINK);
+        passwordInfo.setBackground(Color.PINK);
+        repeatPasswordInfo.setBackground(Color.PINK);
+        emailInfo.setBackground(Color.PINK);
 
         this.add(title);
         this.add(usernameInfo);
