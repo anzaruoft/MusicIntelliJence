@@ -14,22 +14,26 @@ public class Main {
     public static void main(String[] args) {
         final AppBuilder appBuilder = new AppBuilder();
         final JFrame application = appBuilder
-                                            .addLoginView()
-                                            .addSignupView()
-                                            .addLoggedInView()
-                                            .addFeedView()
-                                            .addProfileView()
-                                            .addFriendsView()
-                                            .addFriendProfileView()
-                                            .addSignupUseCase()
-                                            .addLoginUseCase()
-                                            .addChangePasswordUseCase()
-                                            .addLogoutUseCase()
-                                            .addFeedUseCase()
-                                            .addProfileUseCase()
-                                            .addFriendsUseCase()
-                                            .addFriendProfileUseCase()
-                                            .build();
+                .addLoginView()
+                .addSignupView()
+                .addLoggedInView()
+                .addFeedView()
+                .addProfileView()
+                .addFriendsView()
+                .addFriendProfileView()
+                .addSongSearchView()
+                .addLeaveRatingView()
+                .addSignupUseCase()
+                .addLoginUseCase()
+                .addChangePasswordUseCase()
+                .addLogoutUseCase()
+                .addFeedUseCase()
+                .addProfileUseCase()
+                .addFriendsUseCase()
+                .addFriendProfileUseCase()
+                .addSongSearchUseCase()
+                .addLeaveRatingUseCase()
+                .build();
 
         application.pack();
         application.setVisible(true);

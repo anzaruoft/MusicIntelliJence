@@ -22,6 +22,9 @@ import interface_adapter.friendProfile.FriendProfileViewModel;
 import interface_adapter.friends.FriendsController;
 import interface_adapter.friends.FriendsPresenter;
 import interface_adapter.friends.FriendsViewModel;
+import interface_adapter.leave_rating.LeaveRatingController;
+import interface_adapter.leave_rating.LeaveRatingPresenter;
+import interface_adapter.leave_rating.LeaveRatingViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -33,16 +36,22 @@ import interface_adapter.profile.ProfileViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.song_search.SongSearchController;
+import interface_adapter.song_search.SongSearchPresenter;
+import interface_adapter.song_search.SongSearchViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
 import use_case.feed.FeedInputBoundary;
+import use_case.feed.FeedInputData;
 import use_case.feed.FeedInteractor;
 import use_case.friendProfile.FriendProfileInputBoundary;
 import use_case.friendProfile.FriendProfileInteractor;
 import use_case.friends.FriendsInputBoundary;
 import use_case.friends.FriendsInteractor;
 import use_case.friends.FriendsOutputBoundary;
+import use_case.leave_rating.LeaveRatingInputBoundary;
+import use_case.leave_rating.LeaveRatingInteractor;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.logout.LogoutInputBoundary;
@@ -54,6 +63,9 @@ import use_case.profile.ProfileOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
+import use_case.song_search.SongSearchInputBoundary;
+import use_case.song_search.SongSearchInteractor;
+import use_case.song_search.SongSearchOutputBoundary;
 import view.*;
 
 /**
@@ -92,6 +104,10 @@ public class AppBuilder {
     private FriendsView friendsView;
     private FriendProfileViewModel friendProfileViewModel;
     private FriendProfileView friendProfileView;
+    private SongSearchViewModel songSearchViewModel;
+    private SongSearchView songSearchView;
+    private LeaveRatingViewModel leaveRatingViewModel;
+    private LeaveRatingView leaveRatingView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -158,6 +174,20 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addSongSearchView() {
+        songSearchViewModel = new SongSearchViewModel();
+        songSearchView = new SongSearchView(songSearchViewModel);
+        cardPanel.add(songSearchView, songSearchView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addLeaveRatingView() {
+        leaveRatingViewModel = new LeaveRatingViewModel();
+        leaveRatingView = new LeaveRatingView(leaveRatingViewModel);
+        cardPanel.add(leaveRatingView, leaveRatingView.getViewName());
+        return this;
+    }
+
     /**
      * Adds the Signup Use Case to the application.
      * @return this builder
@@ -195,14 +225,14 @@ public class AppBuilder {
      */
     public AppBuilder addChangePasswordUseCase() {
         final ChangePasswordOutputBoundary changePasswordOutputBoundary =
-                new ChangePasswordPresenter(loggedInViewModel);
+                new ChangePasswordPresenter(viewManagerModel, loggedInViewModel);
 
         final ChangePasswordInputBoundary changePasswordInteractor =
                 new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
 
         final ChangePasswordController changePasswordController =
                 new ChangePasswordController(changePasswordInteractor);
-        loggedInView.setChangePasswordController(changePasswordController);
+        feedView.setChangePasswordController(changePasswordController);
         return this;
     }
 
@@ -224,9 +254,8 @@ public class AppBuilder {
 
     public AppBuilder addFeedUseCase() {
         final FeedPresenter feedPresenter = new FeedPresenter(viewManagerModel,
-                feedViewModel, profileViewModel);
+                feedViewModel, profileViewModel, songSearchViewModel, loggedInViewModel);
         final FeedInputBoundary feedInteractor = new FeedInteractor(userDataAccessObject, feedPresenter);
-
         final FeedController feedController = new FeedController(feedInteractor);
         feedView.setFeedController(feedController);
         feedView.setFeedPresenter(feedPresenter);
@@ -234,8 +263,10 @@ public class AppBuilder {
     }
 
     public AppBuilder addProfileUseCase() {
-        final ProfileOutputBoundary profileOutputPresenter = new ProfilePresenter(viewManagerModel, profileViewModel, feedViewModel);
-        final ProfileInputBoundary profileInteractor = new ProfileInteractor(userDataAccessObject, profileOutputPresenter);
+        final ProfileOutputBoundary profileOutputPresenter =
+                new ProfilePresenter(viewManagerModel, profileViewModel, feedViewModel);
+        final ProfileInputBoundary profileInteractor =
+                new ProfileInteractor(userDataAccessObject, profileOutputPresenter);
         final ProfileController profileController = new ProfileController(profileInteractor);
         profileView.setProfileController(profileController);
         feedView.setProfileController(profileController);
@@ -262,6 +293,34 @@ public class AppBuilder {
         final FriendProfileController friendProfileController = new FriendProfileController(friendProfileInteractor);
         friendProfileView.setFriendProfileController(friendProfileController);
         friendProfileView.setFriendProfilePresenter(friendProfilePresenter);
+        return this;
+    }
+
+    public AppBuilder addSongSearchUseCase() {
+        final SongSearchPresenter songSearchPresenter = new SongSearchPresenter(viewManagerModel,
+                songSearchViewModel, feedViewModel, leaveRatingViewModel);
+        final SongSearchInputBoundary songSearchInteractor = new SongSearchInteractor(userDataAccessObject,
+                songSearchPresenter);
+
+        final SongSearchController songSearchController = new SongSearchController(songSearchInteractor);
+        songSearchView.setSongSearchController(songSearchController);
+        songSearchView.setSongSearchPresenter(songSearchPresenter);
+        feedView.setSongSearchController(songSearchController);
+
+        return this;
+    }
+
+    public AppBuilder addLeaveRatingUseCase() {
+        final LeaveRatingPresenter leaveRatingPresenter = new LeaveRatingPresenter(viewManagerModel,
+                leaveRatingViewModel, songSearchViewModel);
+        final LeaveRatingInputBoundary leaveRatingInteractor = new LeaveRatingInteractor(userDataAccessObject,
+                leaveRatingPresenter);
+
+        final LeaveRatingController leaveRatingController = new LeaveRatingController(leaveRatingInteractor);
+        leaveRatingView.setLeaveRatingController(leaveRatingController);
+        leaveRatingView.setLeaveRatingPresenter(leaveRatingPresenter);
+        songSearchView.setLeaveRatingController(leaveRatingController);
+
         return this;
     }
 

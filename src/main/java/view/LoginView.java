@@ -1,6 +1,6 @@
 package view;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -60,11 +60,18 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         final LabelTextPanel passwordInfo = new LabelTextPanel(
                 new JLabel("Password"), passwordInputField);
 
+        usernameInfo.setBackground(Color.PINK);
+        passwordInfo.setBackground(Color.PINK);
+
         final JPanel buttons = new JPanel();
         logIn = new JButton("log in");
         buttons.add(logIn);
         cancel = new JButton("cancel");
         buttons.add(cancel);
+
+        buttons.setBackground(Color.PINK);
+
+        this.setBackground(Color.PINK);
 
         logIn.addActionListener(
                 new ActionListener() {
