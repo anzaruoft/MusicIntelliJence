@@ -63,20 +63,46 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
                 String responseBody = response.body().string();
+
+                // Log the raw response body
                 System.out.println("Response body: " + responseBody);
-                JSONObject jsonObject = new JSONObject(responseBody);
-                return new CommonUser(
-                        username,
-                        jsonObject.getString("password"),
-                        jsonObject.getString("email")
-                );
+
+                // Check if the response indicates an error message like "User not found"
+                if (responseBody.equalsIgnoreCase("User not found")) {
+                    System.out.println("User not found for username: " + username);
+                    return null; // Return null if the user is not found
+                }
+
+                // Check if the response body starts with '{' (valid JSON object)
+                if (!responseBody.trim().startsWith("{")) {
+                    throw new JSONException("Response body is not a valid JSON object");
+                }
+
+                // Attempt to parse the response into a JSONObject
+                try {
+                    JSONObject jsonObject = new JSONObject(responseBody);
+                    return new CommonUser(
+                            username,
+                            jsonObject.getString("password"),
+                            jsonObject.getString("email")
+                    );
+                } catch (JSONException e) {
+                    System.err.println("Failed to parse JSON: " + e.getMessage());
+                    throw e; // Rethrow exception if JSON parsing fails
+                }
+            } else {
+                System.err.println("Request failed. Response code: " + response.code());
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            throw e;
         }
         return null;
     }
+
 
     @Override
     public boolean existsByName(String username) {
