@@ -14,6 +14,8 @@ public interface FeedOutputBoundary {
     void prepareFailView(String errorMessage);
 
     void switchToProfileView(String username);
+  
+    void switchToSongSearchView(String username);
 
-    // switch to friendSearch?
+    void switchToChangePasswordView();
 }

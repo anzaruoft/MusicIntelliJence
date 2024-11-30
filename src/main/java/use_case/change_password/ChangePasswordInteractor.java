@@ -35,4 +35,9 @@ public class ChangePasswordInteractor implements ChangePasswordInputBoundary {
             userPresenter.prepareFailView("passwordFailureEmpty");
         }
     }
+
+    @Override
+    public void switchToChangePasswordView() {
+        userPresenter.switchToChangePasswordView();
+    }
 }

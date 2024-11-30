@@ -14,24 +14,28 @@ public class Main {
     public static void main(String[] args) {
         final AppBuilder appBuilder = new AppBuilder();
         final JFrame application = appBuilder
-                                            .addLoginView()
-                                            .addSignupView()
-                                            .addLoggedInView()
-                                            .addFeedView()
-                                            .addProfileView()
-                                            .addFriendsView()
-                                            .addFriendProfileView()
-                                            .addProfileSearchView()
-                                            .addSignupUseCase()
-                                            .addLoginUseCase()
-                                            .addChangePasswordUseCase()
-                                            .addLogoutUseCase()
-                                            .addFeedUseCase()
-                                            .addProfileUseCase()
-                                            .addFriendsUseCase()
-                                            .addFriendProfileUseCase()
-                                            .addProfileSearchUseCase()
-                                            .build();
+                .addLoginView()
+                .addSignupView()
+                .addLoggedInView()
+                .addFeedView()
+                .addProfileView()
+                .addFriendsView()
+                .addFriendProfileView()
+                .addProfileSearchView()
+                .addSongSearchView()
+                .addLeaveRatingView()
+                .addSignupUseCase()
+                .addLoginUseCase()
+                .addChangePasswordUseCase()
+                .addLogoutUseCase()
+                .addFeedUseCase()
+                .addProfileUseCase()
+                .addFriendsUseCase()
+                .addFriendProfileUseCase()
+                .addSongSearchUseCase()
+                .addLeaveRatingUseCase()
+                .addProfileSearchUseCase()
+                .build();
 
         application.pack();
         application.setVisible(true);

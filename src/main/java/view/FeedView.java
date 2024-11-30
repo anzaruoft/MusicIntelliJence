@@ -9,6 +9,9 @@ import interface_adapter.feed.FeedViewModel;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileState;
+import interface_adapter.song_search.SongSearchController;
+import interface_adapter.song_search.SongSearchPresenter;
+import interface_adapter.song_search.SongSearchState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,12 +26,13 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
     private FeedController feedController;
     private ProfileController profileController;
     private FeedPresenter feedPresenter;
-
+    private SongSearchController songSearchController;
+    private ChangePasswordController changePasswordController;
 
     private final JButton addratingButton;
     private final JButton profileButton;
     private final JButton addfriendbutton;
-
+    private final JButton changepasswordbutton;
 
     public FeedView(FeedViewModel feedViewModel) {
         this.feedViewModel = feedViewModel;
@@ -47,15 +51,33 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
         addfriendbutton = new JButton("Add friend");
         buttons.add(addfriendbutton);
 
+        changepasswordbutton = new JButton("Change password");
+        buttons.add(changepasswordbutton);
+
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.setBackground(Color.PINK);
+        buttons.setBackground(Color.PINK);
 
         addratingButton.addActionListener(
                 // This creates an anonymous subclass of ActionListener and instantiates it.
                 evt -> {
                     if (evt.getSource().equals(addratingButton)) {
                         final FeedState currentState = feedViewModel.getState();
+                    }
+                }
+        );
+
+        addratingButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed (ActionEvent e) {
+                        if (e.getSource().equals(addratingButton)) {
+                            final FeedState currentState = feedViewModel.getState();
+
+                            feedPresenter.switchToSongSearchView(
+                                    currentState.getUsername()
+                            );
+                        }
                     }
                 }
         );
@@ -70,6 +92,14 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
                                     currentState.getUsername()
                             );
                         }
+                    }
+                }
+        );
+
+        changepasswordbutton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        changePasswordController.switchToChangePasswordView();
                     }
                 }
         );
@@ -95,8 +125,16 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
         this.profileController = profileController;
     }
 
+    public void setSongSearchController(SongSearchController songSearchController) {
+        this.songSearchController = songSearchController;
+    }
+
     public void setFeedPresenter(FeedPresenter feedPresenter) {
         this.feedPresenter = feedPresenter;
+    }
+
+    public void setChangePasswordController(ChangePasswordController changePasswordController) {
+        this.changePasswordController = changePasswordController;
     }
 
     /**
@@ -106,5 +144,12 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
     public void actionPerformed(ActionEvent evt) {
         System.out.println("Click " + evt.getActionCommand());
     }
+//
+//    public void setSongSearchController(SongSearchController songSearchController) {
+//    }
+//
+//    public void setSongSearchPresenter(SongSearchPresenter songSearchPresenter) {
+//
+//    }
 }
 

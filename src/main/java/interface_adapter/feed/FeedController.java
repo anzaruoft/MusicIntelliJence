@@ -2,8 +2,9 @@ package interface_adapter.feed;
 
 import use_case.feed.FeedInputBoundary;
 import use_case.feed.FeedInputData;
-/*
 
+/**
+ * The controller for the Feed Use Case.
  */
 public class FeedController {
     private final FeedInputBoundary feedInteractor;
@@ -14,10 +15,11 @@ public class FeedController {
 
     /**
      * Executes the Feed Use Case.
+     * @param username the username of the user logged into the feed.
+     *
      */
-    public void execute() {
-        final FeedInputData feedInputData = new FeedInputData();
-
+    public void execute(String username) {
+        final FeedInputData feedInputData = new FeedInputData(username);
         feedInteractor.execute(feedInputData);
     }
 }
