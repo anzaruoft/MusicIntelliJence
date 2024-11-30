@@ -178,7 +178,20 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 
     @Override
     public String getCurrentUsername() {
-        return null; // Not implemented
+        return null;
+        // Not implemented
+    }
+
+    @Override
+    public List<String> getFriendsPosts(List<String> friends) {
+        final List<String> allPosts = new ArrayList<>();
+        for (String friend : friends) {
+            final User friendUser = get(friend);
+            if (friendUser != null) {
+                allPosts.addAll(friendUser.getPosts());
+            }
+        }
+        return allPosts;
     }
 
 }

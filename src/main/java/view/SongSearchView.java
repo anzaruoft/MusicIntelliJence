@@ -84,6 +84,7 @@ public class SongSearchView extends JPanel implements PropertyChangeListener, Ac
                         String query = textField.getText();
                         try {
                             String result = SpotifyAPIUserDataAccessObject.searchSong(query);
+                            songSearchViewModel.getState().setSongTitle(result);
                             resultsText.setText(result);
                         } catch (Exception ex) {
                             resultsText.setText("Error: " + ex.getMessage());

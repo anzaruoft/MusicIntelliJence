@@ -34,10 +34,22 @@ public class FeedPresenter implements FeedOutputBoundary {
 
     @Override
     public void prepareSuccessView(FeedOutputData outputData) {
+        final FeedState feedState = feedViewModel.getState();
+        feedState.setUsername(outputData.getUsername());
+        feedState.setPosts(outputData.getPosts());
+        feedViewModel.setState(feedState);
+
+        viewManagerModel.setState(feedViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
     }
 
     @Override
     public void prepareFailView(String errorMessage) {
+        final FeedState feedState = feedViewModel.getState();
+        feedState.setFeedError(errorMessage);
+        feedViewModel.setState(feedState);
+
+        viewManagerModel.firePropertyChanged();
 
     }
 

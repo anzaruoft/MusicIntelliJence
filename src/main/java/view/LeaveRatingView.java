@@ -1,7 +1,9 @@
 package view;
 
+import interface_adapter.feed.FeedState;
 import interface_adapter.leave_rating.LeaveRatingController;
 import interface_adapter.leave_rating.LeaveRatingPresenter;
+import interface_adapter.leave_rating.LeaveRatingState;
 import interface_adapter.leave_rating.LeaveRatingViewModel;
 
 import javax.swing.*;
@@ -15,6 +17,7 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener, A
     private final String viewName = "leave rating";
     private final LeaveRatingViewModel leaveRatingViewModel;
     private LeaveRatingController leaveRatingController;
+    private JTextField songTitleField;
 
     public LeaveRatingView(LeaveRatingViewModel leaveRatingViewModel) {
         this.leaveRatingViewModel = leaveRatingViewModel;
@@ -28,8 +31,8 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener, A
 
         // Song Title
         JLabel songTitleLabel = new JLabel("Song Title:");
-        JTextField songTitleField = new JTextField(20);
-
+        songTitleField = new JTextField(20);
+        songTitleField.setEditable(false);
         // Leave a Rating
         JLabel ratingLabel = new JLabel("Leave a Rating (1-5):");
         JTextField ratingField = new JTextField(5);
@@ -68,7 +71,11 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener, A
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        // Handle property changes from the ViewModel if needed
+        if ("state".equals(evt.getPropertyName())) {
+            final LeaveRatingState state = (LeaveRatingState) evt.getNewValue();
+            songTitleField.setText(state.getSongTitle());
+
+        }
     }
 
     public String getViewName() {

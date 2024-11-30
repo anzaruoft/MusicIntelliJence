@@ -236,6 +236,19 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addChangePasswordinloggedinUseCase() {
+        final ChangePasswordOutputBoundary changePasswordOutputBoundary =
+                new ChangePasswordPresenter(viewManagerModel, loggedInViewModel);
+
+        final ChangePasswordInputBoundary changePasswordInteractor =
+                new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
+
+        final ChangePasswordController changePasswordController =
+                new ChangePasswordController(changePasswordInteractor);
+        loggedInView.setChangePasswordController(changePasswordController);
+        return this;
+    }
+
     /**
      * Adds the Logout Use Case to the application.
      * @return this builder

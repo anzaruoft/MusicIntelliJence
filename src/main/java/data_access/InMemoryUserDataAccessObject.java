@@ -1,6 +1,8 @@
 package data_access;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import entity.User;
@@ -59,6 +61,17 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     public void changePassword(User user) {
         // Replace the old entry with the new password
         users.put(user.getName(), user);
+    }
+
+    public List<String> getFriendsPosts(List<String> friends) {
+        final List<String> allPosts = new ArrayList<>();
+        for (String friend : friends) {
+            final User friendUser = users.get(friend);
+            if (friendUser != null) {
+                allPosts.addAll(friendUser.getPosts());
+            }
+        }
+        return allPosts;
     }
 
 }
