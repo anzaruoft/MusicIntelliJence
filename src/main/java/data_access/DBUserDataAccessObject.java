@@ -26,6 +26,7 @@ import use_case.friends.FriendsUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.profile.ProfileUserDataAccessInterface;
+import use_case.profile_search.ProfileSearchUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
 public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
@@ -35,7 +36,8 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         FeedUserDataAccessInterface,
         ProfileUserDataAccessInterface,
         FriendsUserDataAccessInterface,
-        FriendProfileUserDataAccessInterface {
+        FriendProfileUserDataAccessInterface,
+        ProfileSearchUserDataAccessInterface{
 
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";

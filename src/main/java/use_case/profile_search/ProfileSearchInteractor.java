@@ -1,10 +1,5 @@
 package use_case.profile_search;
 
-import use_case.friends.FriendsUserDataAccessInterface;
-import use_case.profile_search.ProfileSearchInputData;
-import use_case.profile_search.ProfileSearchInputBoundary;
-import use_case.profile_search.ProfileSearchUserDataAccessInterface;
-import java.util.List;
 import entity.User;
 
 /**
@@ -15,9 +10,9 @@ public class ProfileSearchInteractor implements ProfileSearchInputBoundary {
     private final ProfileSearchUserDataAccessInterface userDataAccessObject;
     private final ProfileSearchOutputBoundary profileSearchPresenter;
 
-    public ProfileSearchInteractor(ProfileSearchUserDataAccessInterface userDataAccessobject,
+    public ProfileSearchInteractor(ProfileSearchUserDataAccessInterface userDataAccessObject,
                                    ProfileSearchOutputBoundary profileSearchPresenter) {
-        this.userDataAccessObject = userDataAccessobject;
+        this.userDataAccessObject = userDataAccessObject;
         this.profileSearchPresenter = profileSearchPresenter;
     }
 
@@ -26,7 +21,7 @@ public class ProfileSearchInteractor implements ProfileSearchInputBoundary {
         final String inputUsername = profileSearchInputData.getUsername();
 
         if (userDataAccessObject.existsByName(inputUsername)) {
-            final User inputUser = userDataAccessObject.getUser(inputUsername);
+            final User inputUser = userDataAccessObject.get(inputUsername);
             final int inputUserFriendCount = inputUser.getFriends().size();
 
             final ProfileSearchOutputData profileSearchOutputData = new ProfileSearchOutputData(inputUserFriendCount,
@@ -34,6 +29,9 @@ public class ProfileSearchInteractor implements ProfileSearchInputBoundary {
 
             profileSearchPresenter.prepareSuccessView(profileSearchOutputData);
 
+        }
+        else {
+            profileSearchPresenter.prepareFailView("User\"" + inputUsername + "\" does not exist");
         }
     }
 

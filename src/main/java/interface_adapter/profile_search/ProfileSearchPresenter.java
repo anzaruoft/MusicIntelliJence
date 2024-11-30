@@ -50,7 +50,7 @@ public class ProfileSearchPresenter implements ProfileSearchOutputBoundary {
     @Override
     public void prepareFailView(String ErrorMessage) {
         final ProfileSearchState profileSearchState = profileSearchViewModel.getState();
-        profileSearchState.setProfileSearchError(ErrorMessage);
+        profileSearchState.setErrorMessage(ErrorMessage);
         profileSearchViewModel.firePropertyChanged();
     }
 

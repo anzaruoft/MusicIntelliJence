@@ -21,6 +21,7 @@ public class Main {
                                             .addProfileView()
                                             .addFriendsView()
                                             .addFriendProfileView()
+                                            .addProfileSearchView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addChangePasswordUseCase()
@@ -29,6 +30,7 @@ public class Main {
                                             .addProfileUseCase()
                                             .addFriendsUseCase()
                                             .addFriendProfileUseCase()
+                                            .addProfileSearchUseCase()
                                             .build();
 
         application.pack();
