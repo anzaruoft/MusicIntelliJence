@@ -5,7 +5,6 @@ import entity.User;
 /**
  * DAO for Profile Search Use Case.
  */
-
 public interface ProfileSearchUserDataAccessInterface {
 
     /**
@@ -20,7 +19,5 @@ public interface ProfileSearchUserDataAccessInterface {
      * @param username the username of the profile to load.
      * @return the user with the given username.
      */
-    User getUser(String username);
-
-
+    User get(String username);
 }

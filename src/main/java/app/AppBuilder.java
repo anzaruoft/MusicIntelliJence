@@ -30,9 +30,14 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.other_profile.OtherProfilePresenter;
+import interface_adapter.other_profile.OtherProfileViewModel;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfilePresenter;
 import interface_adapter.profile.ProfileViewModel;
+import interface_adapter.profile_search.ProfileSearchController;
+import interface_adapter.profile_search.ProfileSearchPresenter;
+import interface_adapter.profile_search.ProfileSearchViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
@@ -60,6 +65,8 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInteractor;
 import use_case.profile.ProfileOutputBoundary;
+import use_case.profile_search.ProfileSearchInputBoundary;
+import use_case.profile_search.ProfileSearchInteractor;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
@@ -104,6 +111,10 @@ public class AppBuilder {
     private FriendsView friendsView;
     private FriendProfileViewModel friendProfileViewModel;
     private FriendProfileView friendProfileView;
+    private ProfileSearchViewModel profileSearchViewModel;
+    private ProfileSearchView profileSearchView;
+    private OtherProfileViewModel otherProfileViewModel;
+    private OtherProfileView otherProfileView;
     private SongSearchViewModel songSearchViewModel;
     private SongSearchView songSearchView;
     private LeaveRatingViewModel leaveRatingViewModel;
@@ -174,6 +185,11 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addProfileSearchView() {
+        profileSearchViewModel = new ProfileSearchViewModel();
+        profileSearchView = new ProfileSearchView(profileSearchViewModel);
+        cardPanel.add(profileSearchView, profileSearchView.getViewName());
+  
     public AppBuilder addSongSearchView() {
         songSearchViewModel = new SongSearchViewModel();
         songSearchView = new SongSearchView(songSearchViewModel);
@@ -296,6 +312,22 @@ public class AppBuilder {
         return this;
     }
 
+    // Added vvv Error For Some Reason, Check Late!!!!!!!!!!!!!!!!!!!!!!!!
+
+    /**
+     * Adds the profile search use case to the application.
+     * @return this builder
+     */
+    public AppBuilder addProfileSearchUseCase() {
+        final ProfileSearchPresenter profileSearchPresenter = new ProfileSearchPresenter(profileSearchViewModel,
+                viewManagerModel, otherProfileViewModel, feedViewModel);
+        final ProfileSearchInputBoundary profileSearchInteractor = new ProfileSearchInteractor(userDataAccessObject,
+                profileSearchPresenter);
+
+        final ProfileSearchController profileSearchController = new ProfileSearchController(profileSearchInteractor);
+        profileSearchView.setProfileSearchController(profileSearchController);
+        profileSearchView.setProfileSearchPresenter(profileSearchPresenter);
+      
     public AppBuilder addSongSearchUseCase() {
         final SongSearchPresenter songSearchPresenter = new SongSearchPresenter(viewManagerModel,
                 songSearchViewModel, feedViewModel, leaveRatingViewModel);
@@ -320,7 +352,7 @@ public class AppBuilder {
         leaveRatingView.setLeaveRatingController(leaveRatingController);
         leaveRatingView.setLeaveRatingPresenter(leaveRatingPresenter);
         songSearchView.setLeaveRatingController(leaveRatingController);
-
+      
         return this;
     }
 

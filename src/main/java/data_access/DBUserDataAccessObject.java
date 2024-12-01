@@ -24,6 +24,7 @@ import use_case.leave_rating.LeaveRatingUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.profile.ProfileUserDataAccessInterface;
+import use_case.profile_search.ProfileSearchUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 import use_case.song_search.SongSearchUserDataAccessInterface;
 
@@ -35,6 +36,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         ProfileUserDataAccessInterface,
         FriendsUserDataAccessInterface,
         FriendProfileUserDataAccessInterface,
+        ProfileSearchUserDataAccessInterface{
         LeaveRatingUserDataAccessInterface,
         SongSearchUserDataAccessInterface {
 

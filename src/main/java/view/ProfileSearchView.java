@@ -84,7 +84,8 @@ public class ProfileSearchView extends JPanel implements ActionListener, Propert
                     public void actionPerformed(ActionEvent evt) {
                         if (profileSearchPresenter != null) {
                             profileSearchPresenter.switchToFeedView();
-                        } else {
+                        }
+                        else {
                             System.out.println("ProfileSearchPresenter is null");
                         }
                     }
