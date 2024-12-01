@@ -1,5 +1,7 @@
 package use_case.friends;
 
+import org.json.JSONArray;
+
 import java.util.List;
 
 /**
@@ -7,13 +9,13 @@ import java.util.List;
  */
 public class FriendsOutputData {
 
-    private final List<String> friendsList;
+    private final JSONArray friendsList;
 
-    public FriendsOutputData(List<String> friendsList) {
+    public FriendsOutputData(JSONArray friendsList) {
         this.friendsList = friendsList;
     }
 
-    public List<String> getFriendsNames() {
+    public JSONArray getFriendsNames() {
         return friendsList;
     }
 }

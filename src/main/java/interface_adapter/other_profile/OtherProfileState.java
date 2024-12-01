@@ -1,5 +1,7 @@
 package interface_adapter.other_profile;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,7 @@ import java.util.List;
  */
 public class OtherProfileState {
     private String otherUsername;
-    private List<String> friends = new ArrayList<>();
+    private JSONArray friends = new JSONArray();
     private String usernameError;
 
     public String getOtherUsername() {
@@ -21,7 +23,7 @@ public class OtherProfileState {
     }
 
     public int getFriendsNumber() {
-        return friends.size();
+        return friends.length();
     }
 
     public String getProfileError() {
@@ -32,7 +34,7 @@ public class OtherProfileState {
         this.otherUsername = otherUsername;
     }
 
-    public void setFriends(List<String> friends) {
+    public void setFriends(JSONArray friends) {
         this.friends = friends;
     }
 
