@@ -1,5 +1,7 @@
 package use_case.other_profile;
 
+import org.json.JSONArray;
+
 import java.util.List;
 
 /**
@@ -7,14 +9,14 @@ import java.util.List;
  */
 public class OtherProfileOutputData {
     private final String otherUsername;
-    private final List<String> friends;
-    private final List<String> posts;
-    private final List<String> topSongs;
+    private final JSONArray friends;
+    private final JSONArray posts;
+    private final JSONArray topSongs;
 
     public OtherProfileOutputData(String otherUsername,
-                                  List<String> friends,
-                                  List<String> posts,
-                                  List<String> topSongs) {
+                                  JSONArray friends,
+                                  JSONArray posts,
+                                  JSONArray topSongs) {
         this.otherUsername = otherUsername;
         this.friends = friends;
         this.posts = posts;
@@ -25,15 +27,15 @@ public class OtherProfileOutputData {
         return otherUsername;
     }
 
-    public List<String> getFriends() {
+    public JSONArray getFriends() {
         return friends;
     }
 
-    public List<String> getPosts() {
+    public JSONArray getPosts() {
         return posts;
     }
 
-    public List<String> getTopSongs() {
+    public JSONArray getTopSongs() {
         return topSongs;
     }
 }

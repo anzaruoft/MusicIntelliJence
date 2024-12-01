@@ -3,8 +3,10 @@ package data_access;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import entity.CommonUser;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import entity.User;
@@ -77,11 +79,19 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                 try {
                     final JSONObject jsonObject = new JSONObject(responseBody);
                     System.out.println(jsonObject);
-                    return new CommonUser(
+                    // Maybe need to set the other information
+                    final CommonUser user = new CommonUser(
                             username,
                             jsonObject.getString("password"),
                             jsonObject.getString("email")
                     );
+                    System.out.println(jsonObject.get("sentFriends").getClass());
+                    user.setSentFriends((JSONArray) jsonObject.get("sentFriends"));
+                    user.setReceivedFriends((JSONArray) jsonObject.get("receivedFriends"));
+                    user.setFriends((JSONArray) jsonObject.get("friends"));
+                    user.setPosts((JSONArray) jsonObject.get("posts"));
+                    user.setRatings((JSONArray) jsonObject.get("ratings"));
+                    return user;
                 } catch (JSONException e) {
                     System.err.println("Failed to parse JSON: " + e.getMessage());
                     throw e; // Rethrow exception if JSON parsing fails
@@ -175,6 +185,49 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
             e.printStackTrace();
         }
     }
+
+//    @Override
+//    public String getPassword(String username) {
+//        final User commonUser = get(username);
+//        return commonUser.getSentFriends();
+//    }
+//
+//    @Override
+//    public String getSentFriends(String username) {
+//        final User commonUser = get(username);
+//        return commonUser.getSentFriends();
+//    }
+//
+//    @Override
+//    public String getRatings(String username) {
+//        final User commonUser = get(username);
+//        return commonUser.getSentFriends();
+//    }
+//
+//    @Override
+//    public String getReceivedFriends(String username) {
+//        final User commonUser = get(username);
+//        return commonUser.getSentFriends();
+//    }
+//
+//    @Override
+//    public String getPosts(String username) {
+//        final User commonUser = get(username);
+//        return commonUser.getSentFriends();
+//    }
+//
+//    @Override
+//    public String getEmail(String username) {
+//        final User commonUser = get(username);
+//        return commonUser.getSentFriends();
+//    }
+//
+//    @Override
+//    public String getFriends(String username) {
+//        final User commonUser = get(username);
+//        return commonUser.getFriends();
+//    }
+
 
 //    @Override
 //    public void addPost(User user) {

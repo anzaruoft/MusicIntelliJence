@@ -1,5 +1,7 @@
 package interface_adapter.friendProfile;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,11 +10,11 @@ import java.util.List;
  */
 public class FriendProfileState {
     private String friendUsername;
-    private List<String> friends = new ArrayList<>();
-    private List<String> friendsSent = new ArrayList<>();
-    private List<String> friendsReceived = new ArrayList<>();
-    private List<String> friendTopSongs = new ArrayList<>();
-    private List<String> friendPosts = new ArrayList<>();
+    private JSONArray friends = new JSONArray();
+    private JSONArray friendsSent = new JSONArray();
+    private JSONArray friendsReceived = new JSONArray();
+    private JSONArray friendTopSongs = new JSONArray();
+    private JSONArray friendPosts = new JSONArray();
     private String usernameError;
 
     public String getUsername() {
@@ -20,26 +22,26 @@ public class FriendProfileState {
     }
 
     public int getFriendsNumber() {
-        return friends.size();
+        return friends.length();
     }
 
-    public List<String> getFriendsSent() {
+    public JSONArray getFriendsSent() {
         return friendsSent;
     }
 
-    public List<String> getFriendsReceived() {
+    public JSONArray getFriendsReceived() {
         return friendsReceived;
     }
 
-    public List<String> getFriends() {
+    public JSONArray getFriends() {
         return friends;
     }
 
-    public List<String> getTopSongs() {
+    public JSONArray getTopSongs() {
         return friendTopSongs;
     }
 
-    public List<String> getPosts() {
+    public JSONArray getPosts() {
         return friendPosts;
     }
 
@@ -47,23 +49,23 @@ public class FriendProfileState {
         return usernameError;
     }
 
-    public void setFriends(List<String> followers) {
+    public void setFriends(JSONArray followers) {
         this.friends = followers;
     }
 
-    public void setFriendsSent(List<String> friendsSent) {
+    public void setFriendsSent(JSONArray friendsSent) {
         this.friendsSent = friendsSent;
     }
 
-    public void setFriendsReceived(List<String> friendsReceived) {
+    public void setFriendsReceived(JSONArray friendsReceived) {
         this.friendsReceived = friendsReceived;
     }
 
-    public void setTopSongs(List<String> topSongs) {
+    public void setTopSongs(JSONArray topSongs) {
         this.friendTopSongs = topSongs;
     }
 
-    public void setPosts(List<String> posts) {
+    public void setPosts(JSONArray posts) {
         this.friendPosts = posts;
     }
 

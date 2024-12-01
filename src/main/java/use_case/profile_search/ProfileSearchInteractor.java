@@ -27,7 +27,7 @@ public class ProfileSearchInteractor implements ProfileSearchInputBoundary {
 
         if (userDataAccessObject.existsByName(inputUsername)) {
             final User inputUser = userDataAccessObject.getUser(inputUsername);
-            final int inputUserFriendCount = inputUser.getFriends().size();
+            final int inputUserFriendCount = (inputUser.getFriends()).length();
 
             final ProfileSearchOutputData profileSearchOutputData = new ProfileSearchOutputData(inputUserFriendCount,
                     inputUsername);
