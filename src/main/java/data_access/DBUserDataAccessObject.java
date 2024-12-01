@@ -3,8 +3,11 @@ package data_access;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import entity.CommonUser;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import entity.User;
@@ -34,7 +37,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         ProfileUserDataAccessInterface,
         FriendsUserDataAccessInterface,
         FriendProfileUserDataAccessInterface,
-        ProfileSearchUserDataAccessInterface{
+        ProfileSearchUserDataAccessInterface,
         LeaveRatingUserDataAccessInterface,
         SongSearchUserDataAccessInterface {
 
@@ -138,17 +141,10 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         try {
             final String endpointAdd = "/add";
             final URI uri = new URI(JSON_FILE_URL + endpointAdd);
-            final String postsString = new JSONArray(user.getPosts()).toString();
-            System.out.println("Request Data:");
-            System.out.println("Username: " + user.getName());
-            System.out.println("Password: " + user.getPassword());
-            System.out.println("Email: " + "mantle@example.com");
-            System.out.println("Posts: " + postsString);
             final RequestBody formBody = new FormBody.Builder()
                     .add("username", user.getName())
                     .add("password", user.getPassword())
                     .add("email", user.getEmail())
-                    .add("posts", postsString)
                     .build();
 
             final Request request = new Request.Builder()
@@ -183,7 +179,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
             e.printStackTrace();
         }
     }
-
+//
 //    @Override
 //    public void addPost(User user) {
 //        try {
@@ -201,12 +197,12 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 //            final RequestBody formBody = new FormBody.Builder()
 //                    .add("username", user.getName())
 //                    .add("password", user.getPassword())
-//                    .add("sentFriends", user.getSentFriends())
-//                    .add("ratings", user.getRatings())
-//                    .add("receivedFriends", user.getReceivedFriends())
-//                    .add("posts", user.getPosts())
+////                  .add("sentFriends", user.getSentFriends())
+////                  .add("ratings", user.getRatings())
+////      .add("receivedFriends", user.getReceivedFriends())
+//                    .add("posts", user.getPosts().toString())
 //                    .add("email", user.getEmail())
-//                    .add("friends", user.getFriends())
+//                    .add("friends", user.getFriends().toString())
 //                    .build();
 //            final Request request = new Request.Builder()
 //                    .url(uri.toURL())
@@ -229,7 +225,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 //            throw new RuntimeException(e);
 //        }
 //    }
-//
+
 //    @Override
 //    public void addRating(User user) {
 //        // Not sure if yall want a separate function for this or not?

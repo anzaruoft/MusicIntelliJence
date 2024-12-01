@@ -23,6 +23,7 @@ public class ChangePasswordPresenter implements ChangePasswordOutputBoundary {
         // since the output data only contains the username, which remains the same.
         // We still fire the property changed event, but just to let the view know that
         // it can alert the user that their password was changed successfully..
+        loggedInViewModel.firePropertyChanged("username");
         loggedInViewModel.firePropertyChanged("password");
 
     }
@@ -34,7 +35,6 @@ public class ChangePasswordPresenter implements ChangePasswordOutputBoundary {
 
     @Override
     public void switchToChangePasswordView() {
-
         this.viewManagerModel.setState(loggedInViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
 

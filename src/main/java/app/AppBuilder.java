@@ -126,6 +126,7 @@ public class AppBuilder {
 
     /**
      * Adds the Signup View to the application.
+     *
      * @return this builder
      */
     public AppBuilder addSignupView() {
@@ -137,6 +138,7 @@ public class AppBuilder {
 
     /**
      * Adds the Login View to the application.
+     *
      * @return this builder
      */
     public AppBuilder addLoginView() {
@@ -148,6 +150,7 @@ public class AppBuilder {
 
     /**
      * Adds the LoggedIn View to the application.
+     *
      * @return this builder
      */
     public AppBuilder addLoggedInView() {
@@ -189,7 +192,9 @@ public class AppBuilder {
         profileSearchViewModel = new ProfileSearchViewModel();
         profileSearchView = new ProfileSearchView(profileSearchViewModel);
         cardPanel.add(profileSearchView, profileSearchView.getViewName());
-  
+        return this;
+    }
+
     public AppBuilder addSongSearchView() {
         songSearchViewModel = new SongSearchViewModel();
         songSearchView = new SongSearchView(songSearchViewModel);
@@ -206,6 +211,7 @@ public class AppBuilder {
 
     /**
      * Adds the Signup Use Case to the application.
+     *
      * @return this builder
      */
     public AppBuilder addSignupUseCase() {
@@ -221,6 +227,7 @@ public class AppBuilder {
 
     /**
      * Adds the Login Use Case to the application.
+     *
      * @return this builder
      */
     public AppBuilder addLoginUseCase() {
@@ -237,6 +244,7 @@ public class AppBuilder {
 
     /**
      * Adds the Change Password Use Case to the application.
+     *
      * @return this builder
      */
     public AppBuilder addChangePasswordUseCase() {
@@ -267,6 +275,7 @@ public class AppBuilder {
 
     /**
      * Adds the Logout Use Case to the application.
+     *
      * @return this builder
      */
     public AppBuilder addLogoutUseCase() {
@@ -329,6 +338,7 @@ public class AppBuilder {
 
     /**
      * Adds the profile search use case to the application.
+     *
      * @return this builder
      */
     public AppBuilder addProfileSearchUseCase() {
@@ -340,7 +350,10 @@ public class AppBuilder {
         final ProfileSearchController profileSearchController = new ProfileSearchController(profileSearchInteractor);
         profileSearchView.setProfileSearchController(profileSearchController);
         profileSearchView.setProfileSearchPresenter(profileSearchPresenter);
-      
+
+        return this;
+    }
+
     public AppBuilder addSongSearchUseCase() {
         final SongSearchPresenter songSearchPresenter = new SongSearchPresenter(viewManagerModel,
                 songSearchViewModel, feedViewModel, leaveRatingViewModel);
@@ -365,12 +378,13 @@ public class AppBuilder {
         leaveRatingView.setLeaveRatingController(leaveRatingController);
         leaveRatingView.setLeaveRatingPresenter(leaveRatingPresenter);
         songSearchView.setLeaveRatingController(leaveRatingController);
-      
+
         return this;
     }
 
     /**
      * Creates the JFrame for the application and initially sets the SignupView to be displayed.
+     *
      * @return the application
      */
     public JFrame build() {
@@ -384,5 +398,4 @@ public class AppBuilder {
 
         return application;
     }
-
 }
