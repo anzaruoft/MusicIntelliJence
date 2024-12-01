@@ -3,7 +3,6 @@ package data_access;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 
 import entity.CommonUser;
@@ -37,7 +36,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         ProfileUserDataAccessInterface,
         FriendsUserDataAccessInterface,
         FriendProfileUserDataAccessInterface,
-        ProfileSearchUserDataAccessInterface,
+        ProfileSearchUserDataAccessInterface{
         LeaveRatingUserDataAccessInterface,
         SongSearchUserDataAccessInterface {
 
@@ -82,11 +81,19 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                 try {
                     final JSONObject jsonObject = new JSONObject(responseBody);
                     System.out.println(jsonObject);
-                    return new CommonUser(
+                    // Maybe need to set the other information
+                    final CommonUser user = new CommonUser(
                             username,
                             jsonObject.getString("password"),
                             jsonObject.getString("email")
                     );
+                    System.out.println(jsonObject.get("sentFriends").getClass());
+                    user.setSentFriends((JSONArray) jsonObject.get("sentFriends"));
+                    user.setReceivedFriends((JSONArray) jsonObject.get("receivedFriends"));
+                    user.setFriends((JSONArray) jsonObject.get("friends"));
+                    user.setPosts((JSONArray) jsonObject.get("posts"));
+                    user.setRatings((JSONArray) jsonObject.get("ratings"));
+                    return user;
                 } catch (JSONException e) {
                     System.err.println("Failed to parse JSON: " + e.getMessage());
                     throw e; // Rethrow exception if JSON parsing fails
@@ -141,6 +148,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         try {
             final String endpointAdd = "/add";
             final URI uri = new URI(JSON_FILE_URL + endpointAdd);
+
             final RequestBody formBody = new FormBody.Builder()
                     .add("username", user.getName())
                     .add("password", user.getPassword())
@@ -179,7 +187,50 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
             e.printStackTrace();
         }
     }
+
+//    @Override
+//    public String getPassword(String username) {
+//        final User commonUser = get(username);
+//        return commonUser.getSentFriends();
+//    }
 //
+//    @Override
+//    public String getSentFriends(String username) {
+//        final User commonUser = get(username);
+//        return commonUser.getSentFriends();
+//    }
+//
+//    @Override
+//    public String getRatings(String username) {
+//        final User commonUser = get(username);
+//        return commonUser.getSentFriends();
+//    }
+//
+//    @Override
+//    public String getReceivedFriends(String username) {
+//        final User commonUser = get(username);
+//        return commonUser.getSentFriends();
+//    }
+//
+//    @Override
+//    public String getPosts(String username) {
+//        final User commonUser = get(username);
+//        return commonUser.getSentFriends();
+//    }
+//
+//    @Override
+//    public String getEmail(String username) {
+//        final User commonUser = get(username);
+//        return commonUser.getSentFriends();
+//    }
+//
+//    @Override
+//    public String getFriends(String username) {
+//        final User commonUser = get(username);
+//        return commonUser.getFriends();
+//    }
+
+
 //    @Override
 //    public void addPost(User user) {
 //        try {
@@ -197,12 +248,12 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 //            final RequestBody formBody = new FormBody.Builder()
 //                    .add("username", user.getName())
 //                    .add("password", user.getPassword())
-////                  .add("sentFriends", user.getSentFriends())
-////                  .add("ratings", user.getRatings())
-////      .add("receivedFriends", user.getReceivedFriends())
-//                    .add("posts", user.getPosts().toString())
+//                    .add("sentFriends", user.getSentFriends())
+//                    .add("ratings", user.getRatings())
+//                    .add("receivedFriends", user.getReceivedFriends())
+//                    .add("posts", user.getPosts())
 //                    .add("email", user.getEmail())
-//                    .add("friends", user.getFriends().toString())
+//                    .add("friends", user.getFriends())
 //                    .build();
 //            final Request request = new Request.Builder()
 //                    .url(uri.toURL())
@@ -225,7 +276,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 //            throw new RuntimeException(e);
 //        }
 //    }
-
+//
 //    @Override
 //    public void addRating(User user) {
 //        // Not sure if yall want a separate function for this or not?
@@ -243,20 +294,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 
     @Override
     public String getCurrentUsername() {
-        return null;
-        // Not implemented
-    }
-
-    @Override
-    public List<String> getFriendsPosts(List<String> friends) {
-        final List<String> allPosts = new ArrayList<>();
-        for (String friend : friends) {
-            final User friendUser = get(friend);
-            if (friendUser != null) {
-                allPosts.addAll(friendUser.getPosts());
-            }
-        }
-        return allPosts;
+        return null; // Not implemented
     }
 
 }
