@@ -176,6 +176,62 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         }
     }
 
+//    @Override
+//    public void addPost(User user) {
+//        try {
+//            save(user);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    @Override
+//    public boolean addPost(User user, String newPost) {
+//        try {
+//            final String endpoint = "/updated-user";
+//            final URI uri = new URI(JSON_FILE_URL + endpoint);
+//            final RequestBody formBody = new FormBody.Builder()
+//                    .add("username", user.getName())
+//                    .add("password", user.getPassword())
+//                    .add("sentFriends", user.getSentFriends())
+//                    .add("ratings", user.getRatings())
+//                    .add("receivedFriends", user.getReceivedFriends())
+//                    .add("posts", user.getPosts())
+//                    .add("email", user.getEmail())
+//                    .add("friends", user.getFriends())
+//                    .build();
+//            final Request request = new Request.Builder()
+//                    .url(uri.toURL())
+//                    .get()
+//                    .put()
+//                    .build();
+//            OkHttpClient client = new OkHttpClient();
+//            try (Response response = client.newCall(request).execute()) {
+//                if (response.isSuccessful()) {
+//                    System.out.println("User updated successfully: " + response.body().string());
+//                }
+//                else {
+//                    System.out.println("Failed to update user. Response code: " + response.code());
+//                    System.out.println("Response body: " + response.body().string());
+//                }
+//            }
+//            return false;
+//        }
+//        catch (IOException | URISyntaxException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+//
+//    @Override
+//    public void addRating(User user) {
+//        // Not sure if yall want a separate function for this or not?
+//    }
+//
+//    @Override
+//    public void addFriendRequest(User user) {
+//        // Benny i'll leave this for you so it fits your work flow
+//    }
+
     @Override
     public void setCurrentUsername(String name) {
         // Not implemented
