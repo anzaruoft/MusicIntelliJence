@@ -111,11 +111,17 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         try {
             final String endpointAdd = "/add";
             final URI uri = new URI(JSON_FILE_URL + endpointAdd);
-
+            final String postsString = new JSONArray(user.getPosts()).toString();
+            System.out.println("Request Data:");
+            System.out.println("Username: " + user.getName());
+            System.out.println("Password: " + user.getPassword());
+            System.out.println("Email: " + "mantle@example.com");
+            System.out.println("Posts: " + postsString);
             final RequestBody formBody = new FormBody.Builder()
                     .add("username", user.getName())
                     .add("password", user.getPassword())
                     .add("email", user.getEmail())
+                    .add("posts", postsString)
                     .build();
 
             final Request request = new Request.Builder()

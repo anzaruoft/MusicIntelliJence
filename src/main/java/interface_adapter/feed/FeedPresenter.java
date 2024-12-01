@@ -67,10 +67,10 @@ public class FeedPresenter implements FeedOutputBoundary {
     @Override
     public void switchToSongSearchView(String username) {
         final SongSearchState songSearchState = songSearchViewModel.getState();
+        songSearchState.setUsername(username);
         // feedState.setUsername(response.getUsername());
         this.songSearchViewModel.setState(songSearchState);
         this.songSearchViewModel.firePropertyChanged();
-
         this.viewManagerModel.setState(songSearchViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }

@@ -16,4 +16,6 @@ public interface LeaveRatingOutputBoundary {
     void prepareFailView(String errorMessage);
 
     void switchToSongSearchView();
+
+    void switchToFeedView();
 }

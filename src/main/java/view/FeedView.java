@@ -66,20 +66,11 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
         buttons.setBackground(Color.PINK);
 
         addratingButton.addActionListener(
-                // This creates an anonymous subclass of ActionListener and instantiates it.
-                evt -> {
-                    if (evt.getSource().equals(addratingButton)) {
-                        final FeedState currentState = feedViewModel.getState();
-                    }
-                }
-        );
-
-        addratingButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource().equals(addratingButton)) {
                             final FeedState currentState = feedViewModel.getState();
-
+                            feedController.execute(feedViewModel.getState().getUsername());
                             feedPresenter.switchToSongSearchView(
                                     currentState.getUsername()
                             );

@@ -18,6 +18,7 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener, A
     private final LeaveRatingViewModel leaveRatingViewModel;
     private LeaveRatingController leaveRatingController;
     private JTextField songTitleField;
+    private JTextField ratingField;
 
     public LeaveRatingView(LeaveRatingViewModel leaveRatingViewModel) {
         this.leaveRatingViewModel = leaveRatingViewModel;
@@ -25,35 +26,37 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener, A
         this.setLayout(new BorderLayout());
 
         // Panel for form inputs
-        JPanel formPanel = new JPanel();
+        final JPanel formPanel = new JPanel();
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
         formPanel.setBackground(Color.PINK);
 
         // Song Title
-        JLabel songTitleLabel = new JLabel("Song Title:");
+        final JLabel songTitleLabel = new JLabel("Song Title:");
         songTitleField = new JTextField(20);
         songTitleField.setEditable(false);
         // Leave a Rating
-        JLabel ratingLabel = new JLabel("Leave a Rating (1-5):");
-        JTextField ratingField = new JTextField(5);
+
+        final JLabel ratingLabel = new JLabel("Leave a Rating (1-5):");
+        ratingField = new JTextField(5);
+        ratingField.setEditable(false);
 
         // Buttons
-        JPanel buttonPanel = new JPanel();
-        JButton backButton = new JButton("Back");
-        JButton submitButton = new JButton("Save/Submit");
+        final JPanel buttonPanel = new JPanel();
+        final JButton backButton = new JButton("Back");
+        final JButton rateButton = new JButton("Rate");
 
         buttonPanel.setBackground(Color.PINK);
 
         // Adding components to the form panel
         formPanel.add(songTitleLabel);
         formPanel.add(songTitleField);
-        formPanel.add(Box.createVerticalStrut(10)); // Adds spacing
+        formPanel.add(Box.createVerticalStrut(10));
         formPanel.add(ratingLabel);
         formPanel.add(ratingField);
 
         // Adding buttons to the button panel
         buttonPanel.add(backButton);
-        buttonPanel.add(submitButton);
+        buttonPanel.add(rateButton);
 
         // Adding panels to the main view
         this.add(formPanel, BorderLayout.CENTER);
@@ -67,6 +70,19 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener, A
                     }
                 }
         );
+
+        rateButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        System.out.println(leaveRatingViewModel.getState().getUsername());
+                        leaveRatingController
+                                .execute(leaveRatingViewModel.getState().getUsername(),
+                                        songTitleField.getText(), ratingField.getText());
+
+                        leaveRatingController.switchtoFeedView();
+                    }
+                }
+        );
     }
 
     @Override
@@ -74,7 +90,7 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener, A
         if ("state".equals(evt.getPropertyName())) {
             final LeaveRatingState state = (LeaveRatingState) evt.getNewValue();
             songTitleField.setText(state.getSongTitle());
-
+            ratingField.setText(state.getRating());
         }
     }
 
