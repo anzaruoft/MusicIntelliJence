@@ -13,6 +13,7 @@ import use_case.friends.FriendsUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.profile.ProfileUserDataAccessInterface;
+import use_case.profile_search.ProfileSearchUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
 /**
@@ -26,7 +27,8 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         FeedUserDataAccessInterface,
         ProfileUserDataAccessInterface,
         FriendsUserDataAccessInterface,
-        FriendProfileUserDataAccessInterface {
+        FriendProfileUserDataAccessInterface,
+        ProfileSearchUserDataAccessInterface {
 
     private final Map<String, User> users = new HashMap<>();
 
