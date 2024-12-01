@@ -1,5 +1,7 @@
 package view;
 
+import data_access.DBUserDataAccessObject;
+import entity.User;
 import interface_adapter.feed.FeedState;
 import interface_adapter.leave_rating.LeaveRatingController;
 import interface_adapter.leave_rating.LeaveRatingPresenter;
@@ -19,6 +21,8 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener, A
     private LeaveRatingController leaveRatingController;
     private JTextField songTitleField;
     private JTextField ratingField;
+    private DBUserDataAccessObject dbUserDataAccessObject;
+    private LeaveRatingState leaveRatingState;
 
     public LeaveRatingView(LeaveRatingViewModel leaveRatingViewModel) {
         this.leaveRatingViewModel = leaveRatingViewModel;
@@ -78,7 +82,6 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener, A
                         leaveRatingController
                                 .execute(leaveRatingViewModel.getState().getUsername(),
                                         songTitleField.getText(), ratingField.getText());
-
                         leaveRatingController.switchtoFeedView();
                     }
                 }

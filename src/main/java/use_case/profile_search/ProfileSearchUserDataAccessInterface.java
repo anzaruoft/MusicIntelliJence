@@ -20,4 +20,6 @@ public interface ProfileSearchUserDataAccessInterface {
      * @return the user with the given username.
      */
     User get(String username);
+
+    User getUser(String inputUsername);
 }
