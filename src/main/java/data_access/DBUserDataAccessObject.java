@@ -1,20 +1,15 @@
 package data_access;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
 import entity.CommonUser;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import entity.User;
 import entity.UserFactory;
 import okhttp3.FormBody;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -80,7 +75,8 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 
                 // Attempt to parse the response into a JSONObject
                 try {
-                    JSONObject jsonObject = new JSONObject(responseBody);
+                    final JSONObject jsonObject = new JSONObject(responseBody);
+                    System.out.println(jsonObject);
                     return new CommonUser(
                             username,
                             jsonObject.getString("password"),
@@ -117,12 +113,15 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
             try (Response response = client.newCall(request).execute()) {
                 if (response.isSuccessful()) {
                     String jsonResponse = response.body().string();
-                    JSONArray jsonArray = new JSONArray(jsonResponse);
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        if (jsonArray.getString(i).equals(username)) {
+                    System.out.println("Response: " + response);
+                    System.out.println("Response body: " + jsonResponse);
+                    JSONObject jsonObject = new JSONObject(jsonResponse);
+                    for (String key : jsonObject.keySet()) {
+                        if (key.equals(username)) {
                             return true;
                         }
                     }
+                    System.out.println("User not found for username: " + username);
                 }
             }
             return false;
@@ -174,26 +173,6 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
             save(user);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    // Helper method to send the updated JSON data back to the server
-    private void sendJsonData(JSONObject updatedData) throws IOException {
-        final OkHttpClient client = new OkHttpClient().newBuilder().build();
-        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
-        final RequestBody body = RequestBody.create(updatedData.toString(), mediaType);
-
-        final Request request = new Request.Builder()
-                .url(JSON_FILE_URL) // Ensure this is the correct endpoint for updating data
-                .method("PUT", body)
-                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
-                .build();
-
-        final Response response = client.newCall(request).execute();
-        if (response.code() != SUCCESS_CODE) {
-            System.out.println("Response code: " + response.code());
-            System.out.println("Response body: " + response.body().string());
-            throw new RuntimeException("Failed to update JSON data on the server");
         }
     }
 
