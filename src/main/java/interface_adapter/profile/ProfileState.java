@@ -1,6 +1,8 @@
 package interface_adapter.profile;
 
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,9 +11,9 @@ import java.util.List;
  */
 public class ProfileState {
     private String username;
-    private List<String> friends = new ArrayList<>();
-    private List<String> topSongs = new ArrayList<>();
-    private List<String> posts = new ArrayList<>();
+    private JSONArray friends = new JSONArray();
+    private JSONArray topSongs = new JSONArray();
+    private JSONArray posts = new JSONArray();
     private String friendsError;
 
     public String getUsername() {
@@ -19,14 +21,14 @@ public class ProfileState {
     }
 
     public int getFriendsNumber() {
-        return friends.size();
+        return friends.length();
     }
 
-    public List<String> getTopSongs() {
+    public JSONArray getTopSongs() {
         return topSongs;
     }
 
-    public List<String> getPosts() {
+    public JSONArray getPosts() {
         return posts;
     }
 
@@ -38,15 +40,15 @@ public class ProfileState {
         this.username = username;
     }
 
-    public void setFriends(List<String> friends) {
+    public void setFriends(JSONArray friends) {
         this.friends = friends;
     }
 
-    public void setTopSongs(List<String> topSongs) {
+    public void setTopSongs(JSONArray topSongs) {
         this.topSongs = topSongs;
     }
 
-    public void setPosts(List<String> posts) {
+    public void setPosts(JSONArray posts) {
         this.posts = posts;
     }
 

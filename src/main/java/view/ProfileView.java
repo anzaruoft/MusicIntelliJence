@@ -11,6 +11,7 @@ import java.util.List;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
+import org.json.JSONArray;
 
 public class ProfileView extends JPanel implements ActionListener, PropertyChangeListener {
 
@@ -27,8 +28,8 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         // Collect User Information
         final ProfileState currentState = profileViewModel.getState();
         final int friendsNumber = currentState.getFriendsNumber();
-        final List<String> posts = currentState.getPosts();
-        final List<String> topSongs = currentState.getTopSongs();
+        final JSONArray posts = currentState.getPosts();
+        final JSONArray topSongs = currentState.getTopSongs();
 
         // Set up followers / following
         final JPanel topPanel = new JPanel();
@@ -70,8 +71,9 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         songsPanel.add(songsHeader);
         if (!topSongs.isEmpty()) {
 
-            for (String topSong : topSongs) {
-                final JLabel item = new JLabel(topSong);
+            for (int i = 0; i < topSongs.length(); i++) {
+                String song = topSongs.getString(i);
+                JLabel item = new JLabel(song);
                 songsPanel.add(item);
             }
         }
@@ -89,8 +91,9 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         postsPanel.add(postsHeader);
         if (!posts.isEmpty()) {
 
-            for (String post : posts) {
-                final JLabel item = new JLabel(post);
+            for (int i = 0; i < posts.length(); i++) {
+                String post = posts.getString(i);
+                JLabel item = new JLabel(post);
                 postsPanel.add(item);
             }
         }

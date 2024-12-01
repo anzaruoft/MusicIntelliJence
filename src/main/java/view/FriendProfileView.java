@@ -6,6 +6,7 @@ import interface_adapter.friendProfile.FriendProfileState;
 import interface_adapter.friendProfile.FriendProfileViewModel;
 import interface_adapter.friends.FriendsController;
 import interface_adapter.friends.FriendsPresenter;
+import org.json.JSONArray;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,8 +44,8 @@ public class FriendProfileView extends JPanel implements ActionListener, Propert
         final FriendProfileState currentState = friendProfileViewModel.getState();
         final String username = currentState.getUsername();
         final int friendsNumber = currentState.getFriendsNumber();
-        final List<String> posts = currentState.getPosts();
-        final List<String> topSongs = currentState.getTopSongs();
+        final JSONArray posts = currentState.getPosts();
+        final JSONArray topSongs = currentState.getTopSongs();
 
         // Set up followers / following
 
@@ -73,8 +74,9 @@ public class FriendProfileView extends JPanel implements ActionListener, Propert
         songsPanel.add(songsHeader);
 
         if (!topSongs.isEmpty()) {
-            for (String topSong : topSongs) {
-                final JLabel songLabel = new JLabel(topSong);
+            for (int i = 0; i < topSongs.length(); i++) {
+                String topSong = topSongs.getString(i);
+                JLabel songLabel = new JLabel(topSong);
                 songsPanel.add(songLabel);
             }
         }
@@ -93,9 +95,10 @@ public class FriendProfileView extends JPanel implements ActionListener, Propert
         postsPanel.add(postsHeader);
 
         if (!posts.isEmpty()) {
-            for (String post : posts) {
-                final JLabel postLabel = new JLabel(post);
-                postsPanel.add(postLabel);
+            for (int i = 0; i < posts.length(); i++) {
+                String post = posts.getString(i);
+                JLabel item = new JLabel(post);
+                postsPanel.add(item);
             }
         }
         else {
