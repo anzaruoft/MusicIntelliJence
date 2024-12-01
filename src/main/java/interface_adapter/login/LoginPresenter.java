@@ -32,6 +32,7 @@ public class LoginPresenter implements LoginOutputBoundary {
         // On success, switch to the feed view.
 
         final FeedState feedState = feedViewModel.getState();
+        feedState.setUsername(response.getUsername());
         // feedState.setUsername(response.getUsername());
         this.feedViewModel.setState(feedState);
         this.feedViewModel.firePropertyChanged();

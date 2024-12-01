@@ -28,6 +28,8 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
     private FeedPresenter feedPresenter;
     private SongSearchController songSearchController;
     private ChangePasswordController changePasswordController;
+    private final JTextArea postsArea;
+    private final JScrollPane postsScrollPane;
 
     private final JButton addratingButton;
     private final JButton profileButton;
@@ -37,6 +39,10 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
     public FeedView(FeedViewModel feedViewModel) {
         this.feedViewModel = feedViewModel;
         this.feedViewModel.addPropertyChangeListener(this);
+
+        postsArea = new JTextArea(15, 30);
+        postsArea.setEditable(false);
+        postsScrollPane = new JScrollPane(postsArea);
 
         final JLabel title = new JLabel("Feed");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -60,20 +66,11 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
         buttons.setBackground(Color.PINK);
 
         addratingButton.addActionListener(
-                // This creates an anonymous subclass of ActionListener and instantiates it.
-                evt -> {
-                    if (evt.getSource().equals(addratingButton)) {
-                        final FeedState currentState = feedViewModel.getState();
-                    }
-                }
-        );
-
-        addratingButton.addActionListener(
                 new ActionListener() {
-                    public void actionPerformed (ActionEvent e) {
+                    public void actionPerformed(ActionEvent e) {
                         if (e.getSource().equals(addratingButton)) {
                             final FeedState currentState = feedViewModel.getState();
-
+                            feedController.execute(feedViewModel.getState().getUsername());
                             feedPresenter.switchToSongSearchView(
                                     currentState.getUsername()
                             );
@@ -106,11 +103,26 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
 
         this.add(title);
         this.add(buttons);
+        this.add(postsScrollPane);
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        final FeedState state = (FeedState) evt.getNewValue();
+        if ("state".equals(evt.getPropertyName())) {
+            final FeedState state = (FeedState) evt.getNewValue();
+
+            postsArea.setText("");
+            if (state.getPosts() != null && !state.getPosts().isEmpty()) {
+                for (String post : state.getPosts()) {
+                    postsArea.append(post + "\n");
+                }
+            }
+            else {
+                postsArea.setText("No ratings available.");
+                postsArea.setCaretPosition(0);
+            }
+
+        }
     }
 
     public String getViewName() {
@@ -139,17 +151,11 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
 
     /**
      * React to a button click that results in evt.
+     *
      * @param evt the ActionEvent to react to
      */
     public void actionPerformed(ActionEvent evt) {
         System.out.println("Click " + evt.getActionCommand());
     }
-//
-//    public void setSongSearchController(SongSearchController songSearchController) {
-//    }
-//
-//    public void setSongSearchPresenter(SongSearchPresenter songSearchPresenter) {
-//
-//    }
 }
 

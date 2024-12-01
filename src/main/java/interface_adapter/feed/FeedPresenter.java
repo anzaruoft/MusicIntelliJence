@@ -34,10 +34,22 @@ public class FeedPresenter implements FeedOutputBoundary {
 
     @Override
     public void prepareSuccessView(FeedOutputData outputData) {
+        final FeedState feedState = feedViewModel.getState();
+        feedState.setUsername(outputData.getUsername());
+        feedState.setPosts(outputData.getPosts());
+        feedViewModel.setState(feedState);
+
+        viewManagerModel.setState(feedViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
     }
 
     @Override
     public void prepareFailView(String errorMessage) {
+        final FeedState feedState = feedViewModel.getState();
+        feedState.setFeedError(errorMessage);
+        feedViewModel.setState(feedState);
+
+        viewManagerModel.firePropertyChanged();
 
     }
 
@@ -55,10 +67,10 @@ public class FeedPresenter implements FeedOutputBoundary {
     @Override
     public void switchToSongSearchView(String username) {
         final SongSearchState songSearchState = songSearchViewModel.getState();
+        songSearchState.setUsername(username);
         // feedState.setUsername(response.getUsername());
         this.songSearchViewModel.setState(songSearchState);
         this.songSearchViewModel.firePropertyChanged();
-
         this.viewManagerModel.setState(songSearchViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
