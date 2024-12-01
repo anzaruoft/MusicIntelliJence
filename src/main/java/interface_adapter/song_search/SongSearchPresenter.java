@@ -48,6 +48,10 @@ public class SongSearchPresenter implements SongSearchOutputBoundary {
     @Override
     public void switchToLeaveRatingView() {
         this.viewManagerModel.setState(leaveRatingViewModel.getViewName());
+        this.leaveRatingViewModel.getState().setUsername(this.songSearchViewModel.getState().getUsername());
+        this.leaveRatingViewModel.getState().setSongTitle(this.songSearchViewModel.getState().getSongTitle());
+        this.leaveRatingViewModel.getState().setRating(this.songSearchViewModel.getState().getRating());
+        this.leaveRatingViewModel.firePropertyChanged();
         this.viewManagerModel.firePropertyChanged();
     }
 }

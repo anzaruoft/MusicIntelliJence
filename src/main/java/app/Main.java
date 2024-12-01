@@ -21,11 +21,13 @@ public class Main {
                 .addProfileView()
                 .addFriendsView()
                 .addFriendProfileView()
+                .addProfileSearchView()
                 .addSongSearchView()
                 .addLeaveRatingView()
                 .addSignupUseCase()
                 .addLoginUseCase()
                 .addChangePasswordUseCase()
+                .addChangePasswordinloggedinUseCase()
                 .addLogoutUseCase()
                 .addFeedUseCase()
                 .addProfileUseCase()
@@ -33,6 +35,7 @@ public class Main {
                 .addFriendProfileUseCase()
                 .addSongSearchUseCase()
                 .addLeaveRatingUseCase()
+                .addProfileSearchUseCase()
                 .build();
 
         application.pack();

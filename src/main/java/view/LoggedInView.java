@@ -1,6 +1,6 @@
 package view;
 
-import java.awt.Component;
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -24,7 +24,7 @@ import interface_adapter.logout.LogoutController;
  */
 public class LoggedInView extends JPanel implements PropertyChangeListener {
 
-    private final String viewName = "logged in";
+    private final String viewName = "Change Password";
     private final LoggedInViewModel loggedInViewModel;
     private final JLabel passwordErrorField = new JLabel();
     private ChangePasswordController changePasswordController;
@@ -41,14 +41,14 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         this.loggedInViewModel = loggedInViewModel;
         this.loggedInViewModel.addPropertyChangeListener(this);
 
-        final JLabel title = new JLabel("Logged In Screen");
+        final JLabel title = new JLabel("Change Password");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         final LabelTextPanel passwordInfo = new LabelTextPanel(
                 new JLabel("Password"), passwordInputField);
-
-        final JLabel usernameInfo = new JLabel("Currently logged in: ");
-        username = new JLabel();
+        passwordInfo.setBackground(Color.PINK);
+        username = new JLabel("Currently Logged In!");
+        username.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         final JPanel buttons = new JPanel();
         logOut = new JButton("Log Out");
@@ -58,6 +58,8 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         buttons.add(changePassword);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setBackground(Color.PINK);
+        buttons.setBackground(Color.PINK);
 
         passwordInputField.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -113,7 +115,6 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         );
 
         this.add(title);
-        this.add(usernameInfo);
         this.add(username);
 
         this.add(passwordInfo);
@@ -126,13 +127,14 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         if (evt.getPropertyName().equals("state")) {
             final LoggedInState state = (LoggedInState) evt.getNewValue();
             username.setText(state.getUsername());
+            username.setText("Currently logged in " + state.getUsername());
         }
         else if (evt.getPropertyName().equals("password")) {
             final LoggedInState state = (LoggedInState) evt.getNewValue();
-            JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());
+            JOptionPane.showMessageDialog(null, "Password Updated, Please Log Out!");
         }
         else if (evt.getPropertyName().equals("passwordFailureEmpty")) {
-            JOptionPane.showMessageDialog(null, "password can not be empty, try again");
+            JOptionPane.showMessageDialog(null, "Password Can Not Be Empty, Please Try Again!");
         }
 
     }
@@ -148,4 +150,5 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     public void setLogoutController(LogoutController logoutController) {
         this.logoutController = logoutController;
     }
+
 }

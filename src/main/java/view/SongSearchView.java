@@ -5,7 +5,6 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.feed.FeedState;
 import interface_adapter.feed.FeedViewModel;
 import interface_adapter.leave_rating.LeaveRatingController;
-import interface_adapter.leave_rating.LeaveRatingViewModel;
 import interface_adapter.song_search.SongSearchController;
 import interface_adapter.song_search.SongSearchPresenter;
 import interface_adapter.song_search.SongSearchState;
@@ -29,7 +28,7 @@ public class SongSearchView extends JPanel implements PropertyChangeListener, Ac
     private FeedViewModel feedViewModel;
     private ViewManagerModel viewManagerModel;
     private LeaveRatingController leaveRatingController;
-    private LeaveRatingView leaveRatingView;
+    private JTextField ratingField;
 
     public SongSearchView(SongSearchViewModel songSearchViewModel) {
         this.songSearchViewModel = songSearchViewModel;
@@ -39,7 +38,7 @@ public class SongSearchView extends JPanel implements PropertyChangeListener, Ac
         JLabel label = new JLabel("Enter a song!");
 
         // Create a text field where the user can type
-        JTextField textField = new JTextField(20); // 20 columns wide
+        JTextField textField = new JTextField(20);
 
         // Create a button to process input
         final JButton submitButton = new JButton("Submit");
@@ -52,10 +51,11 @@ public class SongSearchView extends JPanel implements PropertyChangeListener, Ac
         resultsText.setLineWrap(true);
         resultsText.setWrapStyleWord(true);
         panel.add(resultsText);
+        resultsText.setEditable(false);
 
-        // Textbox to leave your rating
-        JLabel ratingLabel = new JLabel("Leave a Rating (1-5):");
-        JTextField ratingField = new JTextField(5);
+        // Place to leave a rating
+        final JLabel ratinglabel = new JLabel("Leave a Rating (1-5):");
+        ratingField = new JTextField(5);
 
         this.add(label);
         this.add(textField);
@@ -63,7 +63,7 @@ public class SongSearchView extends JPanel implements PropertyChangeListener, Ac
         this.add(backButton);
         this.add(rateButton);
         this.add(resultsText);
-        this.add(ratingLabel);
+        this.add(ratinglabel);
         this.add(ratingField);
 
         this.setBackground(Color.PINK);
@@ -79,16 +79,14 @@ public class SongSearchView extends JPanel implements PropertyChangeListener, Ac
         rateButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
+                        String rating = ratingField.getText();
+                        try {
+                            songSearchViewModel.getState().setRating(rating);
+                        }
+                        catch (Exception ex) {
+                            resultsText.setText("Error: " + ex.getMessage());
+                        }
                         songSearchController.switchToLeaveRatingView();
-                        String selectedSong = resultsText.getText();
-                        if (!selectedSong.isEmpty()) {
-                            if (leaveRatingView == null) {
-                                leaveRatingView = new LeaveRatingView(new LeaveRatingViewModel()); // Initialize it
-                            }
-                        }
-                        else {
-                            JOptionPane.showMessageDialog(null, "Please search for a song first!");
-                        }
                     }
                 }
         );
@@ -100,8 +98,10 @@ public class SongSearchView extends JPanel implements PropertyChangeListener, Ac
                         String query = textField.getText();
                         try {
                             String result = SpotifyAPIUserDataAccessObject.searchSong(query);
+                            songSearchViewModel.getState().setSongTitle(result);
                             resultsText.setText(result);
-                        } catch (Exception ex) {
+                        }
+                        catch (Exception ex) {
                             resultsText.setText("Error: " + ex.getMessage());
                         }
 
@@ -122,15 +122,15 @@ public class SongSearchView extends JPanel implements PropertyChangeListener, Ac
         this.songSearchController = songSearchController;
     }
 
+    public void setSongSearchPresenter(SongSearchPresenter songSearchPresenter) {
+    }
+
     public void actionPerformed(ActionEvent e) {
         System.out.println("Click " + e.getActionCommand());
     }
 
     public void setLeaveRatingController(LeaveRatingController leaveRatingController) {
         this.leaveRatingController = leaveRatingController;
-    }
 
-    public void setSongSearchPresenter(SongSearchPresenter songSearchPresenter) {
     }
-
 }

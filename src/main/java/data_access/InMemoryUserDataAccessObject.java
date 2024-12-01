@@ -1,6 +1,8 @@
 package data_access;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import entity.User;
@@ -11,6 +13,7 @@ import use_case.friends.FriendsUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.profile.ProfileUserDataAccessInterface;
+import use_case.profile_search.ProfileSearchUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
 /**
@@ -24,7 +27,8 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         FeedUserDataAccessInterface,
         ProfileUserDataAccessInterface,
         FriendsUserDataAccessInterface,
-        FriendProfileUserDataAccessInterface {
+        FriendProfileUserDataAccessInterface,
+        ProfileSearchUserDataAccessInterface {
 
     private final Map<String, User> users = new HashMap<>();
 
@@ -59,6 +63,17 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     public void changePassword(User user) {
         // Replace the old entry with the new password
         users.put(user.getName(), user);
+    }
+
+    public List<String> getFriendsPosts(List<String> friends) {
+        final List<String> allPosts = new ArrayList<>();
+        for (String friend : friends) {
+            final User friendUser = users.get(friend);
+            if (friendUser != null) {
+                allPosts.addAll(friendUser.getPosts());
+            }
+        }
+        return allPosts;
     }
 
 }

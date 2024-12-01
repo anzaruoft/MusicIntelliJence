@@ -7,7 +7,7 @@ Anzar Alvi (anzaruoft), Hugo Hudson (hudsonhu22), Maryam Hassan (maryamhassan1),
 ### User Stories:
 1) Mi hears of a new app and wants to create an account. They input their email, a username and a password by clicking on the signup button, then are directed to the log-in page and log in using the username and password.
    
-2) Maryam listens to a song and wants to see what her friends think before she makes an opinion, she opens the app, but then realizes she forgot her password! She changes her password, accesses the application, and checks to see if her friends have rated it on her feed, and looks at their review.
+2) Maryam listens to a song and wants to see what her friends think before she makes an opinion, she opens the app, logs in and  realizes it took her a while to remember her password! She changes her password, accesses the application, and checks to see if her friends have rated it on her feed, and looks at their review.
 
 3) Hugo is looking for new songs to listen to, but he does not want to listen to a bad one. He believes his friends have good music taste, so he goes on his own profile, views his list of friends, goes to his best friend's profile, and finds a song to listen to.
 

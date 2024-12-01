@@ -14,8 +14,8 @@ public class LeaveRatingController {
     /**
      * Executes the Leave Rating Use Case.
      */
-    public void execute() {
-        final LeaveRatingInputData leaveRatingInputData = new LeaveRatingInputData();
+    public void execute(String username, String songTitle, String rating) {
+        final LeaveRatingInputData leaveRatingInputData = new LeaveRatingInputData(username, songTitle, rating);
 
         leaveRatingInteractor.execute(leaveRatingInputData);
     }
@@ -27,4 +27,10 @@ public class LeaveRatingController {
     public void switchToSongSearchView() {
         leaveRatingInteractor.switchToSongSearchView();
     }
+
+    public void switchtoFeedView() {
+        leaveRatingInteractor.switchtoFeedView();
+    }
+
 }
+
