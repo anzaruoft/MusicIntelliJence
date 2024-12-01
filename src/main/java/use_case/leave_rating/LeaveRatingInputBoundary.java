@@ -10,4 +10,6 @@ public interface LeaveRatingInputBoundary {
 
     // COULD BE SOMETHING ELSE HERE
     void switchToSongSearchView();
+
+    void setSongTitle(String songTitle);
 }

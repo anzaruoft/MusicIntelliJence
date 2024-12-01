@@ -2,9 +2,13 @@ package view;
 
 import interface_adapter.leave_rating.LeaveRatingController;
 import interface_adapter.leave_rating.LeaveRatingPresenter;
+import interface_adapter.leave_rating.LeaveRatingState;
 import interface_adapter.leave_rating.LeaveRatingViewModel;
+import interface_adapter.login.LoginState;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +19,7 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener, A
     private final String viewName = "leave rating";
     private final LeaveRatingViewModel leaveRatingViewModel;
     private LeaveRatingController leaveRatingController;
+    private final JTextField songTitleField;
 
     public LeaveRatingView(LeaveRatingViewModel leaveRatingViewModel) {
         this.leaveRatingViewModel = leaveRatingViewModel;
@@ -28,7 +33,10 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener, A
 
         // Song Title
         JLabel songTitleLabel = new JLabel("Song Title:");
-        JTextField songTitleField = new JTextField(20);
+        songTitleField = new JTextField(20);
+
+        songTitleField.setEditable(false);
+        songTitleField.setBackground(Color.PINK);
 
         // Leave a Rating
         JLabel ratingLabel = new JLabel("Leave a Rating (1-5):");
@@ -64,11 +72,39 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener, A
                     }
                 }
         );
+
+        songTitleField.getDocument().addDocumentListener(new DocumentListener() {
+            private void documentListenerHelper() {
+                final LeaveRatingState currentState = leaveRatingViewModel.getState();
+                currentState.setSongTitle(songTitleField.getText());
+                leaveRatingViewModel.setState(currentState);
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+        }
+        );
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         // Handle property changes from the ViewModel if needed
+    }
+
+    public JTextField getSongTitleField() {
+        return songTitleField;
     }
 
     public String getViewName() {

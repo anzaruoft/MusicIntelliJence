@@ -5,6 +5,7 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.feed.FeedState;
 import interface_adapter.feed.FeedViewModel;
 import interface_adapter.leave_rating.LeaveRatingController;
+import interface_adapter.leave_rating.LeaveRatingViewModel;
 import interface_adapter.song_search.SongSearchController;
 import interface_adapter.song_search.SongSearchPresenter;
 import interface_adapter.song_search.SongSearchState;
@@ -28,6 +29,7 @@ public class SongSearchView extends JPanel implements PropertyChangeListener, Ac
     private FeedViewModel feedViewModel;
     private ViewManagerModel viewManagerModel;
     private LeaveRatingController leaveRatingController;
+    private LeaveRatingView leaveRatingView;
 
     public SongSearchView(SongSearchViewModel songSearchViewModel) {
         this.songSearchViewModel = songSearchViewModel;
@@ -51,6 +53,9 @@ public class SongSearchView extends JPanel implements PropertyChangeListener, Ac
         resultsText.setWrapStyleWord(true);
         panel.add(resultsText);
 
+        // Textbox to leave your rating
+        JLabel ratingLabel = new JLabel("Leave a Rating (1-5):");
+        JTextField ratingField = new JTextField(5);
 
         this.add(label);
         this.add(textField);
@@ -58,6 +63,8 @@ public class SongSearchView extends JPanel implements PropertyChangeListener, Ac
         this.add(backButton);
         this.add(rateButton);
         this.add(resultsText);
+        this.add(ratingLabel);
+        this.add(ratingField);
 
         this.setBackground(Color.PINK);
 
@@ -73,6 +80,15 @@ public class SongSearchView extends JPanel implements PropertyChangeListener, Ac
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         songSearchController.switchToLeaveRatingView();
+                        String selectedSong = resultsText.getText();
+                        if (!selectedSong.isEmpty()) {
+                            if (leaveRatingView == null) {
+                                leaveRatingView = new LeaveRatingView(new LeaveRatingViewModel()); // Initialize it
+                            }
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(null, "Please search for a song first!");
+                        }
                     }
                 }
         );
@@ -116,4 +132,5 @@ public class SongSearchView extends JPanel implements PropertyChangeListener, Ac
 
     public void setSongSearchPresenter(SongSearchPresenter songSearchPresenter) {
     }
+
 }

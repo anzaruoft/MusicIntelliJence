@@ -1,17 +1,18 @@
 package interface_adapter.song_search;
 
 public class SongSearchState {
-    private String username = "";
+    private String songTitle = "";
 
-    public SongSearchState(String username) {
-        this.username = username;
+    public SongSearchState(String songTitle) {
+        this.songTitle = songTitle;
     }
 
-    public SongSearchState() {
-
+    public void setSongTitle(String songTitle) {
+        this.songTitle = songTitle;
     }
 
-    public String getUsername() {
-        return username;
+    public String getSongTitle() {
+        return songTitle;
     }
 }
+
