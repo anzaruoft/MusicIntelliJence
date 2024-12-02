@@ -2,9 +2,6 @@ package entity;
 
 import org.json.JSONArray;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * A simple implementation of the User interface.
  */
@@ -100,6 +97,5 @@ public class CommonUser implements User {
     public void setReceivedFriends(JSONArray receivedFriends) {
         this.receivedFriends = receivedFriends;
     }
-
 
 }

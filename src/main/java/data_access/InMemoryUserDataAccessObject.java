@@ -1,9 +1,10 @@
 package data_access;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import entity.User;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
@@ -65,15 +66,22 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         users.put(user.getName(), user);
     }
 
-    public List<String> getFriendsPosts(List<String> friends) {
-        final List<String> allPosts = new ArrayList<>();
-        for (String friend : friends) {
-            final User friendUser = users.get(friend);
-            if (friendUser != null) {
-                allPosts.addAll(friendUser.getPosts());
+    @Override
+    public JSONArray getFriendsPosts(JSONArray friends) {
+        final JSONArray allPosts = new JSONArray();
+        for (int i = 0; i < friends.length(); i++) {
+            try {
+                final String friendKey = friends.getString(i);
+                final User friendUser = users.get(friendKey);
+
+                if (friendUser != null) {
+                    allPosts.putAll(friendUser.getPosts());
+                }
+            }
+            catch (JSONException evt) {
+                evt.printStackTrace();
             }
         }
         return allPosts;
     }
-
 }

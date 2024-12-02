@@ -1,11 +1,12 @@
 package use_case.leave_rating;
 
+import org.json.JSONArray;
+
 import entity.User;
-import use_case.profile.ProfileOutputData;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * This is the LeaveRatingInteractor class.
+ */
 public class LeaveRatingInteractor implements LeaveRatingInputBoundary {
     private final LeaveRatingUserDataAccessInterface userDataAccessObject;
     private final LeaveRatingOutputBoundary userPresenter;
@@ -23,8 +24,8 @@ public class LeaveRatingInteractor implements LeaveRatingInputBoundary {
         final String username = leaveRatingInputData.getUsername();
         final User user = userDataAccessObject.get(username);
         final LeaveRatingOutputData leaveRatingOutputData = new LeaveRatingOutputData();
-        final List<String> posts = user.getPosts();
-        posts.add(songTitle + " " + rating + "/5");
+        final JSONArray posts = user.getPosts();
+        posts.put(songTitle + " " + rating + "/5");
         user.setPosts(posts);
 
         userDataAccessObject.save(user);
@@ -36,6 +37,7 @@ public class LeaveRatingInteractor implements LeaveRatingInputBoundary {
         userPresenter.switchToSongSearchView();
     }
 
+    @Override
     public void switchtoFeedView() {
         userPresenter.switchToFeedView();
     }

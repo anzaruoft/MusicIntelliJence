@@ -2,9 +2,6 @@ package interface_adapter.other_profile;
 
 import org.json.JSONArray;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * The state for the Other Profile View Model.
  * Like Instagram, not all info is displayed as they are not friends yet.

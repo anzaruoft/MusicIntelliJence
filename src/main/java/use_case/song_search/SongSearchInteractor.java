@@ -1,6 +1,8 @@
 package use_case.song_search;
 
-
+/**
+ * This is the SongSearchInteractor class.
+ */
 public class SongSearchInteractor implements SongSearchInputBoundary {
     private final SongSearchUserDataAccessInterface userDataAccessObject;
     private final SongSearchOutputBoundary userPresenter;
@@ -10,6 +12,7 @@ public class SongSearchInteractor implements SongSearchInputBoundary {
         this.userDataAccessObject = songSearchDataAccessInterface;
         this.userPresenter = songSearchOutputBoundary;
     }
+
     @Override
     public void execute(SongSearchInputData songSearchInputData) {
     }

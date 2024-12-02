@@ -2,8 +2,10 @@ package interface_adapter.leave_rating;
 
 import use_case.leave_rating.LeaveRatingInputBoundary;
 import use_case.leave_rating.LeaveRatingInputData;
-import view.LeaveRatingView;
 
+/**
+ * LeaveRatingController class.
+ */
 public class LeaveRatingController {
     private final LeaveRatingInputBoundary leaveRatingInteractor;
 
@@ -13,6 +15,9 @@ public class LeaveRatingController {
 
     /**
      * Executes the Leave Rating Use Case.
+     * @param username is the username, it's a string.
+     * @param songTitle is the song title, it's a string.
+     * @param rating is the rating, it's a string.
      */
     public void execute(String username, String songTitle, String rating) {
         final LeaveRatingInputData leaveRatingInputData = new LeaveRatingInputData(username, songTitle, rating);
@@ -20,14 +25,16 @@ public class LeaveRatingController {
         leaveRatingInteractor.execute(leaveRatingInputData);
     }
 
-    public void switchToLeaveRatingView(String songTitle) {
-        leaveRatingInteractor.setSongTitle(songTitle);
-    }
-
+    /**
+     * This is the switchToSongSearchView function.
+     */
     public void switchToSongSearchView() {
         leaveRatingInteractor.switchToSongSearchView();
     }
 
+    /**
+     * This is the switchToFeedView function.
+     */
     public void switchtoFeedView() {
         leaveRatingInteractor.switchtoFeedView();
     }

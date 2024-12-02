@@ -1,5 +1,8 @@
 package use_case.song_search;
 
+/**
+ * This is the SongSearchOutputData class.
+ */
 public class SongSearchOutputData {
     private final String songTitle;
 

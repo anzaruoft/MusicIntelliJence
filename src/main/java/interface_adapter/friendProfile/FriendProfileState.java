@@ -2,9 +2,6 @@ package interface_adapter.friendProfile;
 
 import org.json.JSONArray;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * The state for the Friend Profile View Model.
  */
@@ -72,4 +69,5 @@ public class FriendProfileState {
     public void setProfileError(String usernameError) {
         this.usernameError = usernameError;
     }
+    // Checkstyle error here?
 }

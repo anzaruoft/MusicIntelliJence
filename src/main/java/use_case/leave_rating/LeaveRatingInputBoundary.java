@@ -1,5 +1,8 @@
 package use_case.leave_rating;
 
+/**
+ * This is the LeaveRatingInputBoundary interface.
+ */
 public interface LeaveRatingInputBoundary {
     /**
      * Execute the Leave Rating Use Case.
@@ -8,8 +11,13 @@ public interface LeaveRatingInputBoundary {
      */
     void execute(LeaveRatingInputData leaveRatingInputData);
 
-    // COULD BE SOMETHING ELSE HERE
+    /**
+     * This is the switchToSongSearchView function.
+     */
     void switchToSongSearchView();
 
+    /**
+     * This is the switchToFeedView function.
+     */
     void switchtoFeedView();
 }

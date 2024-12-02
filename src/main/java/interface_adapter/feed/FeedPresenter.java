@@ -7,13 +7,12 @@ import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
 import interface_adapter.song_search.SongSearchState;
 import interface_adapter.song_search.SongSearchViewModel;
-import use_case.change_password.ChangePasswordInputData;
-import use_case.change_password.ChangePasswordInteractor;
 import use_case.feed.FeedOutputBoundary;
 import use_case.feed.FeedOutputData;
 
-import javax.swing.text.View;
-
+/**
+ * FeedPresenter class.
+ */
 public class FeedPresenter implements FeedOutputBoundary {
 
     private FeedViewModel feedViewModel;
@@ -87,10 +86,3 @@ public class FeedPresenter implements FeedOutputBoundary {
 
     }
 }
-
-    // public void switchtoChangePasswordView(String username, String newpassword, String email) {
-       // ChangePasswordInputData changePasswordInputData = new ChangePasswordInteractor(username, newpassword, email)
-
-
-
-

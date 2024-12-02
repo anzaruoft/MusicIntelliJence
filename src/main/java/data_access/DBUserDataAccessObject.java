@@ -138,8 +138,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                 }
             }
             return false;
-        }
-        catch (IOException | URISyntaxException e) {
+        } catch (IOException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
@@ -164,17 +163,14 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
             try (Response response = client.newCall(request).execute()) {
                 if (response.isSuccessful()) {
                     System.out.println("User added successfully: " + response.body().string());
-                }
-                else {
+                } else {
                     System.out.println("Failed to add user. Response code: " + response.code());
                     System.out.println("Response body: " + response.body().string());
                 }
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -299,15 +295,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     }
 
     @Override
-    public List<String> getFriendsPosts(List<String> friends) {
-        final List<String> allPosts = new ArrayList<>();
-        for (String friend : friends) {
-            final User friendUser = get(friend);
-            if (friendUser != null) {
-                allPosts.addAll(friendUser.getPosts());
-            }
-        }
-        return allPosts;
+    public JSONArray getFriendsPosts(JSONArray friends) {
+        return null;
     }
-
 }

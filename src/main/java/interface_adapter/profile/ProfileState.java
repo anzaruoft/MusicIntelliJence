@@ -1,10 +1,6 @@
 package interface_adapter.profile;
 
-
 import org.json.JSONArray;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The state for the Profile View Model.

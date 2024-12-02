@@ -1,5 +1,8 @@
 package use_case.leave_rating;
 
+/**
+ * This is the LeaveRatingOutputBoundary class.
+ */
 public interface LeaveRatingOutputBoundary {
     /**
      * Prepares the success view for the Leave Rating Use Case.
@@ -15,7 +18,13 @@ public interface LeaveRatingOutputBoundary {
      */
     void prepareFailView(String errorMessage);
 
+    /**
+     * This is the switchToSongSearchView function.
+     */
     void switchToSongSearchView();
 
+    /**
+     * This is the switchToFeedView function.
+     */
     void switchToFeedView();
 }

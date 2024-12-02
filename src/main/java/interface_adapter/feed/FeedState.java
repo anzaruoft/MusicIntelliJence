@@ -1,14 +1,13 @@
 package interface_adapter.feed;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.json.JSONArray;
 
 /**
  * The State information representing the feed user.
  */
 public class FeedState {
     private String username = "";
-    private List<String> posts = new ArrayList<>();
+    private JSONArray posts = new JSONArray();
     private String feedError;
 
     public String getUsername() {
@@ -19,11 +18,11 @@ public class FeedState {
         this.username = username;
     }
 
-    public List<String> getPosts() {
+    public JSONArray getPosts() {
         return posts;
     }
 
-    public void setPosts(List<String> posts) {
+    public void setPosts(JSONArray posts) {
         this.posts = posts;
     }
 
@@ -36,6 +35,6 @@ public class FeedState {
     }
 
     public int getPostsnumber() {
-        return posts.size();
+        return posts.length();
     }
 }

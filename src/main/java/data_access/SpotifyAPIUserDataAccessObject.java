@@ -14,6 +14,7 @@ import org.json.JSONObject;
 /**
  * DAO for the Spotify Data.
  */
+// There is a checkstyle issue here because of "API", 3 consecutive capital letters, please ignore, too late to change.
 public class SpotifyAPIUserDataAccessObject {
 
     // Your Spotify credentials

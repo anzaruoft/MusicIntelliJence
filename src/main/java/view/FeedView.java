@@ -113,7 +113,7 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
 
             postsArea.setText("");
             if (state.getPosts() != null && !state.getPosts().isEmpty()) {
-                for (String post : state.getPosts()) {
+                for (Object post : state.getPosts()) {
                     postsArea.append(post + "\n");
                 }
             }

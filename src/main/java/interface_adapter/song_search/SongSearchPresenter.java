@@ -4,10 +4,12 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.feed.FeedViewModel;
 import interface_adapter.leave_rating.LeaveRatingState;
 import interface_adapter.leave_rating.LeaveRatingViewModel;
-import interface_adapter.login.LoginState;
 import use_case.song_search.SongSearchOutputBoundary;
 import use_case.song_search.SongSearchOutputData;
 
+/**
+ * This is the SongSearchPresenter class.
+ */
 public class SongSearchPresenter implements SongSearchOutputBoundary {
 
     private SongSearchViewModel songSearchViewModel;

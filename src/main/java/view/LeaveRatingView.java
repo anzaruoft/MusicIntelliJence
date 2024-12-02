@@ -1,19 +1,25 @@
 package view;
 
-import interface_adapter.feed.FeedState;
-import interface_adapter.leave_rating.LeaveRatingController;
-import interface_adapter.leave_rating.LeaveRatingPresenter;
-import interface_adapter.leave_rating.LeaveRatingState;
-import interface_adapter.leave_rating.LeaveRatingViewModel;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.*;
+
+import interface_adapter.leave_rating.LeaveRatingController;
+import interface_adapter.leave_rating.LeaveRatingPresenter;
+import interface_adapter.leave_rating.LeaveRatingState;
+import interface_adapter.leave_rating.LeaveRatingViewModel;
+
+/**
+ * This is the LeaveRatingView class.
+ */
 public class LeaveRatingView extends JPanel implements PropertyChangeListener, ActionListener {
+    private static final int SONG_TITLE_FIELD_CONSTANT = 20;
+    private static final int RATING_FIELD_CONSTANT = 5;
+    private static final int CONSTANT_TEN = 10;
     private final String viewName = "leave rating";
     private final LeaveRatingViewModel leaveRatingViewModel;
     private LeaveRatingController leaveRatingController;
@@ -32,12 +38,12 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener, A
 
         // Song Title
         final JLabel songTitleLabel = new JLabel("Song Title:");
-        songTitleField = new JTextField(20);
+        songTitleField = new JTextField(SONG_TITLE_FIELD_CONSTANT);
         songTitleField.setEditable(false);
         // Leave a Rating
 
         final JLabel ratingLabel = new JLabel("Leave a Rating (1-5):");
-        ratingField = new JTextField(5);
+        ratingField = new JTextField(RATING_FIELD_CONSTANT);
         ratingField.setEditable(false);
 
         // Buttons
@@ -50,7 +56,7 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener, A
         // Adding components to the form panel
         formPanel.add(songTitleLabel);
         formPanel.add(songTitleField);
-        formPanel.add(Box.createVerticalStrut(10));
+        formPanel.add(Box.createVerticalStrut(CONSTANT_TEN));
         formPanel.add(ratingLabel);
         formPanel.add(ratingField);
 
@@ -102,6 +108,10 @@ public class LeaveRatingView extends JPanel implements PropertyChangeListener, A
         this.leaveRatingController = leaveRatingController;
     }
 
+    /**
+     * This is the setLeaveRatingPresenter function.
+     * @param leaveRatingPresenter is a parameter.
+     */
     public void setLeaveRatingPresenter(LeaveRatingPresenter leaveRatingPresenter) {
         // Implement if presenter logic is needed
     }
