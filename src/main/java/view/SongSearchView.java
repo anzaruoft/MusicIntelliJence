@@ -27,7 +27,7 @@ public class SongSearchView extends JPanel implements PropertyChangeListener, Ac
     private FeedViewModel feedViewModel;
     private ViewManagerModel viewManagerModel;
     private LeaveRatingController leaveRatingController;
-    private JTextField ratingField;
+    private JTextArea ratingField;
 
     public SongSearchView(SongSearchViewModel songSearchViewModel) {
         this.songSearchViewModel = songSearchViewModel;
@@ -53,9 +53,8 @@ public class SongSearchView extends JPanel implements PropertyChangeListener, Ac
         resultsText.setEditable(false);
 
         // Place to leave a rating
-        final JLabel ratinglabel = new JLabel("Leave a Rating (1-5):");
-        ratingField = new JTextField(5);
-
+        final JLabel ratinglabel = new JLabel("Leave a Rating:");
+        ratingField = new JTextArea(15, 30);
         this.add(label);
         this.add(textField);
         this.add(submitButton);

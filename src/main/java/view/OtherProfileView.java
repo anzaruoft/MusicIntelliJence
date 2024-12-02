@@ -32,7 +32,8 @@ public class OtherProfileView extends JPanel implements ActionListener, Property
 
         // Set up Labels and Add friend button
         final JPanel topPanel = new JPanel();
-        final JLabel nameLabel = new JLabel("Profile of " + currentState.getOtherUsername());
+//        final JLabel nameLabel = new JLabel("Profile of " + currentState.getOtherUsername());
+        final JLabel nameLabel = new JLabel("Profile Exists");
         final JButton backButton = new JButton("Back");
         topPanel.add(nameLabel);
         topPanel.add(backButton);
@@ -50,7 +51,7 @@ public class OtherProfileView extends JPanel implements ActionListener, Property
                     }
                 }
         );
-        topPanel.add(addButton);
+//        topPanel.add(addButton);
         topPanel.setBackground(Color.PINK);
         topPanel.add(Box.createVerticalGlue());
         this.add(topPanel);

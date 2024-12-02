@@ -47,30 +47,81 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
         this.feedViewModel = feedViewModel;
         this.feedViewModel.addPropertyChangeListener(this);
 
+        // Text area for posts
         postsArea = new JTextArea(15, 30);
         postsArea.setEditable(false);
         postsScrollPane = new JScrollPane(postsArea);
 
-        final JLabel title = new JLabel("Feed");
+        // Title
+        JLabel title = new JLabel("InTune");
+        title.setFont(new Font("Arial", Font.BOLD, 32)); // Large, bold font
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        final JPanel buttons = new JPanel();
+        // Buttons
         addratingButton = new JButton("Add song");
-        buttons.add(addratingButton);
-
         profileButton = new JButton("Profile");
-        buttons.add(profileButton);
-
         changepasswordbutton = new JButton("Change password");
-        buttons.add(changepasswordbutton);
-
         profilesearchbutton = new JButton("Profile search");
-        buttons.add(profilesearchbutton);
 
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        // Buttons panel
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setBackground(Color.PINK);
+        buttonsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        buttonsPanel.add(addratingButton);
+        buttonsPanel.add(profileButton);
+        buttonsPanel.add(changepasswordbutton);
+        buttonsPanel.add(profilesearchbutton);
 
+        // Set layout for the main panel
+        this.setLayout(new BorderLayout());
         this.setBackground(Color.PINK);
-        buttons.setBackground(Color.PINK);
+
+//public class FeedView extends JPanel implements ActionListener, PropertyChangeListener {
+//    private final String viewName = "feed";
+//    private final FeedViewModel feedViewModel;
+//    private FeedController feedController;
+//    private ProfileController profileController;
+//    private FeedPresenter feedPresenter;
+//    private SongSearchController songSearchController;
+//    private ChangePasswordController changePasswordController;
+//    private ProfileSearchController profileSearchController;
+//    private OtherProfileController otherProfileController;
+//    private final JTextArea postsArea;
+//    private final JScrollPane postsScrollPane;
+//
+//    private final JButton addratingButton;
+//    private final JButton profileButton;
+//    private final JButton profilesearchbutton;
+//    private final JButton changepasswordbutton;
+//
+//    public FeedView(FeedViewModel feedViewModel) {
+//        this.feedViewModel = feedViewModel;
+//        this.feedViewModel.addPropertyChangeListener(this);
+//
+//        postsArea = new JTextArea(15, 30);
+//        postsArea.setEditable(false);
+//        postsScrollPane = new JScrollPane(postsArea);
+//
+//        final JLabel title = new JLabel("Feed");
+//        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+//
+//        final JPanel buttons = new JPanel();
+//        addratingButton = new JButton("Add song");
+//        buttons.add(addratingButton);
+//
+//        profileButton = new JButton("Profile");
+//        buttons.add(profileButton);
+//
+//        changepasswordbutton = new JButton("Change password");
+//        buttons.add(changepasswordbutton);
+//
+//        profilesearchbutton = new JButton("Profile search");
+//        buttons.add(profilesearchbutton);
+//
+//        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+//
+//        this.setBackground(Color.PINK);
+//        buttons.setBackground(Color.PINK);
 
         addratingButton.addActionListener(
                 new ActionListener() {
@@ -115,17 +166,17 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(profilesearchbutton)) {
                             final FeedState currentState = feedViewModel.getState();
-
-                            feedPresenter.switchToProfileSearchView();
-                            currentState.getUsername();
+                            feedController.execute(feedViewModel.getState().getUsername());
+                            feedPresenter.switchToProfileSearchView(currentState.getUsername());
                         }
                     }
                 }
         );
 
-        this.add(title);
-        this.add(buttons);
-        this.add(postsScrollPane);
+        // Add components
+        this.add(title, BorderLayout.NORTH); // Title at the top
+        this.add(postsScrollPane, BorderLayout.CENTER); // Scrollable text area in the middle
+        this.add(buttonsPanel, BorderLayout.SOUTH); // Buttons at the bottom
     }
 
 //    @Override

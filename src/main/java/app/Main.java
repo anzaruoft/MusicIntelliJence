@@ -39,7 +39,6 @@ public class Main {
                 .addProfileSearchUseCase()
                 .addOtherProfileUseCase()
                 .build();
-
         application.pack();
         application.setVisible(true);
     }
