@@ -8,6 +8,9 @@ public interface FeedInputBoundary {
      */
     void execute(FeedInputData feedInputData);
 
+    /**
+     * This is switchToChangePasswordView.
+     */
     void switchToChangePasswordView();
 }
 

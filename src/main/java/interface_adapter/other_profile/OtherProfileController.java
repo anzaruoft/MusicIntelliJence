@@ -8,10 +8,10 @@ import use_case.other_profile.OtherProfileInputData;
  */
 public class OtherProfileController {
 
-    private final OtherProfileInputBoundary otherUserProfileUseCaseInteractor;
+    private final OtherProfileInputBoundary otherProfileInteractor;
 
-    public OtherProfileController(OtherProfileInputBoundary otherProfileUseCaseInteractor) {
-        this.otherUserProfileUseCaseInteractor = otherProfileUseCaseInteractor;
+    public OtherProfileController(OtherProfileInputBoundary otherProfileInteractor) {
+        this.otherProfileInteractor = otherProfileInteractor;
     }
 
     /**
@@ -20,13 +20,13 @@ public class OtherProfileController {
      */
     public void execute(String otherUsername) {
         final OtherProfileInputData otherProfileInputData = new OtherProfileInputData(otherUsername);
-        otherUserProfileUseCaseInteractor.execute(otherProfileInputData);
+        otherProfileInteractor.execute(otherProfileInputData);
     }
 
     /**
      * Executes the "switch to LoggedInView" Use Case.
      */
     public void switchToFeedView() {
-        otherUserProfileUseCaseInteractor.switchToFeedView();
+        otherProfileInteractor.switchToFeedView();
     }
 }

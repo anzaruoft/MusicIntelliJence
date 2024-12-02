@@ -5,8 +5,10 @@ import interface_adapter.feed.FeedViewModel;
 import interface_adapter.song_search.SongSearchViewModel;
 import use_case.leave_rating.LeaveRatingOutputBoundary;
 import use_case.leave_rating.LeaveRatingOutputData;
-import view.SongSearchView;
 
+/**
+ * This is the LeaveRatingPresenter class.
+ */
 public class LeaveRatingPresenter implements LeaveRatingOutputBoundary {
 
     private LeaveRatingViewModel leaveRatingViewModel;
@@ -14,7 +16,8 @@ public class LeaveRatingPresenter implements LeaveRatingOutputBoundary {
     private SongSearchViewModel songSearchViewModel;
     private FeedViewModel feedViewModel;
 
-    public LeaveRatingPresenter(ViewManagerModel viewManagerModel, LeaveRatingViewModel leaveRatingViewModel, SongSearchViewModel songSearchViewModel, FeedViewModel feedViewModel) {
+    public LeaveRatingPresenter(ViewManagerModel viewManagerModel, LeaveRatingViewModel leaveRatingViewModel,
+                                SongSearchViewModel songSearchViewModel, FeedViewModel feedViewModel) {
         this.leaveRatingViewModel = leaveRatingViewModel;
         this.viewManagerModel = viewManagerModel;
         this.songSearchViewModel = songSearchViewModel;
@@ -34,6 +37,7 @@ public class LeaveRatingPresenter implements LeaveRatingOutputBoundary {
         this.viewManagerModel.setState(songSearchViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
+
     @Override
     public void switchToFeedView() {
         this.viewManagerModel.setState(feedViewModel.getViewName());

@@ -8,15 +8,10 @@ import use_case.other_profile.OtherProfileOutputData;
 /**
  * The Presenter for the Other Profile Use Case.
  */
-
 public class OtherProfilePresenter implements OtherProfileOutputBoundary {
 
     private final ViewManagerModel viewManagerModel;
     private final OtherProfileViewModel otherProfileViewModel;
-
-    // for feed view model, potentially change to friends search bar****
-    // So feed view may change as the view to return to may be friend search page*****
-
     private final FeedViewModel feedViewModel;
 
     public OtherProfilePresenter(ViewManagerModel viewManagerModel,
@@ -29,9 +24,10 @@ public class OtherProfilePresenter implements OtherProfileOutputBoundary {
     }
 
     @Override
-    public void prepareSuccessView(OtherProfileOutputData otherProfileOutputData) {
+    public void prepareSuccessView(OtherProfileOutputData response) {
         final OtherProfileState otherProfileState = otherProfileViewModel.getState();
-        otherProfileState.setFriends(otherProfileOutputData.getFriends());
+        otherProfileState.setFriendsCount(response.getFriendsCount());
+
         otherProfileViewModel.setState(otherProfileState);
         otherProfileViewModel.firePropertyChanged();
         viewManagerModel.setState(otherProfileViewModel.getViewName());
@@ -45,7 +41,6 @@ public class OtherProfilePresenter implements OtherProfileOutputBoundary {
         otherProfileViewModel.firePropertyChanged();
     }
 
-    // This would also change if friend search page is the prerequiset to view other profile
     @Override
     public void switchToFeedView() {
         viewManagerModel.setState(feedViewModel.getViewName());

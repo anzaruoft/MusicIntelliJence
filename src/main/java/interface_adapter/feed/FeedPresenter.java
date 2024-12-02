@@ -5,15 +5,16 @@ import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
+import interface_adapter.profile_search.ProfileSearchState;
+import interface_adapter.profile_search.ProfileSearchViewModel;
 import interface_adapter.song_search.SongSearchState;
 import interface_adapter.song_search.SongSearchViewModel;
-import use_case.change_password.ChangePasswordInputData;
-import use_case.change_password.ChangePasswordInteractor;
 import use_case.feed.FeedOutputBoundary;
 import use_case.feed.FeedOutputData;
 
-import javax.swing.text.View;
-
+/**
+ * FeedPresenter class.
+ */
 public class FeedPresenter implements FeedOutputBoundary {
 
     private FeedViewModel feedViewModel;
@@ -21,21 +22,24 @@ public class FeedPresenter implements FeedOutputBoundary {
     private ProfileViewModel profileViewModel;
     private SongSearchViewModel songSearchViewModel;
     private LoggedInViewModel changePasswordViewModel;
+    private ProfileSearchViewModel profileSearchViewModel;
 
     public FeedPresenter(ViewManagerModel viewManagerModel, FeedViewModel feedViewModel,
                          ProfileViewModel profileViewModel, SongSearchViewModel songSearchViewModel,
-                         LoggedInViewModel changePasswordViewModel) {
+                         LoggedInViewModel changePasswordViewModel, ProfileSearchViewModel profileSearchViewModel) {
         this.feedViewModel = feedViewModel;
         this.viewManagerModel = viewManagerModel;
         this.profileViewModel = profileViewModel;
         this.songSearchViewModel = songSearchViewModel;
         this.changePasswordViewModel = changePasswordViewModel;
+        this.profileSearchViewModel = profileSearchViewModel;
     }
 
     @Override
     public void prepareSuccessView(FeedOutputData outputData) {
         final FeedState feedState = feedViewModel.getState();
         feedState.setUsername(outputData.getUsername());
+        feedState.setUser(outputData.getUser());
         feedState.setPosts(outputData.getPosts());
         feedViewModel.setState(feedState);
 
@@ -56,10 +60,11 @@ public class FeedPresenter implements FeedOutputBoundary {
     @Override
     public void switchToProfileView(String username) {
         final ProfileState profileState = profileViewModel.getState();
-        // feedState.setUsername(response.getUsername());
+        profileState.setUsername(username);
         this.profileViewModel.setState(profileState);
         this.profileViewModel.firePropertyChanged();
-
+        this.profileViewModel.getState().setPosts(profileState.getPosts());
+        // NEW ADDITION
         this.viewManagerModel.setState(profileViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
@@ -86,11 +91,14 @@ public class FeedPresenter implements FeedOutputBoundary {
         this.viewManagerModel.firePropertyChanged();
 
     }
+
+    @Override
+    public void switchToProfileSearchView() {
+        final ProfileSearchState profileSearchState = profileSearchViewModel.getState();
+        this.profileSearchViewModel.setState(profileSearchState);
+        this.profileSearchViewModel.firePropertyChanged();
+
+        this.viewManagerModel.setState(profileSearchViewModel.getViewName());
+        this.viewManagerModel.firePropertyChanged();
+    }
 }
-
-    // public void switchtoChangePasswordView(String username, String newpassword, String email) {
-       // ChangePasswordInputData changePasswordInputData = new ChangePasswordInteractor(username, newpassword, email)
-
-
-
-

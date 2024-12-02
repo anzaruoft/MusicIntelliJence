@@ -5,19 +5,28 @@ package interface_adapter.profile_search;
  */
 
 public class ProfileSearchState {
-    private String username = "";
+    private String searchedUsername = "";
+    private String thisUsername = "";
     private String errorMessage;
 
-    public String getUsername() {
-        return username;
+    public String getSearchedUsername() {
+        return searchedUsername;
+    }
+
+    public String getThisUsername() {
+        return thisUsername;
     }
 
     public String getErrorMessage() {
         return errorMessage;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setSearchedUsername(String searchedUsername) {
+        this.searchedUsername = searchedUsername;
+    }
+
+    public void setThisUsername(String thisUsername) {
+        this.thisUsername = thisUsername;
     }
 
     public void setErrorMessage(String errorMessage) {

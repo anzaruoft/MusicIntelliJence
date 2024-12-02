@@ -10,10 +10,12 @@ public class ProfileSearchOutputData {
 
     private final int friendCount;
     private final String searchedUserName;
+    private final String thisUserName;
 
-    public ProfileSearchOutputData(int friendCount, String searchedUserName) {
+    public ProfileSearchOutputData(int friendCount, String searchedUserName, String thisUserName) {
         this.friendCount = friendCount;
         this.searchedUserName = searchedUserName;
+        this.thisUserName = thisUserName;
     }
 
     public int getFriendCount() {
@@ -22,5 +24,9 @@ public class ProfileSearchOutputData {
 
     public String getSearchedUserName() {
         return searchedUserName;
+    }
+
+    public String getThisUserName() {
+        return thisUserName;
     }
 }

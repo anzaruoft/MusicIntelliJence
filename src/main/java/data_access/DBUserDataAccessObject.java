@@ -22,11 +22,15 @@ import use_case.friends.FriendsUserDataAccessInterface;
 import use_case.leave_rating.LeaveRatingUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
+import use_case.other_profile.OtherProfileUserDataAccessInterface;
 import use_case.profile.ProfileUserDataAccessInterface;
 import use_case.profile_search.ProfileSearchUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 import use_case.song_search.SongSearchUserDataAccessInterface;
 
+/**
+ * DAO for user data implemented using a database to persist the data.
+ */
 public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
@@ -37,13 +41,16 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         FriendProfileUserDataAccessInterface,
         ProfileSearchUserDataAccessInterface,
         LeaveRatingUserDataAccessInterface,
-        SongSearchUserDataAccessInterface {
+        SongSearchUserDataAccessInterface,
+        OtherProfileUserDataAccessInterface {
 
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String JSON_FILE_URL = "http://ec2-3-139-82-243.us-east-2.compute.amazonaws.com:8080/users";
     private final UserFactory userFactory;
+    private String currentUser;
+    private String searchedUser;
 
     public DBUserDataAccessObject(UserFactory userFactory) {
         this.userFactory = userFactory;
@@ -52,18 +59,18 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     @Override
     public User get(String username) {
         final String endpoint2 = "/user-information";
-        String url = JSON_FILE_URL + endpoint2 + "?username=" + username;
+        final String url = JSON_FILE_URL + endpoint2 + "?username=" + username;
         final Request request = new Request.Builder()
                 .url(url)
                 .get()
                 .build();
-        OkHttpClient client = new OkHttpClient();
+        final OkHttpClient client = new OkHttpClient();
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
-                String responseBody = response.body().string();
+                final String responseBody = response.body().string();
 
                 // Log the raw response body
-                System.out.println("Response body: " + responseBody);
+//                System.out.println("Response body: " + responseBody);
 
                 // Check if the response indicates an error message like "User not found"
                 if (responseBody.equalsIgnoreCase("User not found")) {
@@ -86,33 +93,32 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                             jsonObject.getString("password"),
                             jsonObject.getString("email")
                     );
-                    System.out.println(jsonObject.get("sentFriends").getClass());
+//                    System.out.println(jsonObject.get("sentFriends").getClass());
                     user.setSentFriends((JSONArray) jsonObject.get("sentFriends"));
                     user.setReceivedFriends((JSONArray) jsonObject.get("receivedFriends"));
                     user.setFriends((JSONArray) jsonObject.get("friends"));
                     user.setPosts((JSONArray) jsonObject.get("posts"));
                     user.setRatings((JSONArray) jsonObject.get("ratings"));
                     return user;
-                } catch (JSONException e) {
-                    System.err.println("Failed to parse JSON: " + e.getMessage());
-                    throw e; // Rethrow exception if JSON parsing fails
                 }
-            } else {
+                catch (JSONException evt) {
+                    System.err.println("Failed to parse JSON: " + evt.getMessage());
+                    throw evt; // Rethrow exception if JSON parsing fails
+                }
+            }
+            else {
                 System.err.println("Request failed. Response code: " + response.code());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            throw e;
+        }
+        catch (IOException evt) {
+            evt.printStackTrace();
+            throw new RuntimeException(evt);
+        }
+        catch (JSONException evt) {
+            evt.printStackTrace();
+            throw evt;
         }
         return null;
-    }
-
-    @Override
-    public User getUser(String inputUsername) {
-        return get(inputUsername);
     }
 
     @Override
@@ -129,13 +135,13 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                     .url(uri.toURL())
                     .get()
                     .build();
-            OkHttpClient client = new OkHttpClient();
+            final OkHttpClient client = new OkHttpClient();
             try (Response response = client.newCall(request).execute()) {
                 if (response.isSuccessful()) {
-                    String jsonResponse = response.body().string();
+                    final String jsonResponse = response.body().string();
                     System.out.println("Response: " + response);
                     System.out.println("Response body: " + jsonResponse);
-                    JSONObject jsonObject = new JSONObject(jsonResponse);
+                    final JSONObject jsonObject = new JSONObject(jsonResponse);
                     for (String key : jsonObject.keySet()) {
                         if (key.equals(username)) {
                             return true;
@@ -146,8 +152,8 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
             }
             return false;
         }
-        catch (IOException | URISyntaxException e) {
-            throw new RuntimeException(e);
+        catch (IOException | URISyntaxException evt) {
+            throw new RuntimeException(evt);
         }
     }
 
@@ -181,71 +187,19 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                 e.printStackTrace();
             }
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch (Exception evt) {
+            evt.printStackTrace();
         }
     }
 
-    @Override
-    public void changePassword(User user) {
-        try {
-            save(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    /**
+     * We use this in the updateUsersPost function.
+     * @param inputUsername is type String.
+     * @return a User.
+     */
+    public User getUser(String inputUsername) {
+        return get(inputUsername);
     }
-
-//    @Override
-//    public String getPassword(String username) {
-//        final User commonUser = get(username);
-//        return commonUser.getSentFriends();
-//    }
-//
-//    @Override
-//    public String getSentFriends(String username) {
-//        final User commonUser = get(username);
-//        return commonUser.getSentFriends();
-//    }
-//
-//    @Override
-//    public String getRatings(String username) {
-//        final User commonUser = get(username);
-//        return commonUser.getSentFriends();
-//    }
-//
-//    @Override
-//    public String getReceivedFriends(String username) {
-//        final User commonUser = get(username);
-//        return commonUser.getSentFriends();
-//    }
-//
-//    @Override
-//    public String getPosts(String username) {
-//        final User commonUser = get(username);
-//        return commonUser.getSentFriends();
-//    }
-//
-//    @Override
-//    public String getEmail(String username) {
-//        final User commonUser = get(username);
-//        return commonUser.getSentFriends();
-//    }
-//
-//    @Override
-//    public String getFriends(String username) {
-//        final User commonUser = get(username);
-//        return commonUser.getFriends();
-//    }
-
-
-//    public boolean addPost(User user) {
-//        try {
-//            save(user);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//
 
     @Override
     public void updateUserPosts(User user) {
@@ -255,8 +209,11 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                 posts = new JSONArray();
             }
             final User currentUser = getUser(user.getName());
-            final String postsString = currentUser.getPosts().toString();
-            posts.put(postsString);
+            currentUser.setPosts(posts);
+            System.out.println("This is the current user who is logged in: " + currentUser.getName());
+            System.out.println("This is the current user's posts: " + currentUser.getPosts());
+
+            // Do not append the stringified version
             final String endpoint = "/updated-user";
             final URI uri = new URI(JSON_FILE_URL + endpoint);
             final RequestBody formBody = new FormBody.Builder()
@@ -265,7 +222,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                     .add("sentFriends", user.getSentFriends().toString())
                     .add("ratings", user.getRatings().toString())
                     .add("receivedFriends", user.getReceivedFriends().toString())
-                    .add("posts", user.getPosts().toString())
+                    .add("posts", posts.toString()) // Use the posts JSONArray directly
                     .add("email", user.getEmail())
                     .add("friends", user.getFriends().toString())
                     .build();
@@ -273,47 +230,46 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
             System.out.println(formBody);
             final Request request = new Request.Builder()
                     .url(uri.toURL())
-                    .addHeader(CONTENT_TYPE_LABEL, "application/x-www-form-urlencoded")
                     .put(formBody)
                     .build();
             OkHttpClient client = new OkHttpClient();
             try (Response response = client.newCall(request).execute()) {
                 if (response.isSuccessful()) {
                     System.out.println("User updated successfully: " + response.body().string());
-                }
-                else {
+                } else {
                     System.out.println("Failed to update user. Response code: " + response.code());
                     System.out.println("Response body: " + response.body().string());
                 }
             }
-        }
-        catch (IOException | URISyntaxException e) {
+        } catch (IOException | URISyntaxException e) {
             throw new RuntimeException(e);
+        }
+        System.out.println("User updated successfully");
+        System.out.println(user.getPosts().toString());
+    }
+
+    @Override
+    public void changePassword(User user) {
+        try {
+            save(user);
+        }
+        catch (Exception evt) {
+            evt.printStackTrace();
         }
     }
 
-//    @Override
-//    public void addRating(User user) {
-//        // Not sure if yall want a separate function for this or not?
-//    }
-//
-//    @Override
-//    public void addFriendRequest(User user) {
-//        // Benny i'll leave this for you so it fits your work flow
-//    }
-
-//    @Override
-//    public void setCurrentUsername(String name) {
-        // Not implemented
+    @Override
+    public void setCurrentUsername(String name) {
+        this.currentUser = name;
+    }
 
     @Override
     public String getCurrentUsername() {
-        return null; // Not implemented
+        return currentUser;
     }
 
     @Override
-    public void setCurrentUsername(String username) {
-
+    public void setSearchedUsername(String username) {
+        this.searchedUser = username;
     }
-
 }

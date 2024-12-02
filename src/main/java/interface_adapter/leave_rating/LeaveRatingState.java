@@ -1,5 +1,8 @@
 package interface_adapter.leave_rating;
 
+/**
+ * This is the LeaveRatingState class.
+ */
 public class LeaveRatingState {
     private String username = "";
     private String songTitle = "";

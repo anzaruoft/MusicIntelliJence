@@ -1,8 +1,8 @@
 package use_case.song_search;
 
-
-import entity.User;
-
+/**
+ * This is the SongSearchInteractor class.
+ */
 public class SongSearchInteractor implements SongSearchInputBoundary {
     private final SongSearchUserDataAccessInterface userDataAccessObject;
     private final SongSearchOutputBoundary userPresenter;

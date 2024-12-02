@@ -1,5 +1,8 @@
 package interface_adapter.song_search;
 
+/**
+ * This is the SongSearchState class.
+ */
 public class SongSearchState {
     private String username = "";
     private String songTitle = "";

@@ -21,4 +21,9 @@ public interface ProfileUserDataAccessInterface {
      */
     User get(String username);
 
+    /**
+     * This is updateUserPosts.
+     * @param user type User.
+     */
+    void updateUserPosts(User user);
 }

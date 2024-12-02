@@ -2,8 +2,7 @@ package interface_adapter.feed;
 
 import org.json.JSONArray;
 
-import java.util.ArrayList;
-import java.util.List;
+import entity.User;
 
 /**
  * The State information representing the feed user.
@@ -12,6 +11,7 @@ public class FeedState {
     private String username = "";
     private JSONArray posts = new JSONArray();
     private String feedError;
+    private User user;
 
     public String getUsername() {
         return username;
@@ -40,4 +40,13 @@ public class FeedState {
     public int getPostsnumber() {
         return posts.length();
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
 }

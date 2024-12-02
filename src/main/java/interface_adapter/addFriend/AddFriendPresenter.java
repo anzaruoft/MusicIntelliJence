@@ -12,7 +12,6 @@ public class AddFriendPresenter implements AddFriendOutputBoundary {
         // To DO: implement to display an active friend status on the view model we choose to show it on.
     }
 
-
     @Override
     public void displaySentFriendRequestStatus() {
         // To DO: implement to display an outgoing friend request on the view model, from User to Potential friend.

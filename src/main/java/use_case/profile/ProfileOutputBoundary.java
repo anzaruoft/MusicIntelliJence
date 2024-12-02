@@ -1,6 +1,5 @@
 package use_case.profile;
 
-
 /**
  * The Presenter for the Profile Use Case.
  */

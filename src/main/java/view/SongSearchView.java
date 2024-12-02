@@ -1,25 +1,24 @@
 package view;
 
-import data_access.SpotifyAPIUserDataAccessObject;
-import interface_adapter.ViewManagerModel;
-import interface_adapter.feed.FeedState;
-import interface_adapter.feed.FeedViewModel;
-import interface_adapter.leave_rating.LeaveRatingController;
-import interface_adapter.song_search.SongSearchController;
-import interface_adapter.song_search.SongSearchPresenter;
-import interface_adapter.song_search.SongSearchState;
-import interface_adapter.song_search.SongSearchViewModel;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
+import javax.swing.*;
+
+import data_access.SpotifyAPIUserDataAccessObject;
+import interface_adapter.ViewManagerModel;
+import interface_adapter.feed.FeedViewModel;
+import interface_adapter.leave_rating.LeaveRatingController;
+import interface_adapter.song_search.SongSearchController;
+import interface_adapter.song_search.SongSearchPresenter;
+import interface_adapter.song_search.SongSearchViewModel;
+
+/**
+ * This is the SongSearchView class.
+ */
 public class SongSearchView extends JPanel implements PropertyChangeListener, ActionListener {
     private final String viewName = "song search";
     private final SongSearchViewModel songSearchViewModel;
@@ -34,11 +33,11 @@ public class SongSearchView extends JPanel implements PropertyChangeListener, Ac
         this.songSearchViewModel = songSearchViewModel;
         this.songSearchViewModel.addPropertyChangeListener(this);
 
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Enter a song!");
+        final JPanel panel = new JPanel();
+        final JLabel label = new JLabel("Enter a song!");
 
         // Create a text field where the user can type
-        JTextField textField = new JTextField(20);
+        final JTextField textField = new JTextField(20);
 
         // Create a button to process input
         final JButton submitButton = new JButton("Submit");
@@ -46,7 +45,7 @@ public class SongSearchView extends JPanel implements PropertyChangeListener, Ac
         final JButton rateButton = new JButton("Rate");
 
         // Results Textbox
-        JTextArea resultsText = new JTextArea();
+        final JTextArea resultsText = new JTextArea();
         resultsText.setBounds(10, 100, 350, 150);
         resultsText.setLineWrap(true);
         resultsText.setWrapStyleWord(true);
