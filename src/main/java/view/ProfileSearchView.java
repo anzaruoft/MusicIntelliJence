@@ -34,19 +34,19 @@ import interface_adapter.feed.FeedViewModel;
  */
 public class ProfileSearchView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    private final String viewName = "Profile Search";
+    private final String viewName = "profile search";
     private final ProfileSearchViewModel profileSearchViewModel;
 
-    // Maybe Don't Need
-    private FeedViewModel feedViewModel;
-    private ProfileSearchController profileSearchController;
-    private ProfileSearchPresenter profileSearchPresenter;
-
     // Defining Search Text box, Search and Cancel Buttons, Search Error Field
-    private final JTextField searchField = new JTextField(30);
+    private final JTextField usernameSearchField = new JTextField(30);
     private final JLabel searchErrorField = new JLabel();
+
     private final JButton searchButton;
     private final JButton cancelButton;
+
+    private ProfileSearchController profileSearchController;
+    private ProfileSearchPresenter profileSearchPresenter;
+    private FeedViewModel feedViewModel;
 
     public ProfileSearchView(ProfileSearchViewModel profileSearchViewModel) {
 
@@ -58,7 +58,7 @@ public class ProfileSearchView extends JPanel implements ActionListener, Propert
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         final LabelTextPanel profileSearchBarInfo = new LabelTextPanel(
-                new JLabel("Search Profiles"), searchField);
+                new JLabel("Search Profiles"), usernameSearchField);
 
         final JPanel buttons = new JPanel();
         searchButton = new JButton("search");
@@ -66,13 +66,16 @@ public class ProfileSearchView extends JPanel implements ActionListener, Propert
         cancelButton = new JButton("cancel");
         buttons.add(cancelButton);
 
+        cancelButton.setBackground(Color.RED);
+        searchButton.setBackground(Color.GREEN);
+
         searchButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(searchButton)) {
                             final ProfileSearchState currentState = profileSearchViewModel.getState();
                             profileSearchController.execute(
-                                    currentState.getUsername()
+                                    currentState.getSearchedUsername(), currentState.getThisUsername()
                             );
                         }
                     }
@@ -92,11 +95,11 @@ public class ProfileSearchView extends JPanel implements ActionListener, Propert
                 }
         );
 
-        searchField.getDocument().addDocumentListener(new DocumentListener() {
+        usernameSearchField.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
                 final ProfileSearchState currentState = profileSearchViewModel.getState();
-                currentState.setUsername(searchField.getText());
+                currentState.setSearchedUsername(usernameSearchField.getText());
                 profileSearchViewModel.setState(currentState);
             }
 
@@ -142,7 +145,7 @@ public class ProfileSearchView extends JPanel implements ActionListener, Propert
     }
 
     private void setFields(ProfileSearchState state) {
-        searchField.setText(state.getUsername());
+        usernameSearchField.setText(state.getSearchedUsername());
     }
 
     public String getViewName() {

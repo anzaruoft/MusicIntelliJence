@@ -1,5 +1,6 @@
 package view;
 
+import entity.User;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.LoggedInState;
 import interface_adapter.feed.FeedController;
@@ -7,11 +8,15 @@ import interface_adapter.feed.FeedPresenter;
 import interface_adapter.feed.FeedState;
 import interface_adapter.feed.FeedViewModel;
 import interface_adapter.login.LoginPresenter;
+import interface_adapter.other_profile.OtherProfileController;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileState;
+import interface_adapter.profile_search.ProfileSearchController;
 import interface_adapter.song_search.SongSearchController;
 import interface_adapter.song_search.SongSearchPresenter;
 import interface_adapter.song_search.SongSearchState;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,12 +33,14 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
     private FeedPresenter feedPresenter;
     private SongSearchController songSearchController;
     private ChangePasswordController changePasswordController;
+    private ProfileSearchController profileSearchController;
+    private OtherProfileController otherProfileController;
     private final JTextArea postsArea;
     private final JScrollPane postsScrollPane;
 
     private final JButton addratingButton;
     private final JButton profileButton;
-    private final JButton addfriendbutton;
+    private final JButton profilesearchbutton;
     private final JButton changepasswordbutton;
 
     public FeedView(FeedViewModel feedViewModel) {
@@ -54,11 +61,11 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
         profileButton = new JButton("Profile");
         buttons.add(profileButton);
 
-        addfriendbutton = new JButton("Add friend");
-        buttons.add(addfriendbutton);
-
         changepasswordbutton = new JButton("Change password");
         buttons.add(changepasswordbutton);
+
+        profilesearchbutton = new JButton("Profile search");
+        buttons.add(profilesearchbutton);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -84,10 +91,12 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource().equals(profileButton)) {
                             final FeedState currentState = feedViewModel.getState();
-
+                            feedController.execute(feedViewModel.getState().getUsername());
                             feedPresenter.switchToProfileView(
                                     currentState.getUsername()
                             );
+                            System.out.println("Profile button is clicked");
+                            System.out.println(feedViewModel.getState().getUser().getPosts());
                         }
                     }
                 }
@@ -101,28 +110,74 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
                 }
         );
 
+        profilesearchbutton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(profilesearchbutton)) {
+                            final FeedState currentState = feedViewModel.getState();
+
+                            feedPresenter.switchToProfileSearchView();
+                            currentState.getUsername();
+                        }
+                    }
+                }
+        );
+
         this.add(title);
         this.add(buttons);
         this.add(postsScrollPane);
     }
 
+//    @Override
+//    public void propertyChange(PropertyChangeEvent evt) {
+////        if ("state".equals(evt.getPropertyName())) {
+////            final FeedState state = (FeedState) evt.getNewValue();
+////
+////            postsArea.setText("");
+////            if (state.getPosts() != null && !state.getPosts().isEmpty()) {
+////                for (Object post : state.getPosts()) {
+////                    postsArea.append(post + "\n");
+////                }
+////            } else {
+////                postsArea.setText("No ratings available.");
+////                postsArea.setCaretPosition(0);
+//        feedController.execute(feedViewModel.getState().getUsername());
+//        String rawPosts = feedViewModel.getState().getUser().getPosts().toString();
+//        String formattedPosts = RemoveBackSlashes(rawPosts);
+//        postsArea.setText(formattedPosts);
+//    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if ("state".equals(evt.getPropertyName())) {
-            final FeedState state = (FeedState) evt.getNewValue();
+        feedController.execute(feedViewModel.getState().getUsername());
 
-            postsArea.setText("");
-            if (state.getPosts() != null && !state.getPosts().isEmpty()) {
-                for (Object post : state.getPosts()) {
-                    postsArea.append(post + "\n");
+        // Fetch the posts as a JSONArray
+        JSONArray posts = feedViewModel.getState().getUser().getPosts();
+
+        // Build a formatted string with only the relevant content
+        StringBuilder formattedPosts = new StringBuilder();
+        if (posts != null && posts.length() > 0) {
+            for (int i = 0; i < posts.length(); i++) {
+                try {
+                    String post = posts.getString(i); // Extract each post as a string
+                    if (isValidPost(post)) {         // Check if the post is valid (not nested noise)
+                        formattedPosts.append(post).append("\n"); // Append to the formatted output
+                    }
+                } catch (JSONException e) {
+                    System.err.println("Error parsing post at index " + i + ": " + e.getMessage());
                 }
             }
-            else {
-                postsArea.setText("No ratings available.");
-                postsArea.setCaretPosition(0);
-            }
-
+        } else {
+            formattedPosts.append("No ratings available."); // Default message if no posts
         }
+
+        // Display the formatted posts in the text area
+        postsArea.setText(formattedPosts.toString());
+        postsArea.setCaretPosition(0);
+    }
+
+    private boolean isValidPost(String post) {
+        return post != null && !post.equals("[]") && !post.startsWith("[");
     }
 
     public String getViewName() {
@@ -147,6 +202,14 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
 
     public void setChangePasswordController(ChangePasswordController changePasswordController) {
         this.changePasswordController = changePasswordController;
+    }
+
+    public void setProfileSearchController(ProfileSearchController profileSearchController) {
+        this.profileSearchController = profileSearchController;
+    }
+
+    public void setOtherProfileController(OtherProfileController otherProfileController) {
+        this.otherProfileController = otherProfileController;
     }
 
     /**

@@ -18,17 +18,24 @@ public class ProfileInteractor implements ProfileInputBoundary {
     @Override
     public void execute(ProfileInputData profileInputData) {
         final String username = profileInputData.getName();
-        System.out.println(username);
         final User user = userDataAccessObject.get(username);
-        final ProfileOutputData profileOutputData = new ProfileOutputData(user.getName(),
+        final ProfileOutputData profileOutputData = new ProfileOutputData(
+                user.getName(),
                 user.getFriends(),
                 user.getPosts(),
-                user.getTopSongs());
+                user.getTopSongs(),
+                user);
+        userDataAccessObject.updateUserPosts(user);
         profilePresenter.prepareSuccessView(profileOutputData);
     }
 
     @Override
     public void switchToFeedView() {
         profilePresenter.switchToFeedView();
+    }
+
+    @Override
+    public void switchToFriendsView() {
+        profilePresenter.switchToFriendsView();
     }
 }

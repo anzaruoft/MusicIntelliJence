@@ -2,10 +2,14 @@ package interface_adapter.song_search;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.feed.FeedViewModel;
+import interface_adapter.leave_rating.LeaveRatingState;
 import interface_adapter.leave_rating.LeaveRatingViewModel;
 import use_case.song_search.SongSearchOutputBoundary;
 import use_case.song_search.SongSearchOutputData;
 
+/**
+ * This is the SongSearchPresenter class.
+ */
 public class SongSearchPresenter implements SongSearchOutputBoundary {
 
     private SongSearchViewModel songSearchViewModel;
@@ -23,6 +27,14 @@ public class SongSearchPresenter implements SongSearchOutputBoundary {
 
     @Override
     public void prepareSuccessView(SongSearchOutputData outputData) {
+        // On success, switch to the leave rating view WITH THE SONG NAME THERE.
+        final LeaveRatingState leaveRatingState = leaveRatingViewModel.getState();
+        leaveRatingState.setSongTitle(outputData.getSongTitle());
+        this.leaveRatingViewModel.setState(leaveRatingState);
+        leaveRatingViewModel.firePropertyChanged();
+
+        viewManagerModel.setState(leaveRatingViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
     }
 
     @Override

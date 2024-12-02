@@ -2,13 +2,8 @@ package interface_adapter.friendProfile;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.friends.FriendsViewModel;
-import interface_adapter.profile.ProfileState;
-import interface_adapter.profile.ProfileViewModel;
-import interface_adapter.friendProfile.FriendProfileViewModel;
-import use_case.friendProfile.FriendProfileInputBoundary;
 import use_case.friendProfile.FriendProfileOutputBoundary;
 import use_case.friendProfile.FriendProfileOutputData;
-import use_case.profile.ProfileOutputData;
 
 /**
  * The Presenter for the Friend Profile Use Case.
@@ -19,7 +14,8 @@ public class FriendProfilePresenter implements FriendProfileOutputBoundary {
     private final FriendsViewModel friendsViewModel;
     private final FriendProfileViewModel friendProfileViewModel;
 
-    public FriendProfilePresenter(ViewManagerModel viewManagerModel, FriendProfileViewModel friendProfileViewModel, FriendsViewModel friendsViewModel) {
+    public FriendProfilePresenter(ViewManagerModel viewManagerModel, FriendProfileViewModel friendProfileViewModel,
+                                  FriendsViewModel friendsViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.friendProfileViewModel = friendProfileViewModel;
         this.friendsViewModel = friendsViewModel;

@@ -5,7 +5,7 @@ import org.json.JSONArray;
 import entity.User;
 
 /**
- * The Feed Interactor.
+ * This is the FeedInteractor.
  */
 public class FeedInteractor implements FeedInputBoundary {
 
@@ -23,7 +23,8 @@ public class FeedInteractor implements FeedInputBoundary {
         final String username = feedInputData.getUsername();
         final User user = userDataAccessObject.get(username);
         final JSONArray friendsposts = userDataAccessObject.getFriendsPosts(user.getFriends());
-        final FeedOutputData outputData = new FeedOutputData(username, friendsposts);
+        final FeedOutputData outputData = new FeedOutputData(username, friendsposts, user);
+        userDataAccessObject.updateUserPosts(user);
         userPresenter.prepareSuccessView(outputData);
     }
 

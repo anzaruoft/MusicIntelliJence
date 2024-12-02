@@ -1,7 +1,8 @@
 package use_case.song_search;
 
-import use_case.song_search.SongSearchInputData;
-
+/**
+ * This is the SongSearchInputBoundary interface.
+ */
 public interface SongSearchInputBoundary {
     /**
      * Execute the Song Search Use Case.
@@ -9,7 +10,13 @@ public interface SongSearchInputBoundary {
      */
     void execute(SongSearchInputData songSearchInputData);
 
+    /**
+     * This is the switchToFeedView function.
+     */
     void switchToFeedView();
 
+    /**
+     * This is switchToLeaveRatingView function.
+     */
     void switchToLeaveRatingView();
 }

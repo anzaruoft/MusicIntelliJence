@@ -1,6 +1,5 @@
 package use_case.profile;
 
-
 /**
  * The Presenter for the Profile Use Case.
  */
@@ -22,4 +21,9 @@ public interface ProfileOutputBoundary {
      * Switches to the Feed View.
      */
     void switchToFeedView();
+
+    /**
+     * Switches to the Friends View.
+     */
+    void switchToFriendsView();
 }

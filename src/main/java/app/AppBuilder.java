@@ -30,6 +30,7 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.other_profile.OtherProfileController;
 import interface_adapter.other_profile.OtherProfilePresenter;
 import interface_adapter.other_profile.OtherProfileViewModel;
 import interface_adapter.profile.ProfileController;
@@ -48,13 +49,11 @@ import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
 import use_case.feed.FeedInputBoundary;
-import use_case.feed.FeedInputData;
 import use_case.feed.FeedInteractor;
 import use_case.friendProfile.FriendProfileInputBoundary;
 import use_case.friendProfile.FriendProfileInteractor;
 import use_case.friends.FriendsInputBoundary;
 import use_case.friends.FriendsInteractor;
-import use_case.friends.FriendsOutputBoundary;
 import use_case.leave_rating.LeaveRatingInputBoundary;
 import use_case.leave_rating.LeaveRatingInteractor;
 import use_case.login.LoginInputBoundary;
@@ -62,6 +61,9 @@ import use_case.login.LoginInteractor;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.other_profile.OtherProfileInputBoundary;
+import use_case.other_profile.OtherProfileInteractor;
+import use_case.other_profile.OtherProfileOutputBoundary;
 import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInteractor;
 import use_case.profile.ProfileOutputBoundary;
@@ -72,7 +74,6 @@ import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
 import use_case.song_search.SongSearchInputBoundary;
 import use_case.song_search.SongSearchInteractor;
-import use_case.song_search.SongSearchOutputBoundary;
 import view.*;
 
 /**
@@ -81,11 +82,6 @@ import view.*;
  * <p/>
  * This is done by adding each View and then adding related Use Cases.
  */
-// Checkstyle note: you can ignore the "Class Data Abstraction Coupling"
-//                  and the "Class Fan-Out Complexity" issues for this lab; we encourage
-//                  your team to think about ways to refactor the code to resolve these
-//                  if your team decides to work with this as your starter code
-//                  for your final project this term.
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
@@ -160,6 +156,11 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the Feed View to the application.
+     *
+     * @return this builder
+     */
     public AppBuilder addFeedView() {
         feedViewModel = new FeedViewModel();
         feedView = new FeedView(feedViewModel);
@@ -167,6 +168,11 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the Profile View to the application.
+     *
+     * @return this builder
+     */
     public AppBuilder addProfileView() {
         profileViewModel = new ProfileViewModel();
         profileView = new ProfileView(profileViewModel);
@@ -174,6 +180,22 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the OtherProfile View to the application.
+     * @return this builder.
+     */
+    public AppBuilder addOtherProfileView() {
+        otherProfileViewModel = new OtherProfileViewModel();
+        otherProfileView = new OtherProfileView(otherProfileViewModel);
+        cardPanel.add(otherProfileView, otherProfileView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Friends View to the application.
+     *
+     * @return this builder
+     */
     public AppBuilder addFriendsView() {
         friendsViewModel = new FriendsViewModel();
         friendsView = new FriendsView(friendsViewModel);
@@ -181,6 +203,11 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the FriendProfile View to the application.
+     *
+     * @return this builder
+     */
     public AppBuilder addFriendProfileView() {
         friendProfileViewModel = new FriendProfileViewModel();
         friendProfileView = new FriendProfileView(friendProfileViewModel);
@@ -188,6 +215,11 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the ProfileSearch View to the application.
+     *
+     * @return this builder
+     */
     public AppBuilder addProfileSearchView() {
         profileSearchViewModel = new ProfileSearchViewModel();
         profileSearchView = new ProfileSearchView(profileSearchViewModel);
@@ -195,6 +227,11 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the SongSearch View to the application.
+     *
+     * @return this builder
+     */
     public AppBuilder addSongSearchView() {
         songSearchViewModel = new SongSearchViewModel();
         songSearchView = new SongSearchView(songSearchViewModel);
@@ -202,6 +239,11 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the LeaveRating View to the application.
+     *
+     * @return this builder
+     */
     public AppBuilder addLeaveRatingView() {
         leaveRatingViewModel = new LeaveRatingViewModel();
         leaveRatingView = new LeaveRatingView(leaveRatingViewModel);
@@ -260,6 +302,11 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the ChangePasswordinloggedin Use Case to the application.
+     *
+     * @return this builder
+     */
     public AppBuilder addChangePasswordinloggedinUseCase() {
         final ChangePasswordOutputBoundary changePasswordOutputBoundary =
                 new ChangePasswordPresenter(viewManagerModel, loggedInViewModel);
@@ -290,9 +337,14 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the Feed Use Case to the application.
+     *
+     * @return this builder
+     */
     public AppBuilder addFeedUseCase() {
         final FeedPresenter feedPresenter = new FeedPresenter(viewManagerModel,
-                feedViewModel, profileViewModel, songSearchViewModel, loggedInViewModel);
+                feedViewModel, profileViewModel, songSearchViewModel, loggedInViewModel, profileSearchViewModel);
         final FeedInputBoundary feedInteractor = new FeedInteractor(userDataAccessObject, feedPresenter);
         final FeedController feedController = new FeedController(feedInteractor);
         feedView.setFeedController(feedController);
@@ -300,9 +352,14 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the Profile Use Case to the application.
+     *
+     * @return this builder
+     */
     public AppBuilder addProfileUseCase() {
         final ProfileOutputBoundary profileOutputPresenter =
-                new ProfilePresenter(viewManagerModel, profileViewModel, feedViewModel);
+                new ProfilePresenter(viewManagerModel, profileViewModel, feedViewModel, friendsViewModel);
         final ProfileInputBoundary profileInteractor =
                 new ProfileInteractor(userDataAccessObject, profileOutputPresenter);
         final ProfileController profileController = new ProfileController(profileInteractor);
@@ -311,6 +368,26 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the OtherProfile Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addOtherProfileUseCase() {
+        final OtherProfileOutputBoundary otherProfileOutputBoundary =
+                new OtherProfilePresenter(viewManagerModel, otherProfileViewModel, feedViewModel);
+        final OtherProfileInputBoundary otherProfileInteractor =
+                new OtherProfileInteractor(userDataAccessObject, otherProfileOutputBoundary);
+        final OtherProfileController otherProfileController = new OtherProfileController(otherProfileInteractor);
+        otherProfileView.setOtherProfileController(otherProfileController);
+        feedView.setOtherProfileController(otherProfileController);
+        return this;
+    }
+
+    /**
+     * Adds the Friends Use Case to the application.
+     *
+     * @return this builder
+     */
     public AppBuilder addFriendsUseCase() {
         final FriendsPresenter friendsPresenter = new FriendsPresenter(viewManagerModel,
                 profileViewModel, friendsViewModel);
@@ -322,6 +399,11 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the FriendProfile Use Case to the application.
+     *
+     * @return this builder
+     */
     public AppBuilder addFriendProfileUseCase() {
         final FriendProfilePresenter friendProfilePresenter = new FriendProfilePresenter(viewManagerModel,
                 friendProfileViewModel, friendsViewModel);
@@ -334,11 +416,8 @@ public class AppBuilder {
         return this;
     }
 
-    // Added vvv Error For Some Reason, Check Late!!!!!!!!!!!!!!!!!!!!!!!!
-
     /**
      * Adds the profile search use case to the application.
-     *
      * @return this builder
      */
     public AppBuilder addProfileSearchUseCase() {
@@ -350,10 +429,15 @@ public class AppBuilder {
         final ProfileSearchController profileSearchController = new ProfileSearchController(profileSearchInteractor);
         profileSearchView.setProfileSearchController(profileSearchController);
         profileSearchView.setProfileSearchPresenter(profileSearchPresenter);
-
+        feedView.setProfileSearchController(profileSearchController);
         return this;
     }
 
+    /**
+     * Adds the SongSearch Use Case to the application.
+     *
+     * @return this builder
+     */
     public AppBuilder addSongSearchUseCase() {
         final SongSearchPresenter songSearchPresenter = new SongSearchPresenter(viewManagerModel,
                 songSearchViewModel, feedViewModel, leaveRatingViewModel);
@@ -368,6 +452,11 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the LeaveRating Use Case to the application.
+     *
+     * @return this builder
+     */
     public AppBuilder addLeaveRatingUseCase() {
         final LeaveRatingPresenter leaveRatingPresenter = new LeaveRatingPresenter(viewManagerModel,
                 leaveRatingViewModel, songSearchViewModel, feedViewModel);
@@ -378,7 +467,6 @@ public class AppBuilder {
         leaveRatingView.setLeaveRatingController(leaveRatingController);
         leaveRatingView.setLeaveRatingPresenter(leaveRatingPresenter);
         songSearchView.setLeaveRatingController(leaveRatingController);
-
         return this;
     }
 

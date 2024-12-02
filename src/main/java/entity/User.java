@@ -2,8 +2,6 @@ package entity;
 
 import org.json.JSONArray;
 
-import java.util.List;
-
 /**
  * The representation of a user in our program.
  */
@@ -80,7 +78,6 @@ public interface User {
      * @param receivedFriends the sent friend requests of the user
      */
     void setReceivedFriends(JSONArray receivedFriends);
-
 
     /**
      * Sets the posts by the user.

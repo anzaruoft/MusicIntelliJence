@@ -1,20 +1,16 @@
 package use_case.other_profile;
 
 import entity.User;
-import use_case.other_profile.OtherProfileInputData;
-import use_case.other_profile.OtherProfileOutputBoundary;
-import use_case.other_profile.OtherProfileOutputData;
-import use_case.other_profile.OtherProfileUserDataAccessInterface;
 
 /**
- * The Other Profile interactor.
+ * The Other Profile Interactor.
  */
 public class OtherProfileInteractor implements OtherProfileInputBoundary {
     private final OtherProfileUserDataAccessInterface userDataAccessObject;
     private final OtherProfileOutputBoundary otherProfilePresenter;
 
     public OtherProfileInteractor(OtherProfileUserDataAccessInterface userDataAccessInterface,
-                             OtherProfileOutputBoundary otherProfileOutputBoundary) {
+                                  OtherProfileOutputBoundary otherProfileOutputBoundary) {
         this.userDataAccessObject = userDataAccessInterface;
         this.otherProfilePresenter = otherProfileOutputBoundary;
     }
@@ -25,9 +21,7 @@ public class OtherProfileInteractor implements OtherProfileInputBoundary {
         System.out.println(otherUsername);
         final User user = userDataAccessObject.get(otherUsername);
         final OtherProfileOutputData otherProfileOutputData = new OtherProfileOutputData(user.getName(),
-                user.getFriends(),
-                user.getPosts(),
-                user.getTopSongs());
+                user.getFriends().length());
         otherProfilePresenter.prepareSuccessView(otherProfileOutputData);
     }
 

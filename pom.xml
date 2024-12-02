@@ -49,6 +49,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring-boot.version}</version> <!-- Use the version from the properties -->
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.2.0</version> <!-- or your desired version -->
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

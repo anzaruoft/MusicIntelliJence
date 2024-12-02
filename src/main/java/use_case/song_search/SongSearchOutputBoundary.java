@@ -1,5 +1,8 @@
 package use_case.song_search;
 
+/**
+ * This is the SongSearchOutputBoundary interface.
+ */
 public interface SongSearchOutputBoundary {
     /**
      * Prepares the success view for the Song Search Use Case.
@@ -13,7 +16,13 @@ public interface SongSearchOutputBoundary {
      */
     void prepareFailView(String errorMessage);
 
+    /**
+     * This is the switchToFeedView function.
+     */
     void switchToFeedView();
 
+    /**
+     * This is the switchToLeaveRatingView function.
+     */
     void switchToLeaveRatingView();
 }

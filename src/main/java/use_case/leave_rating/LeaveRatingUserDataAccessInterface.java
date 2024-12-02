@@ -2,6 +2,9 @@ package use_case.leave_rating;
 
 import entity.User;
 
+/**
+ * This is the LeaveRatingUserDataAccessInterface interface.
+ */
 public interface LeaveRatingUserDataAccessInterface {
 
     /**

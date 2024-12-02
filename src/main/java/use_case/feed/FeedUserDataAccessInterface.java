@@ -27,5 +27,7 @@ public interface FeedUserDataAccessInterface {
      * @return the friends posts of the user.
      */
     JSONArray getFriendsPosts(JSONArray friends);
+
+    void updateUserPosts(User user);
 }
 

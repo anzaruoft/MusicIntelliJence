@@ -1,7 +1,7 @@
 package use_case.feed;
 
 /**
- * The Feed Output Boundary.
+ * This is FeedOutputBoundary.
  */
 public interface FeedOutputBoundary {
     /**
@@ -17,15 +17,24 @@ public interface FeedOutputBoundary {
     void prepareFailView(String errorMessage);
 
     /**
-     * Prepares to switch to profile View.
-     * @param username the username parameter.
+     * This is swtichToProfileView.
+     * @param username type String.
      */
     void switchToProfileView(String username);
+
     /**
-     * Prepares to switch to Song SEar View.
-     * @param username the username parameter.
+     * This is switchToSongSearchView.
+     * @param username type String.
      */
     void switchToSongSearchView(String username);
 
+    /**
+     * This is switchToChangePasswordView.
+     */
     void switchToChangePasswordView();
+
+    /**
+     * This is switchToProfileSearchView.
+     */
+    void switchToProfileSearchView();
 }

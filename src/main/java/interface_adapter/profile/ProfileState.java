@@ -1,10 +1,8 @@
 package interface_adapter.profile;
 
-
 import org.json.JSONArray;
 
-import java.util.ArrayList;
-import java.util.List;
+import entity.User;
 
 /**
  * The state for the Profile View Model.
@@ -15,6 +13,7 @@ public class ProfileState {
     private JSONArray topSongs = new JSONArray();
     private JSONArray posts = new JSONArray();
     private String friendsError;
+    private User user;
 
     public String getUsername() {
         return username;
@@ -56,4 +55,11 @@ public class ProfileState {
         this.friendsError = friendsError;
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
 }

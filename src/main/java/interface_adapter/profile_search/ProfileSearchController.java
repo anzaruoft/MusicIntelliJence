@@ -16,11 +16,12 @@ public class ProfileSearchController {
 
     /**
      * Executes the Profile Search Use Case.
-     * @param username the username of the user being searched
+     * @param inputUsername username being searched
+     * @param thisUsername the username of user searching
      */
-    public void execute(String username) {
+    public void execute(String inputUsername, String thisUsername) {
         final ProfileSearchInputData profileSearchInputData = new ProfileSearchInputData(
-                username
+                inputUsername, thisUsername
         );
 
         profileSearchInteractor.execute(profileSearchInputData);
@@ -37,6 +38,6 @@ public class ProfileSearchController {
      * Goes to the Other Profile View (add more detailed comment later).
      */
     public void switchToOtherProfileView() {
-
     }
+
 }

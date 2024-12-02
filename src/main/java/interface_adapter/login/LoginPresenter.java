@@ -49,7 +49,7 @@ public class LoginPresenter implements LoginOutputBoundary {
     }
 
     /**
-     *
+     * This is the prepareSignupView function.
      */
     public void prepareSignupView() {
         final SignupState signupState = signupViewModel.getState();
