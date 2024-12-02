@@ -24,11 +24,11 @@ public class ProfileSearchInteractor implements ProfileSearchInputBoundary {
         System.out.println("Searched by: " + thisUsername);
 
         if (!userDataAccessObject.existsByName(inputUsername)) {
-            profileSearchPresenter.prepareFailView(inputUsername + ": Account does not exist crodie.");
+            profileSearchPresenter.prepareFailView(inputUsername + ": Account does not exist.");
         }
         else {
             if (inputUsername.equals(thisUsername)) {
-                profileSearchPresenter.prepareFailView(thisUsername + ": is you dude.");
+                profileSearchPresenter.prepareFailView(thisUsername + ": is your account.");
             }
             else {
                 final User thisUser = userDataAccessObject.get(profileSearchInputData.getThisUsername());

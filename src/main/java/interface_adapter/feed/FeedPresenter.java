@@ -93,7 +93,7 @@ public class FeedPresenter implements FeedOutputBoundary {
     }
 
     @Override
-    public void switchToProfileSearchView() {
+    public void switchToProfileSearchView(String username) {
         final ProfileSearchState profileSearchState = profileSearchViewModel.getState();
         this.profileSearchViewModel.setState(profileSearchState);
         this.profileSearchViewModel.firePropertyChanged();

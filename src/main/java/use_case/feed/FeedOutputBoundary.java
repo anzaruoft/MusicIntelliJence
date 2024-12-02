@@ -35,6 +35,7 @@ public interface FeedOutputBoundary {
 
     /**
      * This is switchToProfileSearchView.
+     * @param username is type String.
      */
-    void switchToProfileSearchView();
+    void switchToProfileSearchView(String username);
 }
