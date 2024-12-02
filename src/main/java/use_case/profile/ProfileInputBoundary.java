@@ -15,4 +15,9 @@ public interface ProfileInputBoundary {
      * Executes the switch to feed view use case.
      */
     void switchToFeedView();
+
+    /**
+     * Executes the switch to friends view use case.
+     */
+    void switchToFriendsView();
 }

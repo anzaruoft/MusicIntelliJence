@@ -33,4 +33,9 @@ public class ProfileInteractor implements ProfileInputBoundary {
     public void switchToFeedView() {
         profilePresenter.switchToFeedView();
     }
+
+    @Override
+    public void switchToFriendsView() {
+        profilePresenter.switchToFriendsView();
+    }
 }

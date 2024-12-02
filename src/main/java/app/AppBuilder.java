@@ -359,7 +359,7 @@ public class AppBuilder {
      */
     public AppBuilder addProfileUseCase() {
         final ProfileOutputBoundary profileOutputPresenter =
-                new ProfilePresenter(viewManagerModel, profileViewModel, feedViewModel);
+                new ProfilePresenter(viewManagerModel, profileViewModel, feedViewModel, friendsViewModel);
         final ProfileInputBoundary profileInteractor =
                 new ProfileInteractor(userDataAccessObject, profileOutputPresenter);
         final ProfileController profileController = new ProfileController(profileInteractor);

@@ -32,4 +32,10 @@ public class ProfileController {
         userProfileUseCaseInteractor.switchToFeedView();
     }
 
+    /**
+     * Executes the "switch to FriendsView" Use Case.
+     */
+    public void switchToFriendsView() {
+        userProfileUseCaseInteractor.switchToFriendsView();
+    }
 }
