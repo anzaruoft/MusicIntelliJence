@@ -1,12 +1,11 @@
 package use_case.feed;
 
-import entity.User;
 import org.json.JSONArray;
 
-import java.util.List;
+import entity.User;
 
-/*
-
+/**
+ * The Feed Interactor.
  */
 public class FeedInteractor implements FeedInputBoundary {
 
@@ -22,7 +21,6 @@ public class FeedInteractor implements FeedInputBoundary {
     @Override
     public void execute(FeedInputData feedInputData) {
         final String username = feedInputData.getUsername();
-        System.out.println(username);
         final User user = userDataAccessObject.get(username);
         final JSONArray friendsposts = userDataAccessObject.getFriendsPosts(user.getFriends());
         final FeedOutputData outputData = new FeedOutputData(username, friendsposts);

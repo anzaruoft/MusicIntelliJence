@@ -1,5 +1,8 @@
 package use_case.feed;
 
+/**
+ * The Feed Output Boundary.
+ */
 public interface FeedOutputBoundary {
     /**
      * Prepares the success view for the Feed Use Case.
@@ -13,8 +16,15 @@ public interface FeedOutputBoundary {
      */
     void prepareFailView(String errorMessage);
 
+    /**
+     * Prepares to switch to profile View.
+     * @param username the username parameter.
+     */
     void switchToProfileView(String username);
-  
+    /**
+     * Prepares to switch to Song SEar View.
+     * @param username the username parameter.
+     */
     void switchToSongSearchView(String username);
 
     void switchToChangePasswordView();

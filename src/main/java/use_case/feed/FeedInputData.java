@@ -1,5 +1,8 @@
 package use_case.feed;
 
+/**
+ * The input data for the Feed Use Case.
+ */
 public class FeedInputData {
 
     private final String username;

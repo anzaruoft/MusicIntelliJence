@@ -1,5 +1,8 @@
 package use_case.feed;
 
+/**
+ * The Feed Use Case.
+ */
 public interface FeedInputBoundary {
 
     /**
@@ -8,6 +11,9 @@ public interface FeedInputBoundary {
      */
     void execute(FeedInputData feedInputData);
 
+    /**
+     * Prepares to switch to the changePasswordView.
+     */
     void switchToChangePasswordView();
 }
 
