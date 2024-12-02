@@ -2,6 +2,7 @@ package entity;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,31 +40,31 @@ class CommonUserTest {
 
     @Test
     void getPosts() {
-        assertEquals(0, user.getPosts().size());
+        assertEquals(0, user.getPosts().length());
     }
 
     @Test
     void getTopSongs() {
-        assertEquals(0, user.getTopSongs().size());
+        assertEquals(0, user.getTopSongs().length());
     }
 
     @Test
     void getFriends() {
-        assertEquals(0, user.getFriends().size());
+        assertEquals(0, user.getFriends().length());
     }
 
     @Test
     void setFriends() {
-        List<String> names = new ArrayList<>();
-        names.add("Freeda");
-        names.add("Yolanda");
+        JSONArray names = new JSONArray();
+        names.put("Freeda");
+        names.put("Yolanda");
         user.setFriends(names);
-        assertEquals(2, user.getFriends().size());
+        assertEquals(2, user.getFriends().length());
     }
 
     @Test
     void setPosts() throws JsonProcessingException {
-        List<String> posts = new ArrayList<>();
+        JSONArray posts = new JSONArray();
         ObjectMapper objectMapper = new ObjectMapper();
 
         Map<String, Object> postOne = new HashMap<>();
@@ -89,21 +90,21 @@ class CommonUserTest {
         postThree.put("date", "2024-11-24");
         postThree.put("likes", 4);
         String jsonThree = objectMapper.writeValueAsString(postThree);
-        posts.add(jsonOne);
-        posts.add(jsonTwo);
-        posts.add(jsonThree);
+        posts.put(jsonOne);
+        posts.put(jsonTwo);
+        posts.put(jsonThree);
         user.setPosts(posts);
 
-        assertEquals(3, user.getPosts().size());
+        assertEquals(3, user.getPosts().length());
     }
 
     @Test
     void setTopSongs() {
-        List<String> topSongs = new ArrayList<>();
-        topSongs.add("Let it go");
-        topSongs.add("Merry Christmas");
-        topSongs.add("Happy Birthday");
+        JSONArray topSongs = new JSONArray();
+        topSongs.put("Let it go");
+        topSongs.put("Merry Christmas");
+        topSongs.put("Happy Birthday");
         user.setTopSongs(topSongs);
-        assertEquals(3, user.getTopSongs().size());
+        assertEquals(3, user.getTopSongs().length());
     }
 }

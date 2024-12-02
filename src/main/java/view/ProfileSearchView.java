@@ -61,9 +61,9 @@ public class ProfileSearchView extends JPanel implements ActionListener, Propert
                 new JLabel("Search Profiles"), usernameSearchField);
 
         final JPanel buttons = new JPanel();
-        searchButton = new JButton("search");
+        searchButton = new JButton("Search");
         buttons.add(searchButton);
-        cancelButton = new JButton("cancel");
+        cancelButton = new JButton("Cancel");
         buttons.add(cancelButton);
 
         cancelButton.setBackground(Color.RED);
