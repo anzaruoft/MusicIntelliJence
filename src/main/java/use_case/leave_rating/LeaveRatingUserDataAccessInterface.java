@@ -24,4 +24,5 @@ public interface LeaveRatingUserDataAccessInterface {
      */
     void save(User user);
 
+    void updateUserPosts(User user);
 }

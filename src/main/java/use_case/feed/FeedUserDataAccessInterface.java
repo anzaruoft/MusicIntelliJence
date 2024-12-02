@@ -1,6 +1,7 @@
 package use_case.feed;
 
 import entity.User;
+import org.json.JSONArray;
 
 import java.util.List;
 
@@ -25,6 +26,6 @@ public interface FeedUserDataAccessInterface {
      * @param friends
      * @return the friends posts of the user.
      */
-    List<String> getFriendsPosts(List<String> friends);
+    JSONArray getFriendsPosts(JSONArray friends);
 }
 

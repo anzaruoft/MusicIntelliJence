@@ -1,11 +1,11 @@
 package data_access;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import entity.User;
+import org.json.JSONArray;
+import org.json.JSONException;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.feed.FeedUserDataAccessInterface;
 import use_case.friendProfile.FriendProfileUserDataAccessInterface;
@@ -50,6 +50,11 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     }
 
     @Override
+    public User getUser(String inputUsername) {
+        return users.get(inputUsername);
+    }
+
+    @Override
     public String getCurrentUsername() {
         return currentUser;
     }
@@ -65,15 +70,24 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         users.put(user.getName(), user);
     }
 
-    public List<String> getFriendsPosts(List<String> friends) {
-        final List<String> allPosts = new ArrayList<>();
-        for (String friend : friends) {
-            final User friendUser = users.get(friend);
-            if (friendUser != null) {
-                allPosts.addAll(friendUser.getPosts());
+    public JSONArray getFriendsPosts(JSONArray friends) {
+        final JSONArray allPosts = new JSONArray();
+        for (int i = 0; i < friends.length(); i++) {
+            try {
+                // Assuming `friends` contains JSONObjects with user keys
+                String friendKey = friends.getString(i); // Get the key for the friend
+                final User friendUser = users.get(friendKey); // Retrieve the User object
+
+                if (friendUser != null) {
+                    // Get the posts and add them to the result
+                    allPosts.putAll(friendUser.getPosts());
+                }
+            } catch (JSONException e) {
+                // Handle potential parsing issues
+                e.printStackTrace();
             }
         }
+
         return allPosts;
     }
-
 }
