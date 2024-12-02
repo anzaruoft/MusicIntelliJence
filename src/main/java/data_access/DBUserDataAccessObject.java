@@ -3,8 +3,6 @@ package data_access;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
 import entity.CommonUser;
 import org.json.JSONArray;
@@ -112,6 +110,15 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         return null;
     }
 
+    @Override
+    public User getUser(String inputUsername) {
+        return get(inputUsername);
+    }
+
+    @Override
+    public JSONArray getFriendsPosts(JSONArray friends) {
+        return friends;
+    }
 
     @Override
     public boolean existsByName(String username) {
@@ -138,7 +145,8 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                 }
             }
             return false;
-        } catch (IOException | URISyntaxException e) {
+        }
+        catch (IOException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
@@ -163,14 +171,17 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
             try (Response response = client.newCall(request).execute()) {
                 if (response.isSuccessful()) {
                     System.out.println("User added successfully: " + response.body().string());
-                } else {
+                }
+                else {
                     System.out.println("Failed to add user. Response code: " + response.code());
                     System.out.println("Response body: " + response.body().string());
                 }
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -183,7 +194,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
             e.printStackTrace();
         }
     }
-//
+
 //    @Override
 //    public String getPassword(String username) {
 //        final User commonUser = get(username);
@@ -227,51 +238,59 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 //    }
 
 
-//    @Override
-//    public void addPost(User user) {
+//    public boolean addPost(User user) {
 //        try {
 //            save(user);
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-//    }
 //
-//    @Override
-//    public boolean addPost(User user, String newPost) {
-//        try {
-//            final String endpoint = "/updated-user";
-//            final URI uri = new URI(JSON_FILE_URL + endpoint);
-//            final RequestBody formBody = new FormBody.Builder()
-//                    .add("username", user.getName())
-//                    .add("password", user.getPassword())
-////                  .add("sentFriends", user.getSentFriends())
-////                  .add("ratings", user.getRatings())
-////      .add("receivedFriends", user.getReceivedFriends())
-//                    .add("posts", user.getPosts().toString())
-//                    .add("email", user.getEmail())
-//                    .add("friends", user.getFriends().toString())
-//                    .build();
-//            final Request request = new Request.Builder()
-//                    .url(uri.toURL())
-//                    .get()
-//                    .put()
-//                    .build();
-//            OkHttpClient client = new OkHttpClient();
-//            try (Response response = client.newCall(request).execute()) {
-//                if (response.isSuccessful()) {
-//                    System.out.println("User updated successfully: " + response.body().string());
-//                }
-//                else {
-//                    System.out.println("Failed to update user. Response code: " + response.code());
-//                    System.out.println("Response body: " + response.body().string());
-//                }
-//            }
-//            return false;
-//        }
-//        catch (IOException | URISyntaxException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+//
+
+    @Override
+    public void updateUserPosts(User user) {
+        try {
+            JSONArray posts = user.getPosts();
+            if (posts == null) {
+                posts = new JSONArray();
+            }
+            final User currentUser = getUser(user.getName());
+            final String postsString = currentUser.getPosts().toString();
+            posts.put(postsString);
+            final String endpoint = "/updated-user";
+            final URI uri = new URI(JSON_FILE_URL + endpoint);
+            final RequestBody formBody = new FormBody.Builder()
+                    .add("username", user.getName())
+                    .add("password", user.getPassword())
+                    .add("sentFriends", user.getSentFriends().toString())
+                    .add("ratings", user.getRatings().toString())
+                    .add("receivedFriends", user.getReceivedFriends().toString())
+                    .add("posts", user.getPosts().toString())
+                    .add("email", user.getEmail())
+                    .add("friends", user.getFriends().toString())
+                    .build();
+            System.out.println("LOOK BELOW");
+            System.out.println(formBody);
+            final Request request = new Request.Builder()
+                    .url(uri.toURL())
+                    .addHeader(CONTENT_TYPE_LABEL, "application/x-www-form-urlencoded")
+                    .put(formBody)
+                    .build();
+            OkHttpClient client = new OkHttpClient();
+            try (Response response = client.newCall(request).execute()) {
+                if (response.isSuccessful()) {
+                    System.out.println("User updated successfully: " + response.body().string());
+                }
+                else {
+                    System.out.println("Failed to update user. Response code: " + response.code());
+                    System.out.println("Response body: " + response.body().string());
+                }
+            }
+        }
+        catch (IOException | URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 //    @Override
 //    public void addRating(User user) {
@@ -283,19 +302,18 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 //        // Benny i'll leave this for you so it fits your work flow
 //    }
 
-    @Override
-    public void setCurrentUsername(String name) {
+//    @Override
+//    public void setCurrentUsername(String name) {
         // Not implemented
-    }
 
     @Override
     public String getCurrentUsername() {
-        return null;
-        // Not implemented
+        return null; // Not implemented
     }
 
     @Override
-    public JSONArray getFriendsPosts(JSONArray friends) {
-        return null;
+    public void setCurrentUsername(String username) {
+
     }
+
 }

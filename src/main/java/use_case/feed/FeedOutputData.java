@@ -2,7 +2,6 @@ package use_case.feed;
 
 import org.json.JSONArray;
 
-import java.util.List;
 
 public class FeedOutputData {
     // The username of the user whose feed is being prepared

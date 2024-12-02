@@ -2,6 +2,9 @@ package interface_adapter.feed;
 
 import org.json.JSONArray;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The State information representing the feed user.
  */
