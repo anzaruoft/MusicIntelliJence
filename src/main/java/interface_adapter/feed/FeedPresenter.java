@@ -35,6 +35,7 @@ public class FeedPresenter implements FeedOutputBoundary {
     public void prepareSuccessView(FeedOutputData outputData) {
         final FeedState feedState = feedViewModel.getState();
         feedState.setUsername(outputData.getUsername());
+        feedState.setUser(outputData.getUser());
         feedState.setPosts(outputData.getPosts());
         feedViewModel.setState(feedState);
 
@@ -55,10 +56,11 @@ public class FeedPresenter implements FeedOutputBoundary {
     @Override
     public void switchToProfileView(String username) {
         final ProfileState profileState = profileViewModel.getState();
-        // feedState.setUsername(response.getUsername());
+        profileState.setUsername(username);
         this.profileViewModel.setState(profileState);
         this.profileViewModel.firePropertyChanged();
-
+        this.profileViewModel.getState().setPosts(profileState.getPosts());
+        // NEW ADDITION
         this.viewManagerModel.setState(profileViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }

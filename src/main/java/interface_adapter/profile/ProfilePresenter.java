@@ -28,11 +28,11 @@ public class ProfilePresenter implements ProfileOutputBoundary {
     public void prepareSuccessView(ProfileOutputData response) {
         final ProfileState profileState = profileViewModel.getState();
         profileState.setUsername(response.getUsername());
+        profileState.setUser(response.getUser());
         profileState.setFriends(response.getFriends());
         profileState.setPosts(response.getPosts());
         profileState.setTopSongs(response.getTopSongs());
         profileViewModel.setState(profileState);
-        profileViewModel.firePropertyChanged();
         viewManagerModel.setState(profileViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }

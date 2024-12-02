@@ -90,4 +90,8 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
 
         return allPosts;
     }
+
+    @Override
+    public void updateUserPosts(User user) {
+    }
 }

@@ -8,6 +8,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+import data_access.DBUserDataAccessObject;
+import interface_adapter.feed.FeedState;
+import interface_adapter.feed.FeedViewModel;
+import interface_adapter.leave_rating.LeaveRatingState;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
@@ -19,6 +23,8 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     private final ProfileViewModel profileViewModel;
     private ProfileController profileController;
     private final JLabel friendsErrorField = new JLabel();
+    private JLabel songsHeader;
+    private FeedViewModel feedViewModel;
 
     public ProfileView(ProfileViewModel profileViewModel) {
 
@@ -28,7 +34,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         // Collect User Information
         final ProfileState currentState = profileViewModel.getState();
         final int friendsNumber = currentState.getFriendsNumber();
-        final JSONArray posts = currentState.getPosts();
+        JSONArray posts = currentState.getPosts();
         final JSONArray topSongs = currentState.getTopSongs();
 
         // Set up followers / following
@@ -59,26 +65,30 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         backButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-
                         profileController.switchToFeedView();
+                        System.out.println(profileViewModel.getState().getUser().getName());
                     }
                 }
         );
 
-        // Add the top songs
+        // Add your posts
         final JPanel songsPanel = new JPanel();
-        final JLabel songsHeader = new JLabel("Top Songs: ");
+        songsHeader = new JLabel("Your Posts: ");
         songsPanel.add(songsHeader);
-        if (!topSongs.isEmpty()) {
+        posts = currentState.getPosts();
 
-            for (int i = 0; i < topSongs.length(); i++) {
-                String song = topSongs.getString(i);
-                JLabel item = new JLabel(song);
+//        System.out.println("This is JSON format for posts:");
+//        System.out.println(posts.toString());
+        if (!posts.isEmpty()) {
+
+            for (int i = 0; i < posts.length(); i++) {
+                String post = posts.getString(i);
+                JLabel item = new JLabel(post);
                 songsPanel.add(item);
             }
         }
         else {
-            final JLabel songsError = new JLabel("Please add some songs to see your top!");
+            final JLabel songsError = new JLabel("Please add some posts!");
             songsPanel.add(songsError);
         }
         songsPanel.add(Box.createVerticalGlue());
@@ -96,8 +106,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
                 JLabel item = new JLabel(post);
                 postsPanel.add(item);
             }
-        }
-        else {
+        } else {
             final JLabel postsError = new JLabel("Please write some posts to see them here!");
             postsPanel.add(postsError);
         }
@@ -111,6 +120,15 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     public String getViewName() {
         return viewName;
     }
+//
+//    @Override
+//    public void propertyChange(PropertyChangeEvent evt) {
+//        if ("state".equals(evt.getPropertyName())) {
+//            final ProfileState state = (ProfileState) evt.getNewValue();
+//            songsHeader.setText(state.toString());
+//            friendsErrorField.setText(state.getFriendsError());
+//        }
+//    }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -120,9 +138,9 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
     /**
      * React to a button click that results in evt.
+     *
      * @param evt the ActionEvent to react to
      */
-
     public void actionPerformed(ActionEvent evt) {
         System.out.println("Click " + evt.getActionCommand());
     }
@@ -131,3 +149,4 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         this.profileController = profileController;
     }
 }
+

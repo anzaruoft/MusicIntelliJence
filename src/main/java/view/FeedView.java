@@ -1,5 +1,6 @@
 package view;
 
+import entity.User;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.LoggedInState;
 import interface_adapter.feed.FeedController;
@@ -12,6 +13,8 @@ import interface_adapter.profile.ProfileState;
 import interface_adapter.song_search.SongSearchController;
 import interface_adapter.song_search.SongSearchPresenter;
 import interface_adapter.song_search.SongSearchState;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -74,6 +77,10 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
                             feedPresenter.switchToSongSearchView(
                                     currentState.getUsername()
                             );
+//                            System.out.println("Here are the users posts");
+//                            System.out.println(feedViewModel.getState().getUsername());
+//                            // feedViewModel.getState().getUser() is not working!
+//                            System.out.println(feedViewModel.getState().getUser().getPosts());
                         }
                     }
                 }
@@ -84,10 +91,12 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource().equals(profileButton)) {
                             final FeedState currentState = feedViewModel.getState();
-
+                            feedController.execute(feedViewModel.getState().getUsername());
                             feedPresenter.switchToProfileView(
                                     currentState.getUsername()
                             );
+                            System.out.println("Profile button is clicked");
+                            System.out.println(feedViewModel.getState().getUser().getPosts());
                         }
                     }
                 }
@@ -100,29 +109,61 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
                     }
                 }
         );
-
         this.add(title);
         this.add(buttons);
         this.add(postsScrollPane);
     }
 
+//    @Override
+//    public void propertyChange(PropertyChangeEvent evt) {
+////        if ("state".equals(evt.getPropertyName())) {
+////            final FeedState state = (FeedState) evt.getNewValue();
+////
+////            postsArea.setText("");
+////            if (state.getPosts() != null && !state.getPosts().isEmpty()) {
+////                for (Object post : state.getPosts()) {
+////                    postsArea.append(post + "\n");
+////                }
+////            } else {
+////                postsArea.setText("No ratings available.");
+////                postsArea.setCaretPosition(0);
+//        feedController.execute(feedViewModel.getState().getUsername());
+//        String rawPosts = feedViewModel.getState().getUser().getPosts().toString();
+//        String formattedPosts = RemoveBackSlashes(rawPosts);
+//        postsArea.setText(formattedPosts);
+//    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if ("state".equals(evt.getPropertyName())) {
-            final FeedState state = (FeedState) evt.getNewValue();
+        feedController.execute(feedViewModel.getState().getUsername());
 
-            postsArea.setText("");
-            if (state.getPosts() != null && !state.getPosts().isEmpty()) {
-                for (Object post : state.getPosts()) {
-                    postsArea.append(post + "\n");
+        // Fetch the posts as a JSONArray
+        JSONArray posts = feedViewModel.getState().getUser().getPosts();
+
+        // Build a formatted string with only the relevant content
+        StringBuilder formattedPosts = new StringBuilder();
+        if (posts != null && posts.length() > 0) {
+            for (int i = 0; i < posts.length(); i++) {
+                try {
+                    String post = posts.getString(i); // Extract each post as a string
+                    if (isValidPost(post)) {         // Check if the post is valid (not nested noise)
+                        formattedPosts.append(post).append("\n"); // Append to the formatted output
+                    }
+                } catch (JSONException e) {
+                    System.err.println("Error parsing post at index " + i + ": " + e.getMessage());
                 }
             }
-            else {
-                postsArea.setText("No ratings available.");
-                postsArea.setCaretPosition(0);
-            }
-
+        } else {
+            formattedPosts.append("No ratings available."); // Default message if no posts
         }
+
+        // Display the formatted posts in the text area
+        postsArea.setText(formattedPosts.toString());
+        postsArea.setCaretPosition(0);
+    }
+
+    private boolean isValidPost(String post) {
+        return post != null && !post.equals("[]") && !post.startsWith("[");
     }
 
     public String getViewName() {
