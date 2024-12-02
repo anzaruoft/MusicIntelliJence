@@ -5,3 +5,5 @@ package use_case.song_search;
  */
 public class SongSearchInputData {
 }
+
+// NO INPUT TO THE SONG SEARCH USE CASE NEEDED.

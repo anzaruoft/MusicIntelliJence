@@ -22,6 +22,7 @@ import use_case.friends.FriendsUserDataAccessInterface;
 import use_case.leave_rating.LeaveRatingUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
+import use_case.other_profile.OtherProfileUserDataAccessInterface;
 import use_case.profile.ProfileUserDataAccessInterface;
 import use_case.profile_search.ProfileSearchUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
@@ -40,13 +41,16 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         FriendProfileUserDataAccessInterface,
         ProfileSearchUserDataAccessInterface,
         LeaveRatingUserDataAccessInterface,
-        SongSearchUserDataAccessInterface {
+        SongSearchUserDataAccessInterface,
+        OtherProfileUserDataAccessInterface {
 
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String JSON_FILE_URL = "http://ec2-3-139-82-243.us-east-2.compute.amazonaws.com:8080/users";
     private final UserFactory userFactory;
+    private String currentUser;
+    private String searchedUser;
 
     public DBUserDataAccessObject(UserFactory userFactory) {
         this.userFactory = userFactory;
@@ -118,11 +122,6 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     }
 
     @Override
-    public User getUser(String inputUsername) {
-        return get(inputUsername);
-    }
-
-    @Override
     public JSONArray getFriendsPosts(JSONArray friends) {
         return friends;
     }
@@ -188,121 +187,19 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                 e.printStackTrace();
             }
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch (Exception evt) {
+            evt.printStackTrace();
         }
     }
 
-    @Override
-    public void changePassword(User user) {
-        try {
-            save(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    /**
+     * We use this in the updateUsersPost function.
+     * @param inputUsername is type String.
+     * @return a User.
+     */
+    public User getUser(String inputUsername) {
+        return get(inputUsername);
     }
-
-//    @Override
-//    public String getPassword(String username) {
-//        final User commonUser = get(username);
-//        return commonUser.getSentFriends();
-//    }
-//
-//    @Override
-//    public String getSentFriends(String username) {
-//        final User commonUser = get(username);
-//        return commonUser.getSentFriends();
-//    }
-//
-//    @Override
-//    public String getRatings(String username) {
-//        final User commonUser = get(username);
-//        return commonUser.getSentFriends();
-//    }
-//
-//    @Override
-//    public String getReceivedFriends(String username) {
-//        final User commonUser = get(username);
-//        return commonUser.getSentFriends();
-//    }
-//
-//    @Override
-//    public String getPosts(String username) {
-//        final User commonUser = get(username);
-//        return commonUser.getSentFriends();
-//    }
-//
-//    @Override
-//    public String getEmail(String username) {
-//        final User commonUser = get(username);
-//        return commonUser.getSentFriends();
-//    }
-//
-//    @Override
-//    public String getFriends(String username) {
-//        final User commonUser = get(username);
-//        return commonUser.getFriends();
-//    }
-
-
-//    public boolean addPost(User user) {
-//        try {
-//            save(user);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//
-
-//    @Override
-//    public void updateUserPosts(User user) {
-//        try {
-//            JSONArray posts = user.getPosts();
-//            if (posts == null) {
-//                posts = new JSONArray();
-//            }
-//            final User currentUser = getUser(user.getName());
-//            currentUser.setPosts(posts);
-//            System.out.println("This is the current user who is logged in:" + currentUser.getName());
-//            System.out.println("This is the current user's posts:" + currentUser.getPosts());
-//            final String postsString = currentUser.getPosts().toString();
-//            posts.put(postsString);
-//            final String endpoint = "/updated-user";
-//            final URI uri = new URI(JSON_FILE_URL + endpoint);
-//            final RequestBody formBody = new FormBody.Builder()
-//                    .add("username", user.getName())
-//                    .add("password", user.getPassword())
-//                    .add("sentFriends", user.getSentFriends().toString())
-//                    .add("ratings", user.getRatings().toString())
-//                    .add("receivedFriends", user.getReceivedFriends().toString())
-//                    .add("posts", user.getPosts().toString())
-//                    .add("email", user.getEmail())
-//                    .add("friends", user.getFriends().toString())
-//                    .build();
-//            System.out.println("LOOK BELOW");
-//            System.out.println(formBody);
-//            final Request request = new Request.Builder()
-//                    .url(uri.toURL())
-////                    .addHeader(CONTENT_TYPE_LABEL, "application/x-www-form-urlencoded")
-//                    .put(formBody)
-//                    .build();
-//            OkHttpClient client = new OkHttpClient();
-//            try (Response response = client.newCall(request).execute()) {
-//                if (response.isSuccessful()) {
-//                    System.out.println("User updated successfully: " + response.body().string());
-//                }
-//                else {
-//                    System.out.println("Failed to update user. Response code: " + response.code());
-//                    System.out.println("Response body: " + response.body().string());
-//                }
-//            }
-//        }
-//        catch (IOException | URISyntaxException e) {
-//            throw new RuntimeException(e);
-//        }
-//        System.out.println("User updated successfully");
-//        System.out.println(user.getPosts().toString());
-//    }
 
     @Override
     public void updateUserPosts(User user) {
@@ -351,29 +248,28 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         System.out.println(user.getPosts().toString());
     }
 
+    @Override
+    public void changePassword(User user) {
+        try {
+            save(user);
+        }
+        catch (Exception evt) {
+            evt.printStackTrace();
+        }
+    }
 
-//    @Override
-//    public void addRating(User user) {
-//        // Not sure if yall want a separate function for this or not?
-//    }
-//
-//    @Override
-//    public void addFriendRequest(User user) {
-//        // Benny i'll leave this for you so it fits your work flow
-//    }
-
-//    @Override
-//    public void setCurrentUsername(String name) {
-        // Not implemented
+    @Override
+    public void setCurrentUsername(String name) {
+        this.currentUser = name;
+    }
 
     @Override
     public String getCurrentUsername() {
-        return null; // Not implemented
+        return currentUser;
     }
 
     @Override
-    public void setCurrentUsername(String username) {
-
+    public void setSearchedUsername(String username) {
+        this.searchedUser = username;
     }
-
 }

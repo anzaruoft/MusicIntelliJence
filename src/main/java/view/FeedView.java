@@ -8,8 +8,10 @@ import interface_adapter.feed.FeedPresenter;
 import interface_adapter.feed.FeedState;
 import interface_adapter.feed.FeedViewModel;
 import interface_adapter.login.LoginPresenter;
+import interface_adapter.other_profile.OtherProfileController;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileState;
+import interface_adapter.profile_search.ProfileSearchController;
 import interface_adapter.song_search.SongSearchController;
 import interface_adapter.song_search.SongSearchPresenter;
 import interface_adapter.song_search.SongSearchState;
@@ -31,12 +33,14 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
     private FeedPresenter feedPresenter;
     private SongSearchController songSearchController;
     private ChangePasswordController changePasswordController;
+    private ProfileSearchController profileSearchController;
+    private OtherProfileController otherProfileController;
     private final JTextArea postsArea;
     private final JScrollPane postsScrollPane;
 
     private final JButton addratingButton;
     private final JButton profileButton;
-    private final JButton addfriendbutton;
+    private final JButton profilesearchbutton;
     private final JButton changepasswordbutton;
 
     public FeedView(FeedViewModel feedViewModel) {
@@ -57,11 +61,11 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
         profileButton = new JButton("Profile");
         buttons.add(profileButton);
 
-        addfriendbutton = new JButton("Add friend");
-        buttons.add(addfriendbutton);
-
         changepasswordbutton = new JButton("Change password");
         buttons.add(changepasswordbutton);
+
+        profilesearchbutton = new JButton("Profile search");
+        buttons.add(profilesearchbutton);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -77,10 +81,6 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
                             feedPresenter.switchToSongSearchView(
                                     currentState.getUsername()
                             );
-//                            System.out.println("Here are the users posts");
-//                            System.out.println(feedViewModel.getState().getUsername());
-//                            // feedViewModel.getState().getUser() is not working!
-//                            System.out.println(feedViewModel.getState().getUser().getPosts());
                         }
                     }
                 }
@@ -109,6 +109,20 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
                     }
                 }
         );
+
+        profilesearchbutton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(profilesearchbutton)) {
+                            final FeedState currentState = feedViewModel.getState();
+
+                            feedPresenter.switchToProfileSearchView();
+                            currentState.getUsername();
+                        }
+                    }
+                }
+        );
+
         this.add(title);
         this.add(buttons);
         this.add(postsScrollPane);
@@ -188,6 +202,14 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
 
     public void setChangePasswordController(ChangePasswordController changePasswordController) {
         this.changePasswordController = changePasswordController;
+    }
+
+    public void setProfileSearchController(ProfileSearchController profileSearchController) {
+        this.profileSearchController = profileSearchController;
+    }
+
+    public void setOtherProfileController(OtherProfileController otherProfileController) {
+        this.otherProfileController = otherProfileController;
     }
 
     /**

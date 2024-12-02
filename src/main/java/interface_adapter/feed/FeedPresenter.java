@@ -5,6 +5,8 @@ import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
+import interface_adapter.profile_search.ProfileSearchState;
+import interface_adapter.profile_search.ProfileSearchViewModel;
 import interface_adapter.song_search.SongSearchState;
 import interface_adapter.song_search.SongSearchViewModel;
 import use_case.feed.FeedOutputBoundary;
@@ -20,15 +22,17 @@ public class FeedPresenter implements FeedOutputBoundary {
     private ProfileViewModel profileViewModel;
     private SongSearchViewModel songSearchViewModel;
     private LoggedInViewModel changePasswordViewModel;
+    private ProfileSearchViewModel profileSearchViewModel;
 
     public FeedPresenter(ViewManagerModel viewManagerModel, FeedViewModel feedViewModel,
                          ProfileViewModel profileViewModel, SongSearchViewModel songSearchViewModel,
-                         LoggedInViewModel changePasswordViewModel) {
+                         LoggedInViewModel changePasswordViewModel, ProfileSearchViewModel profileSearchViewModel) {
         this.feedViewModel = feedViewModel;
         this.viewManagerModel = viewManagerModel;
         this.profileViewModel = profileViewModel;
         this.songSearchViewModel = songSearchViewModel;
         this.changePasswordViewModel = changePasswordViewModel;
+        this.profileSearchViewModel = profileSearchViewModel;
     }
 
     @Override
@@ -86,5 +90,15 @@ public class FeedPresenter implements FeedOutputBoundary {
         this.viewManagerModel.setState(changePasswordViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
 
+    }
+
+    @Override
+    public void switchToProfileSearchView() {
+        final ProfileSearchState profileSearchState = profileSearchViewModel.getState();
+        this.profileSearchViewModel.setState(profileSearchState);
+        this.profileSearchViewModel.firePropertyChanged();
+
+        this.viewManagerModel.setState(profileSearchViewModel.getViewName());
+        this.viewManagerModel.firePropertyChanged();
     }
 }

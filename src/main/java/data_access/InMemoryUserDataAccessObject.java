@@ -12,6 +12,7 @@ import use_case.friendProfile.FriendProfileUserDataAccessInterface;
 import use_case.friends.FriendsUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
+import use_case.other_profile.OtherProfileUserDataAccessInterface;
 import use_case.profile.ProfileUserDataAccessInterface;
 import use_case.profile_search.ProfileSearchUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
@@ -28,11 +29,13 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         ProfileUserDataAccessInterface,
         FriendsUserDataAccessInterface,
         FriendProfileUserDataAccessInterface,
-        ProfileSearchUserDataAccessInterface {
+        ProfileSearchUserDataAccessInterface,
+        OtherProfileUserDataAccessInterface {
 
     private final Map<String, User> users = new HashMap<>();
 
     private String currentUser;
+    private String searchedUser;
 
     @Override
     public boolean existsByName(String identifier) {
@@ -49,7 +52,11 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         return users.get(username);
     }
 
-    @Override
+    /**
+     * This is the getUser method.
+     * @param inputUsername is a String.
+     * @return a User.
+     */
     public User getUser(String inputUsername) {
         return users.get(inputUsername);
     }
@@ -62,6 +69,11 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     @Override
     public void setCurrentUsername(String username) {
         currentUser = username;
+    }
+
+    @Override
+    public void setSearchedUsername(String username) {
+        searchedUser = username;
     }
 
     @Override

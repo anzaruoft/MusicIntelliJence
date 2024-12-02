@@ -32,4 +32,9 @@ public interface FeedOutputBoundary {
      * This is switchToChangePasswordView.
      */
     void switchToChangePasswordView();
+
+    /**
+     * This is switchToProfileSearchView.
+     */
+    void switchToProfileSearchView();
 }

@@ -52,7 +52,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
                     public void actionPerformed(ActionEvent evt) {
                         final ProfileState currentState = profileViewModel.getState();
                         System.out.println(currentState.getUsername());
-                        profileController.execute(currentState.getUsername());
+                        profileController.execute(currentState.getUsername(), currentState.getUser());
                     }
                 }
         );

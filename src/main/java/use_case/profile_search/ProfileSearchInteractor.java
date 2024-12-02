@@ -18,20 +18,34 @@ public class ProfileSearchInteractor implements ProfileSearchInputBoundary {
 
     @Override
     public void execute(ProfileSearchInputData profileSearchInputData) {
-        final String inputUsername = profileSearchInputData.getUsername();
+        final String inputUsername = profileSearchInputData.getSearchedUsername();
+        final String thisUsername = profileSearchInputData.getThisUsername();
+        System.out.println("Searching for: " + inputUsername);
+        System.out.println("Searched by: " + thisUsername);
 
-        if (userDataAccessObject.existsByName(inputUsername)) {
-            final User inputUser = userDataAccessObject.get(inputUsername);
-            final int inputUserFriendCount = inputUser.getFriends().length();
-
-            final ProfileSearchOutputData profileSearchOutputData = new ProfileSearchOutputData(inputUserFriendCount,
-                    inputUsername);
-
-            profileSearchPresenter.prepareSuccessView(profileSearchOutputData);
-
+        if (!userDataAccessObject.existsByName(inputUsername)) {
+            profileSearchPresenter.prepareFailView(inputUsername + ": Account does not exist crodie.");
         }
         else {
-            profileSearchPresenter.prepareFailView("User\"" + inputUsername + "\" does not exist");
+            if (inputUsername.equals(thisUsername)) {
+                profileSearchPresenter.prepareFailView(thisUsername + ": is you dude.");
+            }
+            else {
+                final User thisUser = userDataAccessObject.get(profileSearchInputData.getThisUsername());
+                final User inputUser = userDataAccessObject.get(profileSearchInputData.getSearchedUsername());
+
+                userDataAccessObject.setCurrentUsername(thisUser.getName());
+                userDataAccessObject.setSearchedUsername(inputUser.getName());
+
+                final ProfileSearchOutputData profileSearchOutputData =
+                        new ProfileSearchOutputData(
+                                inputUser.getFriends().length(),
+                                inputUser.getName(),
+                                thisUser.getName()
+                        );
+                profileSearchPresenter.prepareSuccessView(profileSearchOutputData);
+
+            }
         }
     }
 
@@ -39,6 +53,5 @@ public class ProfileSearchInteractor implements ProfileSearchInputBoundary {
     public void switchToFeedView() {
         profileSearchPresenter.switchToFeedView();
     }
-}
 
-// DATA ACCess Interface code NOT written!!!!
+}

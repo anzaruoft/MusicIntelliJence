@@ -1,12 +1,16 @@
 package interface_adapter.profile_search;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.feed.FeedState;
 import interface_adapter.feed.FeedViewModel;
+import interface_adapter.feed.FeedState;
+import interface_adapter.login.LoginState;
 import interface_adapter.other_profile.OtherProfileState;
 import interface_adapter.other_profile.OtherProfileViewModel;
+
+import use_case.profile.ProfileOutputBoundary;
 import use_case.profile_search.ProfileSearchOutputBoundary;
 import use_case.profile_search.ProfileSearchOutputData;
+
 
 /**
  * The Presenter for the Profile Search Use Case.

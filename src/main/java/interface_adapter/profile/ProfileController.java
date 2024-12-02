@@ -1,5 +1,6 @@
 package interface_adapter.profile;
 
+import entity.User;
 import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInputData;
 
@@ -17,9 +18,10 @@ public class ProfileController {
     /**
      * Executes the Profile Use Case.
      * @param username the username of the profile to view.
+     * @param user is type User.
      */
-    public void execute(String username) {
-        final ProfileInputData profileInputData = new ProfileInputData(username);
+    public void execute(String username, User user) {
+        final ProfileInputData profileInputData = new ProfileInputData(username, user);
         userProfileUseCaseInteractor.execute(profileInputData);
     }
 

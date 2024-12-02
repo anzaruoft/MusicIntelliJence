@@ -30,6 +30,8 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.other_profile.OtherProfileController;
+import interface_adapter.other_profile.OtherProfilePresenter;
 import interface_adapter.other_profile.OtherProfileViewModel;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfilePresenter;
@@ -59,6 +61,9 @@ import use_case.login.LoginInteractor;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.other_profile.OtherProfileInputBoundary;
+import use_case.other_profile.OtherProfileInteractor;
+import use_case.other_profile.OtherProfileOutputBoundary;
 import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInteractor;
 import use_case.profile.ProfileOutputBoundary;
@@ -172,6 +177,17 @@ public class AppBuilder {
         profileViewModel = new ProfileViewModel();
         profileView = new ProfileView(profileViewModel);
         cardPanel.add(profileView, profileView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the OtherProfile View to the application.
+     * @return this builder.
+     */
+    public AppBuilder addOtherProfileView() {
+        otherProfileViewModel = new OtherProfileViewModel();
+        otherProfileView = new OtherProfileView(otherProfileViewModel);
+        cardPanel.add(otherProfileView, otherProfileView.getViewName());
         return this;
     }
 
@@ -328,7 +344,7 @@ public class AppBuilder {
      */
     public AppBuilder addFeedUseCase() {
         final FeedPresenter feedPresenter = new FeedPresenter(viewManagerModel,
-                feedViewModel, profileViewModel, songSearchViewModel, loggedInViewModel);
+                feedViewModel, profileViewModel, songSearchViewModel, loggedInViewModel, profileSearchViewModel);
         final FeedInputBoundary feedInteractor = new FeedInteractor(userDataAccessObject, feedPresenter);
         final FeedController feedController = new FeedController(feedInteractor);
         feedView.setFeedController(feedController);
@@ -349,6 +365,21 @@ public class AppBuilder {
         final ProfileController profileController = new ProfileController(profileInteractor);
         profileView.setProfileController(profileController);
         feedView.setProfileController(profileController);
+        return this;
+    }
+
+    /**
+     * Adds the OtherProfile Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addOtherProfileUseCase() {
+        final OtherProfileOutputBoundary otherProfileOutputBoundary =
+                new OtherProfilePresenter(viewManagerModel, otherProfileViewModel, feedViewModel);
+        final OtherProfileInputBoundary otherProfileInteractor =
+                new OtherProfileInteractor(userDataAccessObject, otherProfileOutputBoundary);
+        final OtherProfileController otherProfileController = new OtherProfileController(otherProfileInteractor);
+        otherProfileView.setOtherProfileController(otherProfileController);
+        feedView.setOtherProfileController(otherProfileController);
         return this;
     }
 
@@ -387,7 +418,6 @@ public class AppBuilder {
 
     /**
      * Adds the profile search use case to the application.
-     *
      * @return this builder
      */
     public AppBuilder addProfileSearchUseCase() {
@@ -399,7 +429,7 @@ public class AppBuilder {
         final ProfileSearchController profileSearchController = new ProfileSearchController(profileSearchInteractor);
         profileSearchView.setProfileSearchController(profileSearchController);
         profileSearchView.setProfileSearchPresenter(profileSearchPresenter);
-
+        feedView.setProfileSearchController(profileSearchController);
         return this;
     }
 
