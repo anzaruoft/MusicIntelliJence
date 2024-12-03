@@ -67,5 +67,107 @@ public class ChangePasswordInteractorTest {
 
         verify(mockPresenter).switchToChangePasswordView();
     }
+
+    @Test
+    public void testChangePasswordFailureNullPassword() {
+        ChangePasswordUserDataAccessInterface mockDataAccess = mock(ChangePasswordUserDataAccessInterface.class);
+        ChangePasswordOutputBoundary mockPresenter = mock(ChangePasswordOutputBoundary.class);
+        UserFactory mockUserFactory = mock(UserFactory.class);
+
+        // Simulate user creation failure (return null for null password)
+        when(mockUserFactory.create(anyString(), eq(null), anyString())).thenReturn(null);
+
+        ChangePasswordInteractor interactor = new ChangePasswordInteractor(mockDataAccess, mockPresenter, mockUserFactory);
+
+        ChangePasswordInputData inputData = new ChangePasswordInputData("testUser", null, "testUser@gmail.com");
+
+        // Act
+        interactor.execute(inputData);
+
+        // Assert
+        verify(mockPresenter).prepareFailView("userCreationFailure"); // Expect "userCreationFailure" due to null user
+        verify(mockDataAccess, never()).changePassword(any(User.class));
+        verify(mockPresenter, never()).prepareSuccessView(any(ChangePasswordOutputData.class));
+    }
+
+    @Test
+    public void testChangePasswordFailureUserCreation() {
+        // Arrange
+        ChangePasswordUserDataAccessInterface mockDataAccess = mock(ChangePasswordUserDataAccessInterface.class);
+        ChangePasswordOutputBoundary mockPresenter = mock(ChangePasswordOutputBoundary.class);
+        UserFactory mockUserFactory = mock(UserFactory.class);
+
+        // Simulate user creation failure
+        when(mockUserFactory.create(anyString(), anyString(), anyString())).thenReturn(null);
+
+        ChangePasswordInteractor interactor = new ChangePasswordInteractor(mockDataAccess, mockPresenter, mockUserFactory);
+
+        ChangePasswordInputData inputData = new ChangePasswordInputData("testUser", "validPassword", "testUser@gmail.com");
+
+        // Act
+        interactor.execute(inputData);
+
+        // Assert
+        verify(mockPresenter).prepareFailView("userCreationFailure");
+        verify(mockDataAccess, never()).changePassword(any(User.class));
+        verify(mockPresenter, never()).prepareSuccessView(any(ChangePasswordOutputData.class));
+    }
+
+    @Test
+    public void testChangePasswordFailureEmptyUsername() {
+        ChangePasswordUserDataAccessInterface mockDataAccess = mock(ChangePasswordUserDataAccessInterface.class);
+        ChangePasswordOutputBoundary mockPresenter = mock(ChangePasswordOutputBoundary.class);
+        UserFactory mockUserFactory = mock(UserFactory.class);
+
+        ChangePasswordInteractor interactor = new ChangePasswordInteractor(mockDataAccess, mockPresenter, mockUserFactory);
+
+        ChangePasswordInputData inputData = new ChangePasswordInputData("", "password", "testUser@gmail.com");
+
+        interactor.execute(inputData);
+
+        verify(mockPresenter).prepareFailView("passwordFailureEmpty");
+        verify(mockDataAccess, never()).changePassword(any(User.class));
+    }
+
+    @Test
+    public void testChangePasswordFailureNullUsername() {
+        // Arrange
+        ChangePasswordUserDataAccessInterface mockDataAccess = mock(ChangePasswordUserDataAccessInterface.class);
+        ChangePasswordOutputBoundary mockPresenter = mock(ChangePasswordOutputBoundary.class);
+        UserFactory mockUserFactory = mock(UserFactory.class);
+
+        ChangePasswordInteractor interactor = new ChangePasswordInteractor(mockDataAccess, mockPresenter, mockUserFactory);
+
+        ChangePasswordInputData inputData = new ChangePasswordInputData(null, "password", "testUser@gmail.com");
+
+        // Act
+        interactor.execute(inputData);
+
+        // Assert
+        verify(mockPresenter).prepareFailView("passwordFailureEmpty");
+        verify(mockDataAccess, never()).changePassword(any(User.class));
+    }
+
+    @Test
+    public void testChangePasswordFailureNullFactoryOutput() {
+        // Arrange
+        ChangePasswordUserDataAccessInterface mockDataAccess = mock(ChangePasswordUserDataAccessInterface.class);
+        ChangePasswordOutputBoundary mockPresenter = mock(ChangePasswordOutputBoundary.class);
+        UserFactory mockUserFactory = mock(UserFactory.class);
+
+        when(mockUserFactory.create(anyString(), eq("validPassword"), anyString())).thenReturn(null);
+
+        ChangePasswordInteractor interactor = new ChangePasswordInteractor(mockDataAccess, mockPresenter, mockUserFactory);
+
+        ChangePasswordInputData inputData = new ChangePasswordInputData("testUser", "validPassword", "email@gmail.com");
+
+        // Act
+        interactor.execute(inputData);
+
+        // Assert
+        verify(mockPresenter).prepareFailView("userCreationFailure");
+        verify(mockDataAccess, never()).changePassword(any(User.class));
+    }
+
 }
 
