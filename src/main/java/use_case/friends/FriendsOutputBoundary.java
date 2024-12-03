@@ -16,4 +16,8 @@ public interface FriendsOutputBoundary {
      */
     void backToProfileView();
 
+    /**
+     * prepares the "switch to friend profile" view Use Case.
+     */
+    void switchToFriendView(String friendUsername);
 }

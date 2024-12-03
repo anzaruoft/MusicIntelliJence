@@ -1,6 +1,5 @@
 package use_case.profile;
 
-import data_access.DBUserDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.User;
@@ -8,9 +7,6 @@ import entity.UserFactory;
 import org.json.JSONArray;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 class ProfileInteractorTest {
 
@@ -22,36 +18,74 @@ class ProfileInteractorTest {
         User user = factory.create("MichaelYe", "password", "MichaelYe@gmail.com");
         userRepository.save(user);
 
-        ProfileInputData inputData = new ProfileInputData("MichaelYe", user);
-        List<String> topSongsList = new ArrayList<>();
-        topSongsList.add("Let it Go");
-        topSongsList.add("Too Many Nights");
-        JSONArray topSongsJson = new JSONArray(topSongsList);
-        user.setTopSongs(topSongsJson);
-        List<String> friendsList = new ArrayList<>();
-        friendsList.add("Jeremy");
-        friendsList.add("Kyle");
-        JSONArray friendsJson = new JSONArray(friendsList);
-        user.setFriends(friendsJson);
+        JSONArray postsList = new JSONArray();
+        postsList.put("Let it Go 5/5");
+        postsList.put("Too Many Nights");
+        user.setPosts(postsList);
+
+        JSONArray friendsList = new JSONArray();
+        friendsList.put("Jeremy");
+        friendsList.put("Kyle");
+        user.setFriends(friendsList);
 
         ProfileOutputBoundary successPresenter = new ProfileOutputBoundary() {
             @Override
             public void prepareSuccessView(ProfileOutputData outputData) {
-                String username = "MichaelYe";
+                Assertions.assertEquals("MichaelYe", outputData.getUsername());
+                Assertions.assertEquals(postsList.toString(), outputData.getPosts().toString());
+                Assertions.assertEquals(friendsList.toString(), outputData.getFriends().toString());
+            }
 
-                List<String> postsList = new ArrayList<>();
-                Assertions.assertEquals(friendsList, outputData.getFriends().toList());
-                Assertions.assertEquals(postsList, outputData.getPosts());
-                Assertions.assertEquals(username, outputData.getUsername());
-                Assertions.assertEquals(topSongsList, outputData.getTopSongs().toList());
-                System.out.println("Type of getFriends(): " + outputData.getFriends().getClass());
-                System.out.println("Contents of getFriends(): " + outputData.getFriends());
-
+            @Override
+            public void prepareFailView(String errorMessage) {
+                Assertions.fail("This should not be called in success scenario.");
             }
 
             @Override
             public void switchToFeedView() {
-                // This is expected
+                // Expected
+            }
+
+            @Override
+            public void switchToFriendsView() {
+                // Expected
+            }
+        };
+
+        ProfileInputData inputData = new ProfileInputData("MichaelYe", user);
+        ProfileInputBoundary interactor = new ProfileInteractor(userRepository, successPresenter);
+        interactor.execute(inputData);
+    }
+
+    @Test
+    void userWithEmptyFriendsAndPostsTest() {
+        InMemoryUserDataAccessObject userRepository = new InMemoryUserDataAccessObject();
+
+        UserFactory factory = new CommonUserFactory();
+        User user = factory.create("EmptyUser", "password", "empty@example.com");
+        userRepository.save(user);
+
+        ProfileOutputBoundary successPresenter = new ProfileOutputBoundary() {
+            @Override
+            public void prepareSuccessView(ProfileOutputData outputData) {
+                Assertions.assertEquals("EmptyUser", outputData.getUsername());
+                Assertions.assertTrue(outputData.getPosts().isEmpty());
+                Assertions.assertTrue(outputData.getFriends().isEmpty());
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage) {
+                Assertions.fail("This should not be called for an existing user.");
+            }
+
+            @Override
+            public void switchToFeedView() {
+                // Expected
+            }
+
+            @Override
+            public void switchToFriendsView() {
+                // Expected
             }
 
             @Override
@@ -65,8 +99,83 @@ class ProfileInteractorTest {
                 Assertions.fail("Unexpected call to prepareFailView: " + errorMessage);
             }
         };
+
+        ProfileInputData inputData = new ProfileInputData("EmptyUser", user);
         ProfileInputBoundary interactor = new ProfileInteractor(userRepository, successPresenter);
         interactor.execute(inputData);
 
+    }
+
+    @Test
+    void getUserTest() {
+        // Arrange
+        UserFactory factory = new CommonUserFactory();
+        User user = factory.create("TestUser", "password", "testuser@example.com");
+
+        // Create ProfileInputData with the user object
+        ProfileInputData inputData = new ProfileInputData("TestUser", user);
+
+        // Act & Assert
+        Assertions.assertEquals(user, inputData.getUser(), "The user should match the one passed to ProfileInputData.");
+    }
+
+    @Test
+    void switchToFeedViewTest() {
+        InMemoryUserDataAccessObject userRepository = new InMemoryUserDataAccessObject();
+
+        ProfileOutputBoundary feedViewPresenter = new ProfileOutputBoundary() {
+            @Override
+            public void prepareSuccessView(ProfileOutputData outputData) {
+                Assertions.fail("Not relevant for this test.");
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage) {
+                Assertions.fail("Not relevant for this test.");
+            }
+
+            @Override
+            public void switchToFeedView() {
+                Assertions.assertTrue(true, "Switch to feed view called successfully.");
+            }
+
+            @Override
+            public void switchToFriendsView() {
+                Assertions.fail("Switch to friends view should not be called.");
+            }
+        };
+
+        ProfileInputBoundary interactor = new ProfileInteractor(userRepository, feedViewPresenter);
+        interactor.switchToFeedView();
+    }
+
+    @Test
+    void switchToFriendsViewTest() {
+        InMemoryUserDataAccessObject userRepository = new InMemoryUserDataAccessObject();
+
+        ProfileOutputBoundary friendsViewPresenter = new ProfileOutputBoundary() {
+            @Override
+            public void prepareSuccessView(ProfileOutputData outputData) {
+                Assertions.fail("Not relevant for this test.");
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage) {
+                Assertions.fail("Not relevant for this test.");
+            }
+
+            @Override
+            public void switchToFeedView() {
+                Assertions.fail("Switch to feed view should not be called.");
+            }
+
+            @Override
+            public void switchToFriendsView() {
+                Assertions.assertTrue(true, "Switch to friends view called successfully.");
+            }
+        };
+
+        ProfileInputBoundary interactor = new ProfileInteractor(userRepository, friendsViewPresenter);
+        interactor.switchToFriendsView();
     }
 }

@@ -26,7 +26,6 @@ public class FriendProfilePresenter implements FriendProfileOutputBoundary {
         final FriendProfileState friendProfileState = friendProfileViewModel.getState();
         friendProfileState.setFriends(friendProfileOutputData.getFriends());
         friendProfileState.setPosts(friendProfileOutputData.getPosts());
-        friendProfileState.setTopSongs(friendProfileOutputData.getTopSongs());
         friendProfileViewModel.setState(friendProfileState);
         friendProfileViewModel.firePropertyChanged();
         viewManagerModel.setState(friendProfileViewModel.getViewName());

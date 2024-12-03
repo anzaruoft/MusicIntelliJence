@@ -1,5 +1,8 @@
 package interface_adapter.friends;
 
+import entity.User;
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,13 +11,14 @@ import java.util.List;
  */
 public class FriendsState {
     private String username = "";
-    private List<String> friends = new ArrayList<>();
+    private JSONArray friends = new JSONArray();
+    private User user;
 
     public String getUsername() {
         return username;
     }
 
-    public List<String> getFriends() {
+    public JSONArray getFriends() {
         return friends;
     }
 
@@ -22,8 +26,15 @@ public class FriendsState {
         this.username = username;
     }
 
-    public void setFriends(List<String> friends) {
+    public void setFriends(JSONArray friends) {
         this.friends = friends;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

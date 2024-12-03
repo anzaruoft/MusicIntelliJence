@@ -74,6 +74,7 @@ import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
 import use_case.song_search.SongSearchInputBoundary;
 import use_case.song_search.SongSearchInteractor;
+import view.FriendsView;
 import view.*;
 
 /**
@@ -390,7 +391,7 @@ public class AppBuilder {
      */
     public AppBuilder addFriendsUseCase() {
         final FriendsPresenter friendsPresenter = new FriendsPresenter(viewManagerModel,
-                profileViewModel, friendsViewModel);
+                profileViewModel, friendsViewModel, friendProfileViewModel);
         final FriendsInputBoundary friendsInteractor = new FriendsInteractor(userDataAccessObject, friendsPresenter);
 
         final FriendsController friendsController = new FriendsController(friendsInteractor);
