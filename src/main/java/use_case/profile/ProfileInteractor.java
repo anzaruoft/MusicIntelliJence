@@ -23,7 +23,6 @@ public class ProfileInteractor implements ProfileInputBoundary {
                 user.getName(),
                 user.getFriends(),
                 user.getPosts(),
-                user.getTopSongs(),
                 user);
         userDataAccessObject.updateUserPosts(user);
         profilePresenter.prepareSuccessView(profileOutputData);

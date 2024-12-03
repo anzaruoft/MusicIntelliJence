@@ -35,7 +35,6 @@ public class ProfilePresenter implements ProfileOutputBoundary {
         profileState.setUser(response.getUser());
         profileState.setFriends(response.getFriends());
         profileState.setPosts(response.getPosts());
-        profileState.setTopSongs(response.getTopSongs());
         profileViewModel.setState(profileState);
         viewManagerModel.setState(profileViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
