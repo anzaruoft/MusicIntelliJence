@@ -12,5 +12,23 @@ public interface FeedInputBoundary {
      * This is switchToChangePasswordView.
      */
     void switchToChangePasswordView();
+
+    /**
+     * This is switchToProfileView.
+     * @param username username.
+     */
+    void switchToProfileView(String username);
+
+    /**
+     * This is switchToProfileSearchView.
+     * @param username username.
+     */
+    void switchToProfileSearchView(String username);
+
+    /**
+     * This is switchToSong SearchView.
+     * @param username username.
+     */
+    void switchToSongSearchView(String username);
 }
 

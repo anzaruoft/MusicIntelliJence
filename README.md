@@ -24,7 +24,7 @@ InTune is a music-focused application designed for music enthusiasts, particular
 - Personalize the experience with options for password management.
 
 ### User Stories:
-1) Maryam listens to a song she hasn’t heard in a long time, and she remembers rating it on INTUNE a while back. She wants to see what her old rating was before she makes an opinion, she opens the app, logs in and realizes it took her awhile to remember her password! She changes her password, relogs back in, and checks to see her old rating on her feed.
+1) Maryam listens to a song she hasn’t heard in a long time, and she remembers rating it on INTUNE a while back. She wants to see what her old rating was before she makes an opinion, she opens the app, logs in and realizes it took her awhile to remember her password! She changes her password, relogs back in, and checks to see her old rating on her feed. None of her friends have rated any songs, so they dont show up on the feed. 
 
 2) Hugo is looking for new songs to listen to, but he does not want to listen to a bad one. He cannot remember the songs he used to like, so he goes on his own profile, and views his past top songs to find something to jam out to. Hugo also views his lists of his friends, but he has none!
 
