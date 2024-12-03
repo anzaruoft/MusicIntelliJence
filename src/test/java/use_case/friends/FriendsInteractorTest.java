@@ -5,6 +5,7 @@ import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.User;
 import entity.UserFactory;
+import org.json.JSONArray;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -21,9 +22,9 @@ class FriendsInteractorTest {
         UserFactory factory = new CommonUserFactory();
         User user = factory.create("MichaelYe", "password", "MichaelYe@gmail.com");
         userRepository.save(user);
-        List<String> friendsList = new ArrayList<>();
-        friendsList.add("Jeremy");
-        friendsList.add("Kyle");
+        JSONArray friendsList = new JSONArray();
+        friendsList.put("Jeremy");
+        friendsList.put("Kyle");
         user.setFriends(friendsList);
 
         FriendsOutputBoundary successPresenter = new FriendsOutputBoundary() {
