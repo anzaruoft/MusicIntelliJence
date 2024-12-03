@@ -1,6 +1,8 @@
 package interface_adapter.friends;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.friendProfile.FriendProfileState;
+import interface_adapter.friendProfile.FriendProfileViewModel;
 import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
 import use_case.friends.FriendsOutputBoundary;
@@ -14,12 +16,15 @@ public class FriendsPresenter implements FriendsOutputBoundary {
     private final FriendsViewModel friendsViewModel;
     private final ViewManagerModel viewManagerModel;
     private final ProfileViewModel profileViewModel;
+    private final FriendProfileViewModel friendProfileViewModel;
 
     public FriendsPresenter(ViewManagerModel viewManagerModel, ProfileViewModel profileViewModel,
-                            FriendsViewModel friendsViewModel) {
+                            FriendsViewModel friendsViewModel,
+                            FriendProfileViewModel friendProfileViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.profileViewModel = profileViewModel;
         this.friendsViewModel = friendsViewModel;
+        this.friendProfileViewModel = friendProfileViewModel;
     }
 
     @Override
@@ -39,6 +44,16 @@ public class FriendsPresenter implements FriendsOutputBoundary {
         this.profileViewModel.firePropertyChanged();
 
         this.viewManagerModel.setState(profileViewModel.getViewName());
+        this.viewManagerModel.firePropertyChanged();
+    }
+
+    @Override
+    public void switchToFriendView(String friendUsername) {
+        final FriendProfileState friendProfileState = friendProfileViewModel.getState();
+        this.friendProfileViewModel.setState(friendProfileState);
+        this.friendProfileViewModel.firePropertyChanged();
+
+        this.viewManagerModel.setState(friendProfileViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
 
