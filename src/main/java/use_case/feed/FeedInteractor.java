@@ -32,4 +32,19 @@ public class FeedInteractor implements FeedInputBoundary {
     public void switchToChangePasswordView() {
         userPresenter.switchToChangePasswordView();
     }
+
+    @Override
+    public void switchToProfileView(String username) {
+        userPresenter.switchToProfileView(username);
+    }
+
+    @Override
+    public void switchToProfileSearchView(String username) {
+        userPresenter.switchToProfileSearchView(username);
+    }
+
+    @Override
+    public void switchToSongSearchView(String username) {
+        userPresenter.switchToSongSearchView(username);
+    }
 }
