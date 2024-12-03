@@ -85,19 +85,9 @@ class ProfileInteractorTest {
 
             @Override
             public void switchToFriendsView() {
-                // Expected
+
             }
 
-            @Override
-            public void switchToFriendsView() {
-                // Provide a dummy implementation for the test
-            }
-
-            @Override
-            public void prepareFailView(String errorMessage) {
-                // Dummy implementation for the test
-                Assertions.fail("Unexpected call to prepareFailView: " + errorMessage);
-            }
         };
 
         ProfileInputData inputData = new ProfileInputData("EmptyUser", user);
