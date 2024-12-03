@@ -95,6 +95,19 @@ class ProfileInteractorTest {
     }
 
     @Test
+    void getUserTest() {
+        // Arrange
+        UserFactory factory = new CommonUserFactory();
+        User user = factory.create("TestUser", "password", "testuser@example.com");
+
+        // Create ProfileInputData with the user object
+        ProfileInputData inputData = new ProfileInputData("TestUser", user);
+
+        // Act & Assert
+        Assertions.assertEquals(user, inputData.getUser(), "The user should match the one passed to ProfileInputData.");
+    }
+
+    @Test
     void switchToFeedViewTest() {
         InMemoryUserDataAccessObject userRepository = new InMemoryUserDataAccessObject();
 

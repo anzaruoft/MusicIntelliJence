@@ -13,14 +13,12 @@ public class ProfileOutputData {
     private final String username;
     private final JSONArray friends;
     private final JSONArray posts;
-    private final JSONArray topSongs;
     private final User user;
 
-    public ProfileOutputData(String username, JSONArray friends, JSONArray posts, JSONArray topSongs, User user) {
+    public ProfileOutputData(String username, JSONArray friends, JSONArray posts, User user) {
         this.username = username;
         this.friends = friends;
         this.posts = posts;
-        this.topSongs = topSongs;
         this.user = user;
     }
 
@@ -34,10 +32,6 @@ public class ProfileOutputData {
 
     public JSONArray getPosts() {
         return posts;
-    }
-
-    public JSONArray getTopSongs() {
-        return topSongs;
     }
 
     public User getUser() {
