@@ -15,4 +15,10 @@ public interface FriendsInputBoundary {
      * Executes the switch back to profile view use case.
      */
     void backToProfileView();
+
+    /**
+     * Executes sthe switch to friends profile use case.
+     * @param friendUsername the username of the friend to switch to.
+     */
+    void switchToFriendProfile(String friendUsername);
 }

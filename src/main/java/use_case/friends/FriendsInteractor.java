@@ -29,4 +29,9 @@ public class FriendsInteractor implements FriendsInputBoundary {
         friendsPresenter.backToProfileView();
     }
 
+    @Override
+    public void switchToFriendProfile(String friendUsername) {
+        friendsPresenter.switchToFriendView(friendUsername);
+    }
+
 }

@@ -30,6 +30,7 @@ class FriendsInteractorTest {
         FriendsOutputBoundary successPresenter = new FriendsOutputBoundary() {
             @Override
             public void prepareSuccessView(FriendsOutputData outputData) {
+
                 Assertions.assertEquals(friendsList, outputData.getFriendsNames());
             }
 
@@ -37,8 +38,53 @@ class FriendsInteractorTest {
             public void backToProfileView() {
                 // This is expected
             }
+
+            @Override
+            public void switchToFriendView(String friendUsername) {
+                // Expected
+            }
         };
         FriendsInputBoundary interactor = new FriendsInteractor(userRepository, successPresenter);
         interactor.execute(friendsInputData);
+    }
+    @Test
+    void testValidFriendsList() {
+        JSONArray friendsList = new JSONArray();
+        friendsList.put("Alice");
+        friendsList.put("Bob");
+
+        FriendsOutputData outputData = new FriendsOutputData(friendsList);
+
+        Assertions.assertEquals(friendsList, outputData.getFriendsNames());
+    }
+
+    @Test
+    void testEmptyFriendsList() {
+        JSONArray friendsList = new JSONArray();
+
+        FriendsOutputData outputData = new FriendsOutputData(friendsList);
+
+        Assertions.assertEquals(friendsList, outputData.getFriendsNames());
+        Assertions.assertTrue(outputData.getFriendsNames().isEmpty());
+    }
+
+    @Test
+    void testNullFriendsList() {
+        FriendsOutputData outputData = new FriendsOutputData(null);
+
+        Assertions.assertNull(outputData.getFriendsNames());
+    }
+
+    @Test
+    void testDifferentContents() {
+        JSONArray friendsList = new JSONArray();
+        friendsList.put("Charlie");
+
+        FriendsOutputData outputData = new FriendsOutputData(friendsList);
+
+        JSONArray differentList = new JSONArray();
+        differentList.put("Dave");
+
+        Assertions.assertNotEquals(differentList, outputData.getFriendsNames());
     }
 }
