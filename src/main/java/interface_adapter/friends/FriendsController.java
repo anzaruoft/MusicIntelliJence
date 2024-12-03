@@ -30,4 +30,11 @@ public class FriendsController {
         userFriendsUseCaseInteractor.backToProfileView();
     }
 
+    /**
+     * Executes the "switch to Friend Profile" Friends Use Case.
+     * @param friendUsername the username of the friends profile to view.
+     */
+    public void switchToFriendProfile(String friendUsername) {
+        userFriendsUseCaseInteractor.switchToFriendProfile(friendUsername);
+    }
 }
