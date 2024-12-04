@@ -37,8 +37,13 @@ public class ProfileSearchPresenter implements ProfileSearchOutputBoundary {
     @Override
     public void prepareSuccessView(ProfileSearchOutputData response) {
         // On success, switch to the Other Profile View.
+        // Remove Later
+        System.out.println("Profile Search Presenter ");
 
         final OtherProfileState otherProfileState = otherProfileViewModel.getState();
+        otherProfileState.setSearchedUsername(response.getSearchedUserName());
+        otherProfileState.setThisUsername(response.getThisUserName());
+        otherProfileState.setFriendsCount(response.getFriendCount());
 
         this.otherProfileViewModel.setState(otherProfileState);
         this.otherProfileViewModel.firePropertyChanged();

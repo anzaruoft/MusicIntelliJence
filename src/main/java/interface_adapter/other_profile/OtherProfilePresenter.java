@@ -26,8 +26,8 @@ public class OtherProfilePresenter implements OtherProfileOutputBoundary {
     @Override
     public void prepareSuccessView(OtherProfileOutputData response) {
         final OtherProfileState otherProfileState = otherProfileViewModel.getState();
-        otherProfileState.setFriendsCount(response.getFriendsCount());
-
+        otherProfileState.setThisUsername(response.getThisUsername());
+        otherProfileState.setResponse(response.getResponse());
         otherProfileViewModel.setState(otherProfileState);
         otherProfileViewModel.firePropertyChanged();
         viewManagerModel.setState(otherProfileViewModel.getViewName());

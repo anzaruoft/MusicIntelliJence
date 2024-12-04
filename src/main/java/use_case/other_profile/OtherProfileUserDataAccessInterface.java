@@ -22,4 +22,8 @@ public interface OtherProfileUserDataAccessInterface {
      */
     User get(String otherUsername);
 
+    boolean isFriends(String thisUsername, String otherUsername);
+
+    void updateUserFriends(User otherUser, User thisUser);
+
 }

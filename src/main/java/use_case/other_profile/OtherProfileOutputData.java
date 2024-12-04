@@ -4,20 +4,20 @@ package use_case.other_profile;
  * Output Data for the Other Profile Use Case.
  */
 public class OtherProfileOutputData {
-    private final String otherUsername;
-    private final int friendsCount;
+    private final String thisUsername;
+    private String response;
 
-    public OtherProfileOutputData(String otherUsername,
-                                  int friendsCount) {
-        this.otherUsername = otherUsername;
-        this.friendsCount = friendsCount;
+    public OtherProfileOutputData(String thisUsername,
+                                  String response) {
+        this.thisUsername = thisUsername;
+        this.response = response;
     }
 
-    public String getOtherUsername() {
-        return otherUsername;
+    public String getThisUsername() {
+        return thisUsername;
     }
 
-    public int getFriendsCount() {
-        return friendsCount;
+    public String getResponse() {
+        return response;
     }
 }

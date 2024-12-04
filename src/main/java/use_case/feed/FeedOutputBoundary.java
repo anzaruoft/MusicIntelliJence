@@ -33,6 +33,12 @@ public interface FeedOutputBoundary {
      */
     void switchToChangePasswordView();
 
+//    /**
+//     * This is switchToProfileSearchView.
+//     * @param outputData the outputData
+//     */
+//    void switchToProfileSearchView(FeedOutputData outputData);
+
     /**
      * This is switchToProfileSearchView.
      * @param username is type String.

@@ -1,5 +1,6 @@
 package use_case.login;
 
+import data_access.InMemoryUserDataAccessObject;
 import entity.User;
 
 /**
@@ -8,6 +9,7 @@ import entity.User;
 public class LoginInteractor implements LoginInputBoundary {
     private final LoginUserDataAccessInterface userDataAccessObject;
     private final LoginOutputBoundary loginPresenter;
+    private InMemoryUserDataAccessObject inMemoryUserDataAccessObject;
 
     public LoginInteractor(LoginUserDataAccessInterface userDataAccessInterface,
                            LoginOutputBoundary loginOutputBoundary) {
@@ -19,6 +21,10 @@ public class LoginInteractor implements LoginInputBoundary {
     public void execute(LoginInputData loginInputData) {
         final String username = loginInputData.getUsername();
         final String password = loginInputData.getPassword();
+        // Added
+        inMemoryUserDataAccessObject = new InMemoryUserDataAccessObject();
+        inMemoryUserDataAccessObject.setCurrentUsername(username);
+
         if (!userDataAccessObject.existsByName(username)) {
             loginPresenter.prepareFailView(username + ": Account does not exist.");
         }
@@ -33,7 +39,8 @@ public class LoginInteractor implements LoginInputBoundary {
                 final User user = userDataAccessObject.get(loginInputData.getUsername());
 
                 userDataAccessObject.setCurrentUsername(user.getName());
-                final LoginOutputData loginOutputData = new LoginOutputData(user.getName(), false);
+                final LoginOutputData loginOutputData = new LoginOutputData(user.getName(), false,
+                        inMemoryUserDataAccessObject);
                 loginPresenter.prepareSuccessView(loginOutputData);
             }
         }

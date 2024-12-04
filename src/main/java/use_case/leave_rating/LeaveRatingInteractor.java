@@ -25,6 +25,7 @@ public class LeaveRatingInteractor implements LeaveRatingInputBoundary {
         final User user = userDataAccessObject.get(username);
         final LeaveRatingOutputData leaveRatingOutputData = new LeaveRatingOutputData();
         final JSONArray posts = user.getPosts();
+
         posts.put(songTitle + " " + "-" + " " + rating);
         user.setPosts(posts);
         userDataAccessObject.updateUserPosts(user);

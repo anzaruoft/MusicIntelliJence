@@ -93,12 +93,27 @@ public class FeedPresenter implements FeedOutputBoundary {
     }
 
     @Override
-    public void switchToProfileSearchView(String username) {
+    public void switchToProfileSearchView(String thisUsername) {
+        // Remove Later or Added
+        System.out.println("Feed Presenter " + thisUsername);
         final ProfileSearchState profileSearchState = profileSearchViewModel.getState();
+        profileSearchState.setThisUsername(thisUsername);
         this.profileSearchViewModel.setState(profileSearchState);
         this.profileSearchViewModel.firePropertyChanged();
 
         this.viewManagerModel.setState(profileSearchViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
+
+//    @Override
+//    public void switchToProfileSearchView(String username) {
+//        // Remove Later
+//        System.out.println("Feed Presenter " + username);
+//        final ProfileSearchState profileSearchState = profileSearchViewModel.getState();
+//        this.profileSearchViewModel.setState(profileSearchState);
+//        this.profileSearchViewModel.firePropertyChanged();
+//
+//        this.viewManagerModel.setState(profileSearchViewModel.getViewName());
+//        this.viewManagerModel.firePropertyChanged();
+//    }
 }

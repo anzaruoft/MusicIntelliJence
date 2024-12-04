@@ -2,8 +2,6 @@ package use_case.friends;
 
 import org.json.JSONArray;
 
-import java.util.List;
-
 /**
  * Output Data for the Friends Use Case.
  */

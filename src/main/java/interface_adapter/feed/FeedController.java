@@ -19,6 +19,8 @@ public class FeedController {
      *
      */
     public void execute(String username) {
+        // remove later
+        System.out.println("Feed Controller " + username);
         final FeedInputData feedInputData = new FeedInputData(username);
         feedInteractor.execute(feedInputData);
     }

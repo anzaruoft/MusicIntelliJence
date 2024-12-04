@@ -2,6 +2,7 @@ package use_case.feed;
 
 import entity.User;
 import org.json.JSONArray;
+import data_access.InMemoryUserDataAccessObject;
 
 
 public class FeedOutputData {
@@ -10,15 +11,22 @@ public class FeedOutputData {
     // The list of posts from friends
     private final JSONArray posts;
     private final User user;
+    private InMemoryUserDataAccessObject inMemoryUserDataAccessObject;
 
-    public FeedOutputData(String username, JSONArray posts, User user) {
+    public FeedOutputData(String username, JSONArray posts, User user,
+                          InMemoryUserDataAccessObject inMemoryUserDataAccessObject) {
         this.username = username;
         this.posts = posts;
         this.user = user;
+        // Added
+        this.inMemoryUserDataAccessObject = inMemoryUserDataAccessObject;
     }
 
+//    public String getUsername() {
+//        return username;
+//    }
     public String getUsername() {
-        return username;
+        return inMemoryUserDataAccessObject.getCurrentUsername();
     }
 
     public JSONArray getPosts() {

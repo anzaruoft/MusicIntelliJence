@@ -5,33 +5,42 @@ package interface_adapter.other_profile;
  * Like Instagram, not all info is displayed as they are not friends yet.
  */
 public class OtherProfileState {
-    private String otherUsername;
-    private String username;
+    private String searchedUsername;
+    private String thisUsername;
     private int friendsCount;
     private String usernameError;
+    private String response;
 
-    public String getOtherUsername() {
-        return otherUsername;
+    public String getSearchedUsername() {
+        return searchedUsername;
     }
 
-    public String getUsername() {
-        return username;
+    public String getThisUsername() {
+        return thisUsername;
     }
 
     public String getUsernameError() {
         return usernameError;
     }
 
+    public String getResponse() {
+        return response;
+    }
+
     public int getFriendsCount() {
         return friendsCount;
     }
 
-    public void setOtherUsername(String otherUsername) {
-        this.otherUsername = otherUsername;
+    public void setResponse(String response) {
+        this.response = response;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setSearchedUsername(String otherUsername) {
+        this.searchedUsername = otherUsername;
+    }
+
+    public void setThisUsername(String thisUsername) {
+        this.thisUsername = thisUsername;
     }
 
     public void setUsernameError(String usernameError) {

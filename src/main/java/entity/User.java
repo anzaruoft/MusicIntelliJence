@@ -50,7 +50,7 @@ public interface User {
     JSONArray getFriends();
 
     /**
-     * Returns the sent friend requests of the user.
+     * Returns the friend list of the user.
      * @return the sentFriends of the user.
      */
     JSONArray getSentFriends();

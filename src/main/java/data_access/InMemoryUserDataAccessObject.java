@@ -71,10 +71,10 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         currentUser = username;
     }
 
-    @Override
-    public void setSearchedUsername(String username) {
-        searchedUser = username;
-    }
+//    @Override
+//    public void setSearchedUsername(String username) {
+//        searchedUser = username;
+//    }
 
     @Override
     public void changePassword(User user) {
@@ -82,6 +82,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         users.put(user.getName(), user);
     }
 
+    @Override
     public JSONArray getFriendsPosts(JSONArray friends) {
         final JSONArray allPosts = new JSONArray();
         for (int i = 0; i < friends.length(); i++) {
@@ -102,8 +103,21 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
 
         return allPosts;
     }
+    // Added
 
     @Override
     public void updateUserPosts(User user) {
     }
+
+    @Override
+    public boolean isFriends(String thisUsername, String otherUsername) {
+        System.out.println("In Memory Called");
+        return true;
+    }
+
+    @Override
+    public void updateUserFriends(User otherUser, User thisUser) {
+        System.out.println("In Memory Called update user posts");
+    }
+
 }

@@ -18,6 +18,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.*;
 import java.util.List;
 
+import interface_adapter.other_profile.OtherProfileState;
 import interface_adapter.profile_search.ProfileSearchController;
 import interface_adapter.profile_search.ProfileSearchPresenter;
 import interface_adapter.profile_search.ProfileSearchState;
@@ -74,6 +75,7 @@ public class ProfileSearchView extends JPanel implements ActionListener, Propert
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(searchButton)) {
                             final ProfileSearchState currentState = profileSearchViewModel.getState();
+
                             profileSearchController.execute(
                                     currentState.getSearchedUsername(), currentState.getThisUsername()
                             );

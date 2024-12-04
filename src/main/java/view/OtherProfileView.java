@@ -1,9 +1,11 @@
 package view;
 
 import interface_adapter.other_profile.OtherProfileController;
+import interface_adapter.other_profile.OtherProfilePresenter;
 import interface_adapter.other_profile.OtherProfileState;
 import interface_adapter.other_profile.OtherProfileViewModel;
 
+import javax.print.attribute.standard.MediaSize;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,63 +20,63 @@ public class OtherProfileView extends JPanel implements ActionListener, Property
 
     private final String viewName = "other profile";
     private final OtherProfileViewModel otherProfileViewModel;
-    private OtherProfileController otherProfilecontroller;
-    private final JLabel usernameErrorField = new JLabel();
+
+    // ADDED
+    private JLabel responseField = new JLabel();
+    private final JLabel nameField = new JLabel();
+    private final JLabel friendsCountField = new JLabel();
+    private final JButton addButton;
+    private final JButton backButton;
+
+    private OtherProfileController otherProfileController;
+    private OtherProfilePresenter otherProfilePresenter;
+    private OtherProfileState otherProfileState;
 
     public OtherProfileView(OtherProfileViewModel otherProfileViewModel) {
 
         this.otherProfileViewModel = otherProfileViewModel;
         this.otherProfileViewModel.addPropertyChangeListener(this);
 
-        // Collect User Information
-        final OtherProfileState currentState = otherProfileViewModel.getState();
-        final int friendsCount = currentState.getFriendsCount();
+        // Title of the page
+        final JLabel title = new JLabel("Other Profile");
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Set up Labels and Add friend button
-        final JPanel topPanel = new JPanel();
-//        final JLabel nameLabel = new JLabel("Profile of " + currentState.getOtherUsername());
-        final JLabel nameLabel = new JLabel("Profile Exists");
-        final JButton backButton = new JButton("Back");
-        topPanel.add(nameLabel);
-        topPanel.add(backButton);
+        // Buttons
+        final JPanel buttons = new JPanel();
+        addButton = new JButton("Add Friend");
+        buttons.add(addButton);
+        backButton = new JButton("Back");
+        buttons.add(backButton);
 
-        final JLabel friendsCountLabel = new JLabel(String.format("Friends: %d", friendsCount));
-
-        final JButton addButton = new JButton("Add");
+        // Add Friend button execution.
         addButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-                        final OtherProfileState currentState = otherProfileViewModel.getState();
-                        System.out.println(currentState.getUsername());
-                        System.out.println(currentState.getOtherUsername());
-                        otherProfilecontroller.execute(currentState.getOtherUsername());
+                        if (evt.getSource().equals(addButton)) {
+                            final OtherProfileState currentState = otherProfileViewModel.getState();
+                            otherProfileController.execute(currentState.getSearchedUsername(),
+                                    currentState.getThisUsername());
+                        }
                     }
                 }
         );
-//        topPanel.add(addButton);
-        topPanel.setBackground(Color.PINK);
-        topPanel.add(Box.createVerticalGlue());
-        this.add(topPanel);
 
+        // Back Button Execution
         backButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-                        otherProfilecontroller.switchToFeedView();
+                        otherProfileController.switchToFeedView();
                     }
                 }
         );
-        this.setBackground(Color.PINK);
+
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-    }
 
-    public String getViewName() {
-        return viewName;
-    }
+        this.add(title);
+        this.add(buttons, BorderLayout.SOUTH);
+        this.add(responseField, BorderLayout.EAST);
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        final OtherProfileState state = (OtherProfileState) evt.getNewValue();
-        usernameErrorField.setText(state.getUsernameError());
+        this.setBackground(Color.PINK);
     }
 
     /**
@@ -86,8 +88,20 @@ public class OtherProfileView extends JPanel implements ActionListener, Property
         System.out.println("Click " + evt.getActionCommand());
     }
 
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        final OtherProfileState state = (OtherProfileState) evt.getNewValue();
+        responseField.setText(state.getResponse());
+        nameField.setText(state.getSearchedUsername());
+        friendsCountField.setText(String.valueOf(state.getFriendsCount()));
+    }
+
     public void setOtherProfileController(OtherProfileController otherProfileController) {
-        this.otherProfilecontroller = otherProfileController;
+        this.otherProfileController = otherProfileController;
+    }
+
+    public String getViewName() {
+        return viewName;
     }
 }
 

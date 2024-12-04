@@ -17,9 +17,11 @@ public class OtherProfileController {
     /**
      * Executes the Other Profile Use Case.
      * @param otherUsername the username of the other profile to view.
+     * @param thisUsername the username of the user of the application.
      */
-    public void execute(String otherUsername) {
-        final OtherProfileInputData otherProfileInputData = new OtherProfileInputData(otherUsername);
+    public void execute(String otherUsername, String thisUsername) {
+        final OtherProfileInputData otherProfileInputData = new OtherProfileInputData(thisUsername, otherUsername);
+        System.out.println(thisUsername + "this username OP controller");
         otherProfileInteractor.execute(otherProfileInputData);
     }
 
